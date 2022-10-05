@@ -12,9 +12,15 @@ import Toolbar from "@mui/material/Toolbar"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
+import { Link } from "react-router-dom"
+import { PATHS } from "../../consts/paths"
 
 const pages = ["Products", "Pricing", "Blog"]
-const settings = ["Profile", "Account", "Dashboard", "Logout"]
+const settings: { name: string; path: string }[] = [
+  { name: "Home", path: PATHS.home },
+  { name: "Login", path: PATHS.login },
+  { name: "Register", path: PATHS.register },
+]
 
 export const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
@@ -150,8 +156,10 @@ export const ResponsiveAppBar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">
+                    <Link to={setting.path}>{setting.name}</Link>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
