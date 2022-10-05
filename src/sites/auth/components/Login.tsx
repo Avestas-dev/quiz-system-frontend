@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import LoginIcon from "@mui/icons-material/Login"
 import { Button } from "@mui/material"
 import { useState } from "react"
@@ -6,16 +7,32 @@ import GoogleLogin, {
   GoogleLoginResponseOffline,
 } from "react-google-login"
 import { useForm } from "react-hook-form"
-import { Input } from "../../../components/Input"
+import { Link } from "react-router-dom"
+import { CheckboxControl } from "../../../components/CheckboxControl"
+
+import { InputControl } from "../../../components/InputControl"
+import { PATHS } from "../../../consts/paths"
+import yup from "../../../consts/yupLocaleEN"
 import { settings } from "../../../settings"
 import { GoogleSignInButton } from "./GoogleSignInButton"
+
+const loginValidationSchema = yup.object().shape({
+  email: yup.string().required().email(),
+  password: yup.string().required(),
+  remember: yup.boolean().required(),
+})
+
 type LoginFormProps = {
   email: string
   password: string
+  remember: boolean
 }
 
 export const Login = () => {
-  const { control, handleSubmit } = useForm<LoginFormProps>()
+  const { control, handleSubmit } = useForm<LoginFormProps>({
+    resolver: yupResolver(loginValidationSchema),
+    reValidateMode: "onChange",
+  })
   const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false)
 
   const onSuccess = (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
@@ -28,10 +45,11 @@ export const Login = () => {
 
   const onSubmit = (props: LoginFormProps) => {
     console.log(props)
+    console.log("test")
   }
 
   return (
-    <div className="flex max-w-[70%] ml-auto mr-auto justify-center flex-col  flex-wrap px-2 py-4 self-center">
+    <div className="flex max-w-[70%] h-[100%] ml-auto mr-auto justify-center flex-col  flex-wrap px-2 py-4 pb-10">
       <div className="flex">
         <h1 className="">Login</h1>
       </div>
@@ -62,7 +80,7 @@ export const Login = () => {
       </div>
 
       <div className="flex flex-col space-y-4 ">
-        <Input
+        <InputControl
           control={control}
           name="email"
           label="Email"
@@ -71,22 +89,42 @@ export const Login = () => {
           type="email"
           inputProps={{ inputMode: "email" }}
         />
-        <Input
+        <InputControl
           control={control}
           name="password"
           label="Password"
           type="password"
           inputProps={{ hidden: true }}
         />
-        <Button
-          variant="contained"
-          onClick={() => handleSubmit(onSubmit)}
-          style={{ borderRadius: 9999 }}
-          startIcon={<LoginIcon />}
-        >
-          Sign in
-        </Button>
       </div>
+
+      <div className="flex flex-row pt-4 pb-4">
+        <CheckboxControl
+          control={control}
+          name="remember"
+          aria-label="test"
+          label="Remember me"
+        />
+        <Link
+          to={PATHS["forget-password"]}
+          className="self-center ml-auto text-[#3b83f6] font-semibold px-1 py-1"
+        >
+          <p>Forget password?</p>
+        </Link>
+      </div>
+      <Button
+        variant="contained"
+        onClick={handleSubmit(onSubmit)}
+        style={{ borderRadius: 9999 }}
+        startIcon={<LoginIcon />}
+      >
+        Sign in
+      </Button>
+
+      <Link to={PATHS.register} className="flex pt-3">
+        <p>Not yet registered?</p>
+        <p className="pl-2 font-bold text-[#3b83f6]">Sign up now!</p>
+      </Link>
     </div>
   )
 }

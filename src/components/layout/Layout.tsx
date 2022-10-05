@@ -1,3 +1,4 @@
+import { Container } from "@mui/material"
 import { FC } from "react"
 import { ResponsiveAppBar } from "./ResponsiveAppBar"
 interface LayoutProps {
@@ -8,15 +9,22 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen w-full flex flex-col">
       <ResponsiveAppBar />
-      {/* <Container
-        sx={{ minHeight: "100%", backgroundColor: "red" }}
+
+      <Container
+        sx={{
+          paddingX: 4,
+          paddingY: 4,
+          marginLeft: "auto",
+          marginRight: "auto",
+          flex: 1,
+          flexDirection: "column",
+          flexGrow: 1,
+          width: "100%",
+        }}
         maxWidth="xl"
-        fixed
-      > */}
-      <div className="px-2 py-4 ml-auto mr-auto flex flex-col flex-grow w-full bg-red-50">
+      >
         {children}
-      </div>
-      {/* </Container> */}
+      </Container>
     </div>
   )
 }
