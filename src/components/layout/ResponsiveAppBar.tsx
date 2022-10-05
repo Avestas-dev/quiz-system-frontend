@@ -15,7 +15,11 @@ import * as React from "react"
 import { Link } from "react-router-dom"
 import { PATHS } from "../../consts/paths"
 
-const pages = ["Products", "Pricing", "Blog"]
+const pages: { name: string; path: string }[] = [
+  { name: "Home", path: PATHS.home },
+  { name: "Login", path: PATHS.login },
+  { name: "Register", path: PATHS.register },
+]
 const settings: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
   { name: "Login", path: PATHS.login },
@@ -96,8 +100,8 @@ export const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -124,11 +128,11 @@ export const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                <Link to={page.path}>{page.name}</Link>
               </Button>
             ))}
           </Box>
@@ -157,9 +161,9 @@ export const ResponsiveAppBar = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <Link to={setting.path}>{setting.name}</Link>
-                  </Typography>
+                  <Link to={setting.path}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
