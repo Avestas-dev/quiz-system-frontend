@@ -1,2 +1,2 @@
 # quiz-system-frontend
-Projekt wykonywany w ramach prrzedmiotu Aplikacje Internetowe 
+Projekt wykonywany w ramach przedmiotu Aplikacje Internetowe 
