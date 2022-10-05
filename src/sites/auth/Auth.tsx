@@ -8,16 +8,18 @@ type AuthProps = {
 
 export const Auth = ({ variant }: AuthProps) => {
   return (
-    <Layout>
-      <div className="flex flex-row">
-        <div className="bg-red-500 w-[55%]">
-          {variant === "login" && <Login />}
-          {variant === "register" && <Register />}
+    <div className="bg-green-500 flex">
+      <Layout>
+        <div className="flex flex-row shadow-2xl border-gray border-2 min-h-full bg-red">
+          <div className="flex-1 w-[55%] min-h-full ">
+            {variant === "login" && <Login />}
+            {variant === "register" && <Register />}
+          </div>
+          <div className="bg-blue-500 w-[45%] shadow-2xl border-gray border-2">
+            <p>test</p>
+          </div>
         </div>
-        <div className="bg-blue-500 w-[45%]">
-          <p>test</p>
-        </div>
-      </div>
-    </Layout>
+      </Layout>
+    </div>
   )
 }
