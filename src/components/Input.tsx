@@ -1,3 +1,3 @@
 export const Input = () => {
-  return <div></div>
+  return <div>Input</div>
 }

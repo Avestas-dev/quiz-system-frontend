@@ -3982,7 +3982,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.11":
+"autoprefixer@npm:^10.4.11, autoprefixer@npm:^10.4.12":
   version: 10.4.12
   resolution: "autoprefixer@npm:10.4.12"
   dependencies:
@@ -10288,7 +10288,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.3.5, postcss@npm:^8.4.14, postcss@npm:^8.4.4, postcss@npm:^8.4.7":
+"postcss@npm:^8.3.5, postcss@npm:^8.4.14, postcss@npm:^8.4.17, postcss@npm:^8.4.4, postcss@npm:^8.4.7":
   version: 8.4.17
   resolution: "postcss@npm:8.4.17"
   dependencies:
@@ -10484,6 +10484,8 @@ __metadata:
     "@types/node": ^16.11.64
     "@types/react": ^18.0.21
     "@types/react-dom": ^18.0.6
+    autoprefixer: ^10.4.12
+    postcss: ^8.4.17
     react: ^18.2.0
     react-dom: ^18.2.0
     react-router: ^6.4.1

@@ -5,7 +5,7 @@ import { Layout } from "./components/layout/Layout"
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Test!</div>,
+    element: <div className="text-3xl">Test!</div>,
   },
 ])
 
