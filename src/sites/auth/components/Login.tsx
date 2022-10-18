@@ -104,6 +104,7 @@ export const Login = () => {
           name="remember"
           aria-label="test"
           label="Remember me"
+          defaultChecked={false}
         />
         <Link
           to={PATHS["forget-password"]}

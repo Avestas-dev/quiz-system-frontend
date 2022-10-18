@@ -14,10 +14,11 @@ export const InputControl = <TFieldValues extends FieldValues = FieldValues>({
   <Controller
     name={name}
     control={control}
+    defaultValue={"" || undefined}
     render={({ field: { onChange, value, ref }, formState }) => (
       <TextField
         onChange={onChange}
-        value={value}
+        value={value || ""}
         ref={ref}
         name={name}
         sx={{ borderRadius: 300 }}
