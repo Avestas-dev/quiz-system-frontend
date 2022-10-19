@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios"
 
-axios.defaults.baseURL = "http://localhost:8000/"
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
 
 axios.interceptors.request.use(
   async (config: AxiosRequestConfig<any>) => {
