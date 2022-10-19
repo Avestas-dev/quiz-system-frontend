@@ -12,8 +12,10 @@ import Toolbar from "@mui/material/Toolbar"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
+import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { PATHS } from "../../consts/paths"
+import { UserContext } from "../../contexts/UserContext"
 
 const pages: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
@@ -31,7 +33,7 @@ export const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
-
+  const userContext = useContext(UserContext)
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
@@ -167,6 +169,14 @@ export const ResponsiveAppBar = () => {
                   </MenuItem>
                 </Link>
               ))}
+              <MenuItem
+                onClick={() => {
+                  userContext.logout()
+                  handleCloseUserMenu()
+                }}
+              >
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

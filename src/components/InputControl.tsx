@@ -14,7 +14,7 @@ export const InputControl = <TFieldValues extends FieldValues = FieldValues>({
   <Controller
     name={name}
     control={control}
-    defaultValue={"" || undefined}
+    defaultValue={(rest?.defaultValue as any) || undefined}
     render={({ field: { onChange, value, ref }, formState }) => (
       <TextField
         onChange={onChange}

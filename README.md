@@ -4,6 +4,12 @@ Commit do branch'a **_main_** jest równoznaczny z deploy'em na hosting. Najlepi
 
 Obecnie wykorzystywany jest darmowy hosting - **Vercel**.
 
+# Swagger codegen
+
+Przenieść aktualny plik swagger.json z repozytorium backend'u, a następnie użyć komendy:
+
+    npx swagger-typescript-api -p ./swagger.json -o ./src/models
+
 # Najważniejsze biblioteki użyte w projekcie
 
 - react-hook-forms - do obsługi formularzy
