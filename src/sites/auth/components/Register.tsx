@@ -4,7 +4,7 @@ import { Button } from "@mui/material"
 import { useContext, useState } from "react"
 import GoogleLogin, {
   GoogleLoginResponse,
-  GoogleLoginResponseOffline,
+  GoogleLoginResponseOffline
 } from "react-google-login"
 import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
@@ -20,7 +20,7 @@ import {
   RegisterGoogleRequest,
   RegisterGoogleResponse,
   RegisterRequest,
-  RegisterResponse,
+  RegisterResponse
 } from "../../../models/Api"
 import { settings } from "../../../settings"
 import { GoogleSignInButton } from "./GoogleSignInButton"
@@ -131,7 +131,7 @@ export const Register = () => {
           autoLoad={false}
           onRequest={() => setIsGoogleSignInLoading(true)}
           cookiePolicy={"single_host_origin"}
-          isSignedIn={true}
+          isSignedIn={false}
           render={({ onClick }) => (
             <GoogleSignInButton
               buttonText="SIGN UP WITH GOOGLE"
