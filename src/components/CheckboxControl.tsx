@@ -20,12 +20,18 @@ export const CheckboxControl = <
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value, ref }, formState }) => (
+      defaultValue={!!rest.defaultChecked as boolean | any} // TODO: fix this any
+      render={({
+        field: { onChange, value: hookFormValue, ref },
+        formState,
+      }) => (
         <div className="flex flex-col">
           <FormControlLabel
             style={{ fontWeight: "semibold" }}
             control={
               <Checkbox
+                value={hookFormValue}
+                onChange={(e) => onChange(e.target.checked)}
                 sx={
                   !!formState.errors[name]
                     ? {
@@ -43,7 +49,9 @@ export const CheckboxControl = <
           />
 
           {!!formState.errors[name] && (
-            <FormHelperText style={{ color: "#d32f2f" }}>tekst</FormHelperText>
+            <FormHelperText style={{ color: "#d32f2f" }}>
+              {formState.errors[name]?.message as string}
+            </FormHelperText>
           )}
         </div>
       )}
