@@ -11,13 +11,17 @@ import { useMutation } from "react-query"
 import { Link, useNavigate } from "react-router-dom"
 import { CheckboxControl } from "../../../components/CheckboxControl"
 
-import axios, { AxiosError } from "axios"
+import axios from "axios"
 import { toast } from "react-toastify"
 import { InputControl } from "../../../components/InputControl"
 import { PATHS } from "../../../consts/paths"
 import yup from "../../../consts/yupLocaleEN"
 import { UserContext } from "../../../contexts/UserContext"
-import { LoginRequest, LoginResponse } from "../../../models/Api"
+import {
+  LoginGoogleRequest,
+  LoginRequest,
+  LoginResponse,
+} from "../../../models/Api"
 import { settings } from "../../../settings"
 import { GoogleSignInButton } from "./GoogleSignInButton"
 
@@ -51,14 +55,46 @@ export const Login = () => {
   const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false)
 
   const onSuccess = (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    console.log("success:", res)
+    const idToken = (res as GoogleLoginResponse).tokenObj.id_token
+
+    if (idToken) {
+      loginGoogleMutation.mutate({ tokenId: idToken })
+    }
   }
 
   const onFailure = (err: any) => {
     console.log("failed:", err)
   }
 
-  const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>(
+  const loginGoogleMutation = useMutation<
+    LoginResponse,
+    any,
+    LoginGoogleRequest
+  >(
+    async (loginData) => {
+      const res = await axios.post("/login-google", loginData)
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        userContext.login({
+          remember: watch("remember"),
+          email: response?.email,
+          refreshToken: response?.refreshToken,
+          token: response?.token,
+        })
+        toast.success("Logged in successfully!", { autoClose: 3000 })
+        navigate("/panel")
+      },
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.message || "Login error.", {
+          autoClose: 2000,
+        })
+      },
+    }
+  )
+
+  const loginMutation = useMutation<LoginResponse, any, LoginRequest>(
     async (loginData) => {
       const res = await axios.post("/login", loginData)
       return res.data
@@ -71,11 +107,13 @@ export const Login = () => {
           refreshToken: response?.refreshToken,
           token: response?.token,
         })
-        toast.success("Logged in successfully!", { autoClose: 5000 })
+        toast.success("Logged in successfully!", { autoClose: 3000 })
         navigate("/panel")
       },
       onError: (error) => {
-        toast.error("Login error", { autoClose: 3000 })
+        toast.error(error?.response?.data?.message || "Login error.", {
+          autoClose: 2000,
+        })
       },
     }
   )
@@ -104,7 +142,7 @@ export const Login = () => {
           autoLoad={false}
           onRequest={() => setIsGoogleSignInLoading(true)}
           cookiePolicy={"single_host_origin"}
-          isSignedIn={true}
+          isSignedIn={false}
           render={({ onClick }) => (
             <GoogleSignInButton
               buttonText="SIGN IN WITH GOOGLE"

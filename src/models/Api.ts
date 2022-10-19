@@ -25,6 +25,39 @@ export interface LoginResponse {
   email?: string;
 }
 
+export interface LoginGoogleRequest {
+  /** @example token */
+  tokenId?: string;
+}
+
+export interface LoginGoogleResponse {
+  /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE2NjYxMDQzMTIsImV4cCI6MTc1MjEwNDMxMn0.H7E3TQPh8Nc0O5JWqPyMfRNHYoTPy57kc8z-2IJd0cc */
+  token?: string;
+  /** @example 5f3c44c9-eac1-4ffd-a112-ae5a1fe38fed */
+  refreshToken?: string;
+}
+
+export interface RegisterGoogleResponse {
+  /** @example kamilporeba@hotmail.com */
+  email?: string;
+  /** @example googleSub */
+  googleSub?: string;
+  /** @example 1 */
+  id?: number;
+  /** @example password */
+  password?: string;
+  passwordResetDate?: object;
+  /** @example resetToken */
+  passwordResetToken?: string;
+  /** @example refreshToken */
+  refreshToken?: string;
+}
+
+export interface RegisterGoogleRequest {
+  /** @example token */
+  tokenId?: string;
+}
+
 export interface RegisterRequest {
   /** @example kamilporeba@hotmail.com */
   email?: string;
@@ -35,13 +68,19 @@ export interface RegisterRequest {
 }
 
 export interface RegisterResponse {
-  /** @example 6 */
-  id?: number;
   /** @example kamilporeba@hotmail.com */
   email?: string;
-  /** @example $2b$10$QGj.YqitWM3o0NMzuB192umX0lHTtSjApAclGXeUF3H96deGimtsi */
+  /** @example googleSub */
+  googleSub?: string;
+  /** @example 1 */
+  id?: number;
+  /** @example password */
   password?: string;
-  refreshToken?: any;
+  passwordResetDate?: object;
+  /** @example resetToken */
+  passwordResetToken?: string;
+  /** @example refreshToken */
+  refreshToken?: string;
 }
 
 export interface ProfileResponse {
@@ -52,6 +91,11 @@ export interface ProfileResponse {
 export interface RefreshTokenResponse {
   /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE2NjYxMDQzMTIsImV4cCI6MTc1MjEwNDMxMn0.H7E3TQPh8Nc0O5JWqPyMfRNHYoTPy57kc8z-2IJd0cc */
   token?: string;
+}
+
+export interface ResetStartRequest {
+  /** @example kamilporeba@hotmail.com */
+  email?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -283,7 +327,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/login`,
         method: "POST",
         body: obj,
-        type: ContentType.Json,
         ...params,
       }),
   };
@@ -309,15 +352,94 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Get new token using refresh token.
      *
      * @tags Auth
-     * @name RefreshCreate
-     * @request POST:/refresh
+     * @name RefreshList
+     * @request GET:/refresh
      * @secure
      */
-    refreshCreate: (params: RequestParams = {}) =>
+    refreshList: (params: RequestParams = {}) =>
       this.request<RefreshTokenResponse, any>({
         path: `/refresh`,
-        method: "POST",
+        method: "GET",
         secure: true,
+        ...params,
+      }),
+  };
+  resetStart = {
+    /**
+     * @description Endpoint to start reset password procedure
+     *
+     * @tags Auth
+     * @name ResetStartCreate
+     * @request POST:/reset-start
+     */
+    resetStartCreate: (obj: ResetStartRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/reset-start`,
+        method: "POST",
+        body: obj,
+        ...params,
+      }),
+  };
+  reset = {
+    /**
+     * @description Endpoint to start reset password procedure
+     *
+     * @tags Auth
+     * @name ResetList
+     * @request GET:/reset
+     */
+    resetList: (obj: ResetStartRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/reset`,
+        method: "GET",
+        body: obj,
+        ...params,
+      }),
+  };
+  sendMessage = {
+    /**
+     * No description
+     *
+     * @name SendMessageCreate
+     * @request POST:/send-message
+     */
+    sendMessageCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/send-message`,
+        method: "POST",
+        ...params,
+      }),
+  };
+  loginGoogle = {
+    /**
+     * @description Endpoint to sign in a specific user
+     *
+     * @tags Auth
+     * @name LoginGoogleCreate
+     * @request POST:/login-google
+     */
+    loginGoogleCreate: (obj: LoginRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/login-google`,
+        method: "POST",
+        body: obj,
+        ...params,
+      }),
+  };
+  registerGoogle = {
+    /**
+     * @description Endpoint to sign up a specific user using Google
+     *
+     * @tags Auth
+     * @name RegisterGoogleCreate
+     * @request POST:/register-google
+     */
+    registerGoogleCreate: (obj: RegisterGoogleRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/register-google`,
+        method: "POST",
+        body: obj,
+        type: ContentType.Json,
         ...params,
       }),
   };

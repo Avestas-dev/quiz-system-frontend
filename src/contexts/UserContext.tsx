@@ -78,22 +78,14 @@ export const UserContextProvider: React.FC<{
         })
       },
       onError: (error) => {
-        navigate(PATHS.home)
+        // navigate(PATHS.home)
       },
     }
   )
   // checking, if provided credentials are valid
   useEffect(() => {
-    // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
-    //   "token"
-    // )}`
-    // axios.defaults.headers.common.Refresh = localStorage.getItem("refreshToken")
     checkUserMutation.mutate()
   }, [])
-
-  // const checkUser = () => {
-  //   checkUserMutation.mutate()
-  // }
 
   const logout = () => {
     setEmail("")

@@ -16,7 +16,12 @@ import { InputControl } from "../../../components/InputControl"
 import { PATHS } from "../../../consts/paths"
 import yup from "../../../consts/yupLocaleEN"
 import { UserContext } from "../../../contexts/UserContext"
-import { LoginRequest, LoginResponse } from "../../../models/Api"
+import {
+  RegisterGoogleRequest,
+  RegisterGoogleResponse,
+  RegisterRequest,
+  RegisterResponse,
+} from "../../../models/Api"
 import { settings } from "../../../settings"
 import { GoogleSignInButton } from "./GoogleSignInButton"
 
@@ -53,14 +58,18 @@ export const Register = () => {
   const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false)
 
   const onSuccess = (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    console.log("success:", res)
+    const idToken = (res as GoogleLoginResponse).tokenObj.id_token
+    console.log(res)
+    if (idToken) {
+      registerGoogleMutation.mutate({ tokenId: idToken })
+    }
   }
 
   const onFailure = (err: any) => {
     console.log("failed:", err)
   }
 
-  const loginMutation = useMutation<LoginResponse, any, LoginRequest>(
+  const registerMutation = useMutation<RegisterResponse, any, RegisterRequest>(
     async (registerData) => {
       const res = await axios.post("/register", registerData)
       return res.data
@@ -78,9 +87,30 @@ export const Register = () => {
     }
   )
 
+  const registerGoogleMutation = useMutation<
+    RegisterGoogleResponse,
+    any,
+    RegisterGoogleRequest
+  >(
+    async (registerData) => {
+      const res = await axios.post("/register-google", registerData)
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Signed up successfully!", { autoClose: 2000 })
+        navigate("/login")
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || "Register error.", {
+          autoClose: 2000,
+        })
+      },
+    }
+  )
+
   const onSubmit = (props: RegisterFormProps) => {
-    console.log(props)
-    loginMutation.mutate(props)
+    registerMutation.mutate(props)
   }
 
   return (
