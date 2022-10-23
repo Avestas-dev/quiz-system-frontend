@@ -21,11 +21,15 @@ const pages: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
   { name: "Login", path: PATHS.login },
   { name: "Register", path: PATHS.register },
+  { name: "Trainings", path: PATHS.trainings },
+  { name: "CreateTraining", path: PATHS.createTraining },
 ]
 const settings: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
   { name: "Login", path: PATHS.login },
   { name: "Register", path: PATHS.register },
+  { name: "Trainings", path: PATHS.trainings },
+  { name: "CreateTraining", path: PATHS.createTraining },
 ]
 
 export const ResponsiveAppBar = () => {

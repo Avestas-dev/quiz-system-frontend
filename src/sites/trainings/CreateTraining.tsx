@@ -38,6 +38,7 @@ export const CreateTraining = () => {
                 <div className="flex pt-10">
                   <h1>Create training</h1>
                 </div>
+
                 <InputControl
                   control={control}
                   name="question"
@@ -46,6 +47,25 @@ export const CreateTraining = () => {
                   inputProps={{ inputMode: "text" }}
                   defaultValue=""
                 />
+                <div className="flex pt-2">
+                  <h1>Accesibility</h1>
+                </div>
+                <div className="flex">
+                  <input
+                    type="checkbox"
+                    name="accesibility"
+                    id="accesibility"
+                  />
+                  <p className="pl-2">Private</p>
+                </div>
+                <div className="flex">
+                  <input
+                    type="checkbox"
+                    name="accesibility"
+                    id="accesibility"
+                  />
+                  <p className="pl-2">Public</p>
+                </div>
               </div>
             </div>
           </div>
@@ -76,15 +96,21 @@ export const CreateTraining = () => {
               </div>
               <ul className="list-decimal">
                 {questions.map((question) => (
-                  <div className="">
+                  <div>
                     <li className="font-bold mb-2">
                       {question.content}
                       <Button>Add Answer</Button>
+                      <input
+                        type="checkbox"
+                        name="agree"
+                        id="agree"
+                        className="peer"
+                      />
                     </li>
                     <div className="pl-2">
                       {question.answers.map((answers) => (
                         <>
-                          <div className="flex mb-2 items-center border-2">
+                          <div className="flex mb-2 items-center border-2 ">
                             <div className="w-full text-grey-darkest">
                               {answers}
                             </div>
