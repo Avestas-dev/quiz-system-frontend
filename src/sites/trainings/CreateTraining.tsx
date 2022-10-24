@@ -70,7 +70,7 @@ export const CreateTraining = () => {
             </div>
           </div>
           <div className="flex-1 w-[50%] min-h-full ">
-            <div className="flex max-w-[70%]  ml-auto mr-auto justify-center flex-col ">
+            <div className="flex max-w-[90%]  ml-auto mr-auto justify-center flex-col ">
               <div className="flex flex-col space-y-4 ">
                 <div className="flex pt-10">
                   <h1>Questions:</h1>
@@ -84,7 +84,7 @@ export const CreateTraining = () => {
                   defaultValue=""
                 />
               </div>
-              <div className="flex justify-center pt-4">
+              <div className="flex justify-center pt-4 pb-4">
                 <Button
                   type="submit"
                   variant="contained"
@@ -99,7 +99,9 @@ export const CreateTraining = () => {
                   <div>
                     <li className="font-bold mb-2">
                       {question.content}
-                      <Button>Add Answer</Button>
+                      <Button color="success">Add Answer</Button>
+                      <Button >Edit</Button>
+                      <Button color="error">Delete</Button>
                       <input
                         type="checkbox"
                         name="agree"
