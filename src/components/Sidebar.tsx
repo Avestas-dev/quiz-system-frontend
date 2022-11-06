@@ -4,7 +4,7 @@ import DropdownButton from "./DropdownButton"
 export default function Sidebar() {
   const navigate = useNavigate()
   return (
-    <aside>
+    <aside className="flex bg-white">
       <div className=" h-screen">
         <ul className="space-y-1">
           <li className="p-1">
