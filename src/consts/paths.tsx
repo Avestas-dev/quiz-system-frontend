@@ -5,5 +5,6 @@ export const PATHS = {
   panel: "/panel",
   trainings: "/trainings",
   createTraining: "/createTraining",
+  training: "/training/:id",
   "forget-password": "/forget-password",
 }

@@ -1,22 +1,20 @@
 import CollectionButton from "../../components/CollectionButton"
 import { Layout } from "../../components/layout/Layout"
-import QuizListItem from "../../components/QuizListItem"
 import Sidebar from "../../components/Sidebar"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import FolderOpenIcon from "@mui/icons-material/FolderOpen"
 import ShareIcon from "@mui/icons-material/Share"
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks"
 import AddCircle from "@mui/icons-material/AddCircle"
+import { GetAllTrainings } from "./GetAllTrainings"
 
 export const TrainingList = () => {
   return (
     <Layout>
-      <div className="flex flex-row space-x-2 bg-gray-300">
+      <div className="flex flex-row space-x-2 h-full bg-gray-300">
         <Sidebar />
-        <div className="flex flex-col w-1/2 h-screen space-y-2 mt-2">
-          <QuizListItem />
-          <QuizListItem />
-          <QuizListItem />
+        <div className="flex flex-col w-1/2 mt-2">
+          <GetAllTrainings />
         </div>
         <div className="flex "></div>
         <div className="w-[35%] h-max bg-white mt-2 rounded-2xl ">

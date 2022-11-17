@@ -6,10 +6,29 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import FolderOpenIcon from "@mui/icons-material/FolderOpen"
 import ShareIcon from "@mui/icons-material/Share"
+import { useNavigate } from "react-router"
+interface QuizProps {
+  id?: number
+  name?: string
+  visibility?: boolean
+}
 
-export default function QuizListItem() {
+export default function QuizListItem({
+  id,
+  name,
+  visibility = true,
+}: QuizProps) {
+  const navigate = useNavigate()
+
+  console.log("quiz list item id", id)
+
   return (
-    <div className="flex flex-col bg-white border-1 border-gray-400 h-[25%] rounded-xl">
+    <div
+      className="flex flex-col bg-white border-1 border-gray-400 rounded-xl"
+      onClick={() => {
+        navigate(`/training/${id}`)
+      }}
+    >
       <div className="h-5/6 p-2 space-x-2">
         <div className="float-left  bg-gray-300   p-2 rounded-xl">
           Obrazek quizu
@@ -24,7 +43,7 @@ export default function QuizListItem() {
               <p className="mt-1">HARD</p>
             </div>
           </div>
-          <div>Nazwa quizu</div>
+          <div>{name}</div>
           <div className="flex flex-row text-[10px]">
             <PrecisionManufacturingIcon fontSize="inherit" />
             <p> 0% poprawność odpowiedzi</p>
