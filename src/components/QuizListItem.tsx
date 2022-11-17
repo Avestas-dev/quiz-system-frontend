@@ -7,6 +7,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import FolderOpenIcon from "@mui/icons-material/FolderOpen"
 import ShareIcon from "@mui/icons-material/Share"
 import { useNavigate } from "react-router"
+import { useContext } from "react"
+import { UserContext } from "../contexts/UserContext"
 interface QuizProps {
   id?: number
   name?: string
@@ -19,6 +21,7 @@ export default function QuizListItem({
   visibility = true,
 }: QuizProps) {
   const navigate = useNavigate()
+  const userContext = useContext(UserContext)
 
   console.log("quiz list item id", id)
 
@@ -60,7 +63,7 @@ export default function QuizListItem({
       <div className="p-2">
         <div className="float-left flex flex-row">
           <AccountCircleIcon color="disabled" fontSize="large" />
-          <p className="text-[10px] mt-3">Autor: nazwa_użytkownika</p>
+          <p className="text-[10px] mt-3">Autor: {userContext.email}</p>
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
           <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
