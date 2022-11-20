@@ -3,5 +3,6 @@ export const PATHS = {
   login: "/login",
   register: "/register",
   panel: "/panel",
+  adminPanel: "/adminPanel",
   "forget-password": "/forget-password",
 }

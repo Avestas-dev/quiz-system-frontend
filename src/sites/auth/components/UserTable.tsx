@@ -1,0 +1,45 @@
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { ProfileResponse } from "../../../models/Api";
+
+export function UserTable() {
+  const { data } = useQuery<any, any, ProfileResponse>(
+    "/admin/user/all",
+    async () => {
+      const res = await axios.get(`/admin/user/all`);
+      return res.data;
+    }
+  );
+
+  return (
+    <div>
+      <h1>Użytkownicy</h1>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>E-mail</TableCell>
+              <TableCell>Akcje</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell component="th" scope="row">{data?.email}</TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+}
