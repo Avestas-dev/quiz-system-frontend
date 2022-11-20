@@ -8,7 +8,7 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen"
 import ShareIcon from "@mui/icons-material/Share"
 import { useNavigate } from "react-router"
 import { useContext } from "react"
-import { UserContext } from "../contexts/UserContext"
+import { UserContext } from "../../../contexts/UserContext"
 interface QuizProps {
   id?: number
   name?: string
@@ -23,8 +23,6 @@ export default function QuizListItem({
   const navigate = useNavigate()
   const userContext = useContext(UserContext)
 
-  console.log("quiz list item id", id)
-
   return (
     <div
       className="flex flex-col bg-white border-1 border-gray-400 rounded-xl"
@@ -33,7 +31,7 @@ export default function QuizListItem({
       }}
     >
       <div className="h-5/6 p-2 space-x-2">
-        <div className="float-left  bg-gray-300   p-2 rounded-xl">
+        <div className="float-left  bg-gray-300 h-24   p-2 rounded-xl">
           Obrazek quizu
         </div>
         <div className="float-left flex flex-col mt-2 ">

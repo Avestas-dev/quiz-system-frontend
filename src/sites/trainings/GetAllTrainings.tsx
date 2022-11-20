@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios"
 import { useQuery } from "react-query"
 import { useNavigate } from "react-router"
-import QuizListItem from "../../components/QuizListItem"
+import QuizListItem from "./components/QuizListItem"
 import { GetAllTrainingsResponse } from "../../models/Api"
 export interface GetAllTrainingsProps {
   onlyLiked?: boolean
@@ -22,7 +22,7 @@ export const GetAllTrainings = ({
       return res.data
     }
   )
-  console.log(data)
+
   return (
     <div className="space-y-2">
       {data?.map((e) => (
