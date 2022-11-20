@@ -1,4 +1,4 @@
-import Delete from "@mui/icons-material/Delete"
+import Delete from "@mui/icons-material/DeleteOutlined"
 import Bolt from "@mui/icons-material/Bolt"
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
@@ -24,13 +24,13 @@ export default function QuizListItem({
   const userContext = useContext(UserContext)
 
   return (
-    <div
-      className="flex flex-col bg-white border-1 border-gray-400 rounded-xl"
-      onClick={() => {
-        navigate(`/training/${id}`)
-      }}
-    >
-      <div className="h-5/6 p-2 space-x-2">
+    <div className="flex flex-col bg-white border-1 border-gray-400 rounded-xl">
+      <div
+        onClick={() => {
+          navigate(`/training/${id}`)
+        }}
+        className="h-5/6 p-2 space-x-2"
+      >
         <div className="float-left  bg-gray-300 h-24   p-2 rounded-xl">
           Obrazek quizu
         </div>
@@ -64,8 +64,15 @@ export default function QuizListItem({
           <p className="text-[10px] mt-3">Autor: {userContext.email}</p>
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
-          <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
-            <p className="mt-1">Edytuj</p>
+          <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200">
+            <button
+              className="mt-1"
+              onClick={() => {
+                navigate(`/training/edit/${id}`)
+              }}
+            >
+              Edytuj
+            </button>
           </div>
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
@@ -77,7 +84,14 @@ export default function QuizListItem({
         <div className="float-right flex flex-row mt-2 ml-2">
           <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
             <FolderOpenIcon fontSize="small" />
-            <p className="mt-1">Zapisz</p>
+            <button
+              onClick={() => {
+                navigate("/")
+              }}
+              className="mt-1"
+            >
+              Zapisz
+            </button>
           </div>
         </div>
 

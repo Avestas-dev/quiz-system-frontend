@@ -36,7 +36,12 @@ export const TrainingView = () => {
           </div>
 
           <div className="">
-            <GetAllQuestions trainingId={id} withAnswers={true} />
+            <GetAllQuestions
+              withQuestionButtons={false}
+              withButtons={true}
+              trainingId={id}
+              withAnswers={true}
+            />
           </div>
         </div>
       </div>
