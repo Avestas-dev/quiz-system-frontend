@@ -5,11 +5,16 @@ import Delete from "@mui/icons-material/DeleteOutlined"
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined"
 
 interface QuestionProps {
+  id?: number
   question?: string
   withButtons?: boolean
 }
 
-export const QuestionListItem = ({ question, withButtons }: QuestionProps) => {
+export const QuestionListItem = ({
+  id,
+  question,
+  withButtons,
+}: QuestionProps) => {
   const navigate = useNavigate()
   return (
     <div
@@ -59,7 +64,14 @@ export const QuestionListItem = ({ question, withButtons }: QuestionProps) => {
           <div className="float-right ml-2">
             <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-2">
               <CreateOutlinedIcon fontSize="small" />
-              <p className="mt-1">Edytuj</p>
+              <button
+                onClick={() => {
+                  navigate(`/question/edit/${id}`)
+                }}
+                className="mt-1"
+              >
+                Edytuj
+              </button>
             </div>
           </div>
         </div>

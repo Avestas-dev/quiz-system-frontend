@@ -18,6 +18,7 @@ export default function CollectionButton() {
   return (
     <div className="flex flex-row bg-white border-1 shadow-xl  border-black rounded-2xl ">
       <Button
+        fullWidth={true}
         id="basic-button"
         size="large"
         aria-controls={open ? "basic-menu" : undefined}

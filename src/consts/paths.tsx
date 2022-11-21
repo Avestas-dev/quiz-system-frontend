@@ -4,8 +4,8 @@ export const PATHS = {
   register: "/register",
   panel: "/panel",
   trainings: "/trainings",
-  createTraining: "/training/create",
   training: "/training/:id",
   editTraining: "/training/edit/:id",
+  editQuestion: "/question/edit/:id",
   "forget-password": "/forget-password",
 }

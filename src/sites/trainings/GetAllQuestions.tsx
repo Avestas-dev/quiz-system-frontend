@@ -74,6 +74,7 @@ export const GetAllQuestions = ({
       <div className="space-y-2">
         {data?.map((e) => (
           <QuestionListItem
+            id={e.id}
             withButtons={withQuestionButtons}
             question={e.question}
           />

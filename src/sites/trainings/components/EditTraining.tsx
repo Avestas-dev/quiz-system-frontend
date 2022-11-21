@@ -2,14 +2,15 @@ import { useNavigate, useParams } from "react-router"
 import { GetAllQuestions } from "../GetAllQuestions"
 import { EditTrainingTopBar } from "./EditTrainingTopBar"
 import Delete from "@mui/icons-material/DeleteOutlined"
+import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
 
 export const EditTraining = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   return (
-    <div>
+    <div className="bg-gray-300">
       <EditTrainingTopBar />
-      <div className="flex flex-row bg-gray-300 p-2 space-x-2">
+      <div className="flex flex-row  p-2 space-x-2">
         <div className=" w-[50%] grid place-items-center">
           <div className="float-right m-2">
             <button className="bg-yellow-200 border-2 border-gray-400 rounded-xl p-1">
@@ -34,7 +35,13 @@ export const EditTraining = () => {
               <Delete color="error" />
             </div>
           </div>
-          <div className="ml-8 flex flex-col"></div>
+          <div className="ml-8 flex flex-col pb-10">
+            <div className="text-[24px]">
+              Nazwa
+              <CreateOutlinedIcon />
+            </div>
+            publiczny polski 30s
+          </div>
         </div>
       </div>
     </div>
