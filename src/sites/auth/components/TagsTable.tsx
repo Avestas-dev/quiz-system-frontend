@@ -1,3 +1,4 @@
+import { Button, Stack } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,10 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { ProfileResponse } from "../../../models/Api";
+import { TagsResponse } from "../../../models/Api";
 
 export function TagsTable() {
-  const { data } = useQuery<any, any, ProfileResponse>("/tag", async () => {
+  const { data } = useQuery<any, any, TagsResponse>("/tag", async () => {
     const res = await axios.get(`/tag`);
     return res.data;
   });
@@ -28,11 +29,18 @@ export function TagsTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row"></TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
-            </TableRow>
+            {data?.map((e) => (
+              <>
+                <TableCell>{e.id}</TableCell>
+                <TableCell>{e.name}</TableCell>
+                <TableCell>
+                  <Stack spacing={2} direction="row">
+                    <Button>Zaakceptuj</Button>
+                    <Button>Usuń</Button>
+                  </Stack>
+                </TableCell>
+              </>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
