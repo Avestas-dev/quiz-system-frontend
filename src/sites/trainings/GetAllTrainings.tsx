@@ -3,6 +3,7 @@ import { useQuery } from "react-query"
 import { useNavigate } from "react-router"
 import QuizListItem from "./components/QuizListItem"
 import { GetAllTrainingsResponse } from "../../models/Api"
+import { toast } from "react-toastify"
 export interface GetAllTrainingsProps {
   onlyLiked?: boolean
   search?: string
@@ -20,13 +21,29 @@ export const GetAllTrainings = ({
         `/training/all?onlyLiked=${onlyLiked}?search=${search}`
       )
       return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Trainings loaded succesfully", { autoClose: 3000 })
+      },
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+            "There was an error while getting trainings",
+          {
+            autoClose: 2000,
+          }
+        )
+      },
     }
   )
 
   return (
     <div className="space-y-2">
       {data?.map((e) => (
-        <QuizListItem id={e.id} name={e.name} />
+        <div key={e.name}>
+          <QuizListItem id={e.id} name={e.name} />
+        </div>
       ))}
     </div>
   )

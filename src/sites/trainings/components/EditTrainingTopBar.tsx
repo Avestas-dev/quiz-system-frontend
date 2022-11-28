@@ -1,7 +1,7 @@
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
 import { useNavigate } from "react-router"
 
-export const EditTrainingTopBar = () => {
+export const EditTrainingTopBar = ({ saveButtonFunction }: any) => {
   const navigate = useNavigate()
   return (
     <div className="bg-yellow-300 space-x-3 pl-4 pr-4 h-12">
@@ -13,7 +13,12 @@ export const EditTrainingTopBar = () => {
         <CreateOutlinedIcon fontSize="small" />
       </div>
       <div className="float-right m-2">
-        <button className="bg-yellow-100 rounded p-1">Zapisz</button>
+        <button
+          onClick={saveButtonFunction}
+          className="bg-yellow-100 rounded p-1"
+        >
+          Zapisz
+        </button>
       </div>
       <div className="float-right m-2">
         <button className="p-1" onClick={() => navigate(-1)}>

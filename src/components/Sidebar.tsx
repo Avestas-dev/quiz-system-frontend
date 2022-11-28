@@ -24,7 +24,6 @@ export default function Sidebar() {
           >
             Ustawienia
           </li>
-          <li className="hover:bg-gray-300 p-1 ">Czat</li>
         </ul>
       </div>
     </aside>

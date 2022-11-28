@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useQuery } from "react-query"
-import { GetQuestionResponse } from "../../models/Api"
+import { GetQuestionResponse } from "../../../models/Api"
 import MovieCreation from "@mui/icons-material/MovieCreation"
 import AudioFile from "@mui/icons-material/AudioFile"
 import Image from "@mui/icons-material/Image"
@@ -21,6 +21,7 @@ import FunctionsOutlinedIcon from "@mui/icons-material/FunctionsOutlined"
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined"
 import RadioButtonUncheckedOutlinedIcon from "@mui/icons-material/RadioButtonUncheckedOutlined"
 import { useNavigate } from "react-router"
+import { toast } from "react-toastify"
 
 interface GetQuestionWithAnswers {
   questionId?: string
@@ -36,6 +37,20 @@ export const GetQuestionWithAnswers = ({
     async () => {
       const res = await axios.get(`/question/${questionId}`)
       return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Question loaded succesfully", { autoClose: 3000 })
+      },
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+            "There was an error while getting Question",
+          {
+            autoClose: 2000,
+          }
+        )
+      },
     }
   )
 
@@ -58,17 +73,27 @@ export const GetQuestionWithAnswers = ({
             </div>
           </div>
           <div className="w-4/5 rounded-xl border-4 border-yellow-200">
-            <input
+            {/* <input
               placeholder={data?.question}
               id="large-input"
               className="placeholder:text-black placeholder:text-center bg-yellow-300 rounded-xl  w-full h-full"
               type="text"
+            /> */}
+            <TextField
+              placeholder={data?.question}
+              fullWidth
+              multiline
+              rows={6}
+              style={{
+                padding: "0.25rem",
+                height: "",
+              }}
             />
           </div>
         </div>
         <div className="flex flex-row space-x-8">
           {data?.QuestionAnswer?.map((e) => (
-            <div className="flex flex-col ">
+            <div key={e.id} className="flex flex-col ">
               <div className=" bg-purple-500 rounded-xl">
                 <div className="float-right">
                   <Checkbox
@@ -96,12 +121,7 @@ export const GetQuestionWithAnswers = ({
                     <FunctionsOutlinedIcon fontSize="small" />
                   </IconButton>
                 </div>
-                <textarea
-                  placeholder={e.answer}
-                  className="w-full p-2 placeholder:align-middle placeholder:text-black placeholder:text-center  rounded-xl bg-purple-500"
-                  cols={30}
-                  rows={10}
-                ></textarea>
+                <TextField placeholder={e.answer} rows={10} multiline />
               </div>
             </div>
           ))}

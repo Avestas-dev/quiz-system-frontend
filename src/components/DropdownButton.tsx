@@ -4,8 +4,10 @@ import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import AddCircle from "@mui/icons-material/AddCircle"
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown"
+import { Navigate, useNavigate } from "react-router"
 
 export default function DropdownButton() {
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,8 +42,23 @@ export default function DropdownButton() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Jednokrotnego wyboru</MenuItem>
-        <MenuItem onClick={handleClose}>Wielokrotnego wyboru</MenuItem>
+        <MenuItem
+          onClick={() => {
+            navigate(`/training/create/1`)
+            handleClose()
+          }}
+        >
+          Jednokrotnego wyboru
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            navigate(`/training/create/2`)
+            handleClose()
+          }}
+        >
+          Wielokrotnego wyboru
+        </MenuItem>
       </Menu>
     </div>
   )

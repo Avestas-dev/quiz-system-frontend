@@ -1,19 +1,37 @@
 import { useNavigate, useParams } from "react-router"
-import { GetAllQuestions } from "../GetAllQuestions"
-import { EditTrainingTopBar } from "./EditTrainingTopBar"
+import { GetAllQuestions } from "./GetAllQuestions"
+import { EditTrainingTopBar } from "./components/EditTrainingTopBar"
 import Delete from "@mui/icons-material/DeleteOutlined"
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
+import axios from "axios"
+import { useQuery } from "react-query"
+import { GetOneTrainingResponse, TagsResponse } from "../../models/Api"
+import { useEffect } from "react"
 
 export const EditTraining = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+
+  const { data } = useQuery<any, any, GetOneTrainingResponse>(
+    `/training/${id}`,
+    async () => {
+      const res = await axios.get(`/training/${id}`)
+      return res.data
+    }
+  )
+
   return (
-    <div className="bg-gray-300">
+    <div className="bg-gray-300 h-screen">
       <EditTrainingTopBar />
       <div className="flex flex-row  p-2 space-x-2">
         <div className=" w-[50%] grid place-items-center">
           <div className="float-right m-2">
-            <button className="bg-yellow-200 border-2 border-gray-400 rounded-xl p-1">
+            <button
+              onClick={() => {
+                navigate(`/question/create/`)
+              }}
+              className="bg-yellow-200 border-2 border-gray-400 rounded-xl p-1"
+            >
               Dodaj pytanie
             </button>
           </div>
@@ -23,6 +41,7 @@ export const EditTraining = () => {
               withButtons={false}
               trainingId={id}
               withAnswers={true}
+              tag={"wielokrotnego wyboru"}
             />
           </div>
         </div>
@@ -37,7 +56,7 @@ export const EditTraining = () => {
           </div>
           <div className="ml-8 flex flex-col pb-10">
             <div className="text-[24px]">
-              Nazwa
+              {data?.name}
               <CreateOutlinedIcon />
             </div>
             publiczny polski 30s

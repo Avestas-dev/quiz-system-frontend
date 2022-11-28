@@ -4,7 +4,11 @@ import { useParams } from "react-router"
 import { Layout } from "../../components/layout/Layout"
 import QuizListItem from "./components/QuizListItem"
 import Sidebar from "../../components/Sidebar"
-import { GetOneTrainingResponse, GetQuestionsResponse } from "../../models/Api"
+import {
+  GetOneTrainingResponse,
+  GetQuestionsResponse,
+  TagsResponse,
+} from "../../models/Api"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import ListIcon from "@mui/icons-material/List"
@@ -32,7 +36,7 @@ export const TrainingView = () => {
         <Sidebar />
         <div className="flex flex-col w-1/2 mt-2 ">
           <div className="">
-            <QuizListItem id={data?.id} name={data?.name} />
+            {data && <QuizListItem id={data?.id} name={data?.name} />}
           </div>
 
           <div className="">
@@ -41,6 +45,7 @@ export const TrainingView = () => {
               withButtons={true}
               trainingId={id}
               withAnswers={true}
+              tag={"jednokrotnego wyboru"}
             />
           </div>
         </div>

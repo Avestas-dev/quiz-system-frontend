@@ -1,7 +1,7 @@
 import { Layout } from "../../components/layout/Layout"
 
 import { useParams } from "react-router"
-import { GetQuestionWithAnswers } from "./GetQuestionWithAnswers"
+import { GetQuestionWithAnswers } from "./components/GetQuestionWithAnswers"
 import { EditTrainingTopBar } from "./components/EditTrainingTopBar"
 
 export const EditQuestion = () => {

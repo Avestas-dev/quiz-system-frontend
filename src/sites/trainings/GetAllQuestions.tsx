@@ -8,6 +8,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import ListIcon from "@mui/icons-material/List"
 
 import IconButton from "@mui/material/IconButton"
+import { toast } from "react-toastify"
 export interface GetAllQuestionsProps {
   trainingId: string | undefined
   withAnswers: boolean
@@ -15,6 +16,7 @@ export interface GetAllQuestionsProps {
   schema?: string
   withButtons?: boolean
   withQuestionButtons?: boolean
+  tag?: string
 }
 export const GetAllQuestions = ({
   trainingId,
@@ -23,6 +25,7 @@ export const GetAllQuestions = ({
   schema = "",
   withButtons,
   withQuestionButtons,
+  tag,
 }: GetAllQuestionsProps) => {
   const { data } = useQuery<any, any, GetQuestionsResponse>(
     "/questions/all",
@@ -31,6 +34,20 @@ export const GetAllQuestions = ({
         `/question/all/${trainingId}?withAnswers=${withAnswers}}`
       )
       return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Questions loaded succesfully", { autoClose: 3000 })
+      },
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+            "There was an error while getting questions",
+          {
+            autoClose: 2000,
+          }
+        )
+      },
     }
   )
 
@@ -45,7 +62,7 @@ export const GetAllQuestions = ({
             </IconButton>
           </div>
           <div className="float-left mt-2 ml-2">
-            {data === undefined ? (
+            {!data && data === undefined ? (
               <p>brak pytań</p>
             ) : data.length > 10 ? (
               <p>{data.length} pytań</p>
@@ -72,13 +89,17 @@ export const GetAllQuestions = ({
         <div></div>
       )}
       <div className="space-y-2">
-        {data?.map((e) => (
-          <QuestionListItem
-            id={e.id}
-            withButtons={withQuestionButtons}
-            question={e.question}
-          />
-        ))}
+        {data &&
+          data?.map((e) => (
+            <div key={e.question}>
+              <QuestionListItem
+                id={e.id}
+                withButtons={withQuestionButtons}
+                question={e.question}
+                tag={tag}
+              />
+            </div>
+          ))}
       </div>
     </div>
   )

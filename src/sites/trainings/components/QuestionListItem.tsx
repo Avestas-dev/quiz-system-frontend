@@ -8,12 +8,14 @@ interface QuestionProps {
   id?: number
   question?: string
   withButtons?: boolean
+  tag?: string
 }
 
 export const QuestionListItem = ({
   id,
   question,
   withButtons,
+  tag,
 }: QuestionProps) => {
   const navigate = useNavigate()
   return (
@@ -34,7 +36,7 @@ export const QuestionListItem = ({
             id="multi-choice-checkbox"
             type="checkbox"
           ></input>
-          <p>wielokrotnego wyboru</p>
+          <p>{tag}</p>
         </div>
         <div className="flex flex-row space-x-1 float-right border-2 text-[10px] border-gray-300">
           <AccessTimeIcon fontSize="small" />
