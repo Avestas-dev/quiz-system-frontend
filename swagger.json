@@ -5,13 +5,25 @@
     "description": "Project made for Internet Application classes.",
     "version": "1.0.0"
   },
-  "host": "localhost:8000",
+  "host": "quiz-system-backend-h.herokuapp.com",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Bearer token verification"
+    }
+  },
   "paths": {
     "/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "Endpoint to sign in a specific user",
         "parameters": [
           {
@@ -26,15 +38,20 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User successfully logged in.",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
           }
         }
       }
     },
     "/register": {
       "post": {
-        "tags": ["Auth"],
-        "description": "Endpoint to register user",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Endpoint to register user.",
         "parameters": [
           {
             "name": "obj",
@@ -48,14 +65,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User successfully signed up.",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
           }
         }
       }
     },
     "/refresh": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "Get new token using refresh token.",
         "parameters": [
           {
@@ -71,7 +93,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Gets refresh token.",
+            "description": "User sucessfully reseted token.",
             "schema": {
               "$ref": "#/definitions/RefreshTokenResponse"
             }
@@ -86,7 +108,9 @@
     },
     "/reset-start": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "Endpoint to start reset password procedure",
         "parameters": [
           {
@@ -107,9 +131,11 @@
       }
     },
     "/reset": {
-      "get": {
-        "tags": ["Auth"],
-        "description": "Endpoint to start reset password procedure",
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Endpoint to start reset password procedure.",
         "parameters": [
           {
             "name": "obj",
@@ -117,7 +143,7 @@
             "description": "User reset.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ResetStartRequest"
+              "$ref": "#/definitions/ResetRequest"
             }
           }
         ],
@@ -128,20 +154,11 @@
         }
       }
     },
-    "/send-message": {
-      "post": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/login-google": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "Endpoint to sign in a specific user",
         "parameters": [
           {
@@ -156,14 +173,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User successfully logged in.",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
           }
         }
       }
     },
     "/register-google": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "Endpoint to sign up a specific user using Google",
         "parameters": [
           {
@@ -178,28 +200,922 @@
         ],
         "responses": {
           "200": {
+            "description": "User successfully logged in.",
+            "schema": {
+              "$ref": "#/definitions/RegisterGoogleResponse"
+            }
+          }
+        }
+      }
+    },
+    "/initdb": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
             "description": "OK"
           }
         }
       }
     },
-    "/profile": {
-      "post": {
-        "tags": ["Auth"],
-        "description": "Get user profile from token",
+    "/training/all": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "description": "Gets all trainings of all user that have visiblity set to true, and all trainings of logged in user.",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
+            "name": "onlyLiked",
+            "in": "query",
+            "description": "Set to true, if only liked one should be displayed",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Set to search query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Set tags",
+            "required": false,
+            "type": "array"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All trainings received.",
+            "schema": {
+              "$ref": "#/definitions/GetAllTrainingsResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/training/{trainingId}": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "description": "Gets one training.",
+        "parameters": [
+          {
+            "name": "trainingId",
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "One training received.",
+            "schema": {
+              "$ref": "#/definitions/GetOneTrainingResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Training"
+        ],
+        "description": "Delete training.",
+        "parameters": [
+          {
+            "name": "trainingId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/training": {
+      "post": {
+        "tags": [
+          "Training"
+        ],
+        "description": "Create training",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Create request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddTrainingRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Training"
+        ],
+        "description": "Edit training",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Edit request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EditTrainingRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/training-session/start": {
+      "post": {
+        "tags": [
+          "Training Session"
+        ],
+        "description": "Start training session. It makes new training session with finished status set to false. If training session with given id already exists, then response is always success - before creating new training session, it is required to use /training-session/end endpoint.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Start training session request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StartTrainingSessionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/training-session/end": {
+      "post": {
+        "tags": [
+          "Training Session"
+        ],
+        "description": "Ends training session, setting its finished status to true. ",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Ending of training session request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EndTrainingSessionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/training-session/{trainingSessionId}/questions": {
+      "get": {
+        "tags": [
+          "Training Session"
+        ],
+        "description": "Get all questions for training session that were not answered, and were created after creation of training session. This endpoint should be used to get questions for training session that is started or continued (when previous was not finished) using endpoint /training-session/start",
+        "parameters": [
+          {
+            "name": "trainingSessionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/training-session/all": {
+      "get": {
+        "tags": [
+          "Training Session"
+        ],
+        "description": "Get all training sessions done or started by user - it should be used on screen where all training session history is shown - endpoint doesn",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/training-session/{trainingSessionId}": {
+      "get": {
+        "tags": [
+          "Training Session"
+        ],
+        "description": "Get single training session with all the details for it",
+        "parameters": [
+          {
+            "name": "trainingSessionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/tag": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "description": "Get all available tags for training.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TagsResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "description": "Create new tag.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/tag/{trainingId}": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "description": "Get all available tags for training.",
+        "parameters": [
+          {
+            "name": "trainingId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TagsResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/question/all/{trainingId}": {
+      "get": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Get all questions for training, with or without answers. This endpoint should be used when browsing list of all trainings.",
+        "parameters": [
+          {
+            "name": "trainingId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "withAnswers",
+            "in": "query",
+            "description": "If questions should include answers or no.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All questions received.",
+            "schema": {
+              "$ref": "#/definitions/GetQuestionsResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/question/{questionId}": {
+      "get": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Get one question details, with all answers.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All questions received.",
+            "schema": {
+              "$ref": "#/definitions/GetQuestionResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Remove question",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/question": {
+      "post": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Create question",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Create question request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddQuestionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Edit question.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Edit question success.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EditQuestionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/question/with-answers": {
+      "post": {
+        "tags": [
+          "Question"
+        ],
+        "description": "Create question with answers",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Create question with answers request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddQuestionWithAnswersRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/user-answer": {
+      "post": {
+        "tags": [
+          "User Answer"
+        ],
+        "description": "Add answer to question. This endpoint should be used when responding to question, answers should be an array.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Add answer to given question in given training session.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddUserAnswerRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/question-answer/{questionAnswerId}": {
+      "delete": {
+        "tags": [
+          "Answer"
+        ],
+        "description": "Remove question answer",
+        "parameters": [
+          {
+            "name": "questionAnswerId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "questionAnswerId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/question-answer": {
+      "post": {
+        "tags": [
+          "Answer"
+        ],
+        "description": "Add answer for question",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Create answer for question request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddQuestionAnswerRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Answer"
+        ],
+        "description": "Edit question answer.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Edit question question success.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EditQuestionAnswerRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/profile": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Get user profile from token",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "User profile.",
             "schema": {
               "$ref": "#/definitions/ProfileResponse"
             }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/tag": {
+      "post": {
+        "tags": [
+          "Admin-Tags"
+        ],
+        "description": "Create new tag.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Admin-Tags"
+        ],
+        "description": "Edit tag.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "tagId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/tag/accept": {
+      "put": {
+        "tags": [
+          "Admin-Tags"
+        ],
+        "description": "Accept new tag.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/tag/reject": {
+      "put": {
+        "tags": [
+          "Admin-Tags"
+        ],
+        "description": "Reject tag.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/user/all": {
+      "get": {
+        "tags": [
+          "Admin-Users"
+        ],
+        "description": "Get All Users.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/user/block": {
+      "post": {
+        "tags": [
+          "Admin-Users"
+        ],
+        "description": "Block selected user for given time.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Block given user to given date.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BlockUserRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/user/unlock": {
+      "post": {
+        "tags": [
+          "Admin-Users"
+        ],
+        "description": "Unlock given user.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Unlock given user.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UnlockUserRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         },
         "security": [
@@ -283,8 +1199,8 @@
           "example": "password"
         },
         "passwordResetDate": {
-          "type": "object",
-          "properties": {}
+          "type": "string",
+          "example": "2017-07-21"
         },
         "passwordResetToken": {
           "type": "string",
@@ -342,8 +1258,8 @@
           "example": "password"
         },
         "passwordResetDate": {
-          "type": "object",
-          "properties": {}
+          "type": "string",
+          "example": "2017-07-21"
         },
         "passwordResetToken": {
           "type": "string",
@@ -361,6 +1277,10 @@
         "email": {
           "type": "string",
           "example": "kamilporeba@hotmail.com"
+        },
+        "id": {
+          "type": "number",
+          "example": 1
         }
       }
     },
@@ -379,6 +1299,411 @@
         "email": {
           "type": "string",
           "example": "kamilporeba@hotmail.com"
+        }
+      }
+    },
+    "ResetRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "kamilporeba@hotmail.com"
+        },
+        "resetGUID": {
+          "type": "string",
+          "example": "e31ace7a-99fd-45e1-91c7-855e02d54983"
+        },
+        "password": {
+          "type": "string",
+          "example": "Kamil123!"
+        },
+        "passwordRepeated": {
+          "type": "string",
+          "example": "Kamil123!"
+        }
+      }
+    },
+    "AddTrainingRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Training name"
+        },
+        "visibility": {
+          "type": "boolean",
+          "example": true
+        },
+        "tagIds": {
+          "type": "array",
+          "example": [
+            1
+          ],
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "EditTrainingRequest": {
+      "type": "object",
+      "properties": {
+        "trainingId": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Training name"
+        },
+        "visibility": {
+          "type": "boolean",
+          "example": true
+        },
+        "tagIds": {
+          "type": "array",
+          "example": [
+            1
+          ],
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "GetAllTrainingsResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Training name"
+          },
+          "visibility": {
+            "type": "boolean",
+            "example": true
+          },
+          "userId": {
+            "type": "number",
+            "example": 4
+          }
+        }
+      }
+    },
+    "GetOneTrainingRequest": {
+      "type": "object",
+      "properties": {
+        "trainingId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "GetOneTrainingResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Training name"
+        },
+        "visibility": {
+          "type": "boolean",
+          "example": true
+        },
+        "userId": {
+          "type": "number",
+          "example": 4
+        }
+      }
+    },
+    "GetOneTrainingsResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Training name"
+          },
+          "visibility": {
+            "type": "boolean",
+            "example": true
+          },
+          "userId": {
+            "type": "number",
+            "example": 4
+          }
+        }
+      }
+    },
+    "AddQuestionRequest": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "string",
+          "example": "Sample question"
+        },
+        "trainingId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "AddQuestionAnswerRequest": {
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "number",
+          "example": 1
+        },
+        "answer": {
+          "type": "string",
+          "example": "Sample answer"
+        },
+        "isCorrect": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
+    "GetQuestionsResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "question": {
+            "type": "string",
+            "example": "Test question"
+          },
+          "trainingId": {
+            "type": "number",
+            "example": 1
+          },
+          "QuestionAnswer": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "questionId": {
+                  "type": "number",
+                  "example": 1
+                },
+                "answer": {
+                  "type": "string",
+                  "example": "sample answer"
+                },
+                "isCorrect": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "GetQuestionResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "question": {
+          "type": "string",
+          "example": "Test question"
+        },
+        "trainingId": {
+          "type": "number",
+          "example": 1
+        },
+        "QuestionAnswer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "questionId": {
+                "type": "number",
+                "example": 1
+              },
+              "answer": {
+                "type": "string",
+                "example": "sample answer"
+              },
+              "isCorrect": {
+                "type": "boolean",
+                "example": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "EditQuestionRequest": {
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "number",
+          "example": 1
+        },
+        "question": {
+          "type": "string",
+          "example": "Sample question"
+        }
+      }
+    },
+    "EditQuestionAnswerRequest": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string",
+          "example": "Sample answer"
+        },
+        "isCorrect": {
+          "type": "boolean",
+          "example": true
+        },
+        "questionAnswerId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "AddQuestionWithAnswersRequest": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "string",
+          "example": "Sample question"
+        },
+        "trainingId": {
+          "type": "number",
+          "example": 1
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string",
+                "example": "Sample answer 2"
+              },
+              "isCorrect": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "StartTrainingSessionRequest": {
+      "type": "object",
+      "properties": {
+        "trainingId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "EndTrainingSessionRequest": {
+      "type": "object",
+      "properties": {
+        "trainingId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "AddUserAnswerRequest": {
+      "type": "object",
+      "properties": {
+        "trainingSessionId": {
+          "type": "number",
+          "example": 1
+        },
+        "questionId": {
+          "type": "number",
+          "example": 1
+        },
+        "questionAnswerIds": {
+          "type": "array",
+          "example": [
+            1,
+            2,
+            3
+          ],
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "TagsResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Tag name"
+          },
+          "trainingId": {
+            "type": "number",
+            "example": 1
+          }
+        }
+      }
+    },
+    "BlockUserRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "number",
+          "example": 1
+        },
+        "blockedTo": {
+          "type": "string",
+          "example": "2022-11-09T18:43:24.642Z"
+        }
+      }
+    },
+    "UnlockUserRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "number",
+          "example": 1
         }
       }
     }

@@ -46,7 +46,8 @@ export interface RegisterGoogleResponse {
   id?: number;
   /** @example password */
   password?: string;
-  passwordResetDate?: object;
+  /** @example 2017-07-21 */
+  passwordResetDate?: string;
   /** @example resetToken */
   passwordResetToken?: string;
   /** @example refreshToken */
@@ -76,7 +77,8 @@ export interface RegisterResponse {
   id?: number;
   /** @example password */
   password?: string;
-  passwordResetDate?: object;
+  /** @example 2017-07-21 */
+  passwordResetDate?: string;
   /** @example resetToken */
   passwordResetToken?: string;
   /** @example refreshToken */
@@ -86,6 +88,8 @@ export interface RegisterResponse {
 export interface ProfileResponse {
   /** @example kamilporeba@hotmail.com */
   email?: string;
+  /** @example 1 */
+  id?: number;
 }
 
 export interface RefreshTokenResponse {
@@ -96,6 +100,198 @@ export interface RefreshTokenResponse {
 export interface ResetStartRequest {
   /** @example kamilporeba@hotmail.com */
   email?: string;
+}
+
+export interface ResetRequest {
+  /** @example kamilporeba@hotmail.com */
+  email?: string;
+  /** @example e31ace7a-99fd-45e1-91c7-855e02d54983 */
+  resetGUID?: string;
+  /** @example Kamil123! */
+  password?: string;
+  /** @example Kamil123! */
+  passwordRepeated?: string;
+}
+
+export interface AddTrainingRequest {
+  /** @example Training name */
+  name?: string;
+  /** @example true */
+  visibility?: boolean;
+  /** @example [1] */
+  tagIds?: number[];
+}
+
+export interface EditTrainingRequest {
+  /** @example 1 */
+  trainingId?: number;
+  /** @example Training name */
+  name?: string;
+  /** @example true */
+  visibility?: boolean;
+  /** @example [1] */
+  tagIds?: number[];
+}
+
+export type GetAllTrainingsResponse = {
+  /** @example 1 */
+  id?: number;
+  /** @example Training name */
+  name?: string;
+  /** @example true */
+  visibility?: boolean;
+  /** @example 4 */
+  userId?: number;
+}[];
+
+export interface GetOneTrainingRequest {
+  /** @example 1 */
+  trainingId?: number;
+}
+
+export interface GetOneTrainingResponse {
+  /** @example 1 */
+  id?: number;
+  /** @example Training name */
+  name?: string;
+  /** @example true */
+  visibility?: boolean;
+  /** @example 4 */
+  userId?: number;
+}
+
+export type GetOneTrainingsResponse = {
+  /** @example 1 */
+  id?: number;
+  /** @example Training name */
+  name?: string;
+  /** @example true */
+  visibility?: boolean;
+  /** @example 4 */
+  userId?: number;
+}[];
+
+export interface AddQuestionRequest {
+  /** @example Sample question */
+  question?: string;
+  /** @example 1 */
+  trainingId?: number;
+}
+
+export interface AddQuestionAnswerRequest {
+  /** @example 1 */
+  questionId?: number;
+  /** @example Sample answer */
+  answer?: string;
+  /** @example true */
+  isCorrect?: boolean;
+}
+
+export type GetQuestionsResponse = {
+  /** @example 1 */
+  id?: number;
+  /** @example Test question */
+  question?: string;
+  /** @example 1 */
+  trainingId?: number;
+  QuestionAnswer?: {
+    /** @example 1 */
+    id?: number;
+    /** @example 1 */
+    questionId?: number;
+    /** @example sample answer */
+    answer?: string;
+    /** @example true */
+    isCorrect?: boolean;
+  }[];
+}[];
+
+export interface GetQuestionResponse {
+  /** @example 1 */
+  id?: number;
+  /** @example Test question */
+  question?: string;
+  /** @example 1 */
+  trainingId?: number;
+  QuestionAnswer?: {
+    /** @example 1 */
+    id?: number;
+    /** @example 1 */
+    questionId?: number;
+    /** @example sample answer */
+    answer?: string;
+    /** @example true */
+    isCorrect?: boolean;
+  }[];
+}
+
+export interface EditQuestionRequest {
+  /** @example 1 */
+  questionId?: number;
+  /** @example Sample question */
+  question?: string;
+}
+
+export interface EditQuestionAnswerRequest {
+  /** @example Sample answer */
+  answer?: string;
+  /** @example true */
+  isCorrect?: boolean;
+  /** @example 1 */
+  questionAnswerId?: number;
+}
+
+export interface AddQuestionWithAnswersRequest {
+  /** @example Sample question */
+  question?: string;
+  /** @example 1 */
+  trainingId?: number;
+  answers?: {
+    /** @example Sample answer 2 */
+    answer?: string;
+    /** @example false */
+    isCorrect?: boolean;
+  }[];
+}
+
+export interface StartTrainingSessionRequest {
+  /** @example 1 */
+  trainingId?: number;
+}
+
+export interface EndTrainingSessionRequest {
+  /** @example 1 */
+  trainingId?: number;
+}
+
+export interface AddUserAnswerRequest {
+  /** @example 1 */
+  trainingSessionId?: number;
+  /** @example 1 */
+  questionId?: number;
+  /** @example [1,2,3] */
+  questionAnswerIds?: number[];
+}
+
+export type TagsResponse = {
+  /** @example 1 */
+  id?: number;
+  /** @example Tag name */
+  name?: string;
+  /** @example 1 */
+  trainingId?: number;
+}[];
+
+export interface BlockUserRequest {
+  /** @example 1 */
+  userId?: number;
+  /** @example 2022-11-09T18:43:24.642Z */
+  blockedTo?: string;
+}
+
+export interface UnlockUserRequest {
+  /** @example 1 */
+  userId?: number;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -143,7 +339,7 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = "http://localhost:8000";
+  public baseUrl: string = "https://quiz-system-backend-h.herokuapp.com";
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
@@ -309,7 +505,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title Quiz System Api
  * @version 1.0.0
- * @baseUrl http://localhost:8000
+ * @baseUrl https://quiz-system-backend-h.herokuapp.com
  *
  * Project made for Internet Application classes.
  */
@@ -323,7 +519,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/login
      */
     loginCreate: (obj: LoginRequest, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<LoginResponse, any>({
         path: `/login`,
         method: "POST",
         body: obj,
@@ -332,14 +528,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   register = {
     /**
-     * @description Endpoint to register user
+     * @description Endpoint to register user.
      *
      * @tags Auth
      * @name RegisterCreate
      * @request POST:/register
      */
     registerCreate: (obj: RegisterRequest, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<RegisterResponse, any>({
         path: `/register`,
         method: "POST",
         body: obj,
@@ -377,36 +573,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/reset-start`,
         method: "POST",
         body: obj,
+        type: ContentType.Json,
         ...params,
       }),
   };
   reset = {
     /**
-     * @description Endpoint to start reset password procedure
+     * @description Endpoint to start reset password procedure.
      *
      * @tags Auth
-     * @name ResetList
-     * @request GET:/reset
+     * @name ResetCreate
+     * @request POST:/reset
      */
-    resetList: (obj: ResetStartRequest, params: RequestParams = {}) =>
+    resetCreate: (obj: ResetRequest, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/reset`,
-        method: "GET",
-        body: obj,
-        ...params,
-      }),
-  };
-  sendMessage = {
-    /**
-     * No description
-     *
-     * @name SendMessageCreate
-     * @request POST:/send-message
-     */
-    sendMessageCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/send-message`,
         method: "POST",
+        body: obj,
+        type: ContentType.Json,
         ...params,
       }),
   };
@@ -419,7 +603,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/login-google
      */
     loginGoogleCreate: (obj: LoginRequest, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<LoginResponse, any>({
         path: `/login-google`,
         method: "POST",
         body: obj,
@@ -435,10 +619,466 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/register-google
      */
     registerGoogleCreate: (obj: RegisterGoogleRequest, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<RegisterGoogleResponse, any>({
         path: `/register-google`,
         method: "POST",
         body: obj,
+        type: ContentType.Json,
+        ...params,
+      }),
+  };
+  initdb = {
+    /**
+     * No description
+     *
+     * @name InitdbCreate
+     * @request POST:/initdb
+     */
+    initdbCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/initdb`,
+        method: "POST",
+        ...params,
+      }),
+  };
+  training = {
+    /**
+     * @description Gets all trainings of all user that have visiblity set to true, and all trainings of logged in user.
+     *
+     * @tags Training
+     * @name GetTraining
+     * @request GET:/training/all
+     * @secure
+     */
+    getTraining: (
+      query: {
+        /** Set to true, if only liked one should be displayed */
+        onlyLiked: string;
+        /** Set to search query */
+        search?: string;
+        /** Set tags */
+        tags?: any[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetAllTrainingsResponse, any>({
+        path: `/training/all`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Gets one training.
+     *
+     * @tags Training
+     * @name TrainingDetail
+     * @request GET:/training/{trainingId}
+     * @secure
+     */
+    trainingDetail: (trainingId: string, params: RequestParams = {}) =>
+      this.request<GetOneTrainingResponse, any>({
+        path: `/training/${trainingId}`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Delete training.
+     *
+     * @tags Training
+     * @name TrainingDelete
+     * @request DELETE:/training/{trainingId}
+     * @secure
+     */
+    trainingDelete: (trainingId: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/training/${trainingId}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Create training
+     *
+     * @tags Training
+     * @name TrainingCreate
+     * @request POST:/training
+     * @secure
+     */
+    trainingCreate: (obj: AddTrainingRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/training`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Edit training
+     *
+     * @tags Training
+     * @name TrainingUpdate
+     * @request PUT:/training
+     * @secure
+     */
+    trainingUpdate: (obj: EditTrainingRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/training`,
+        method: "PUT",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+  };
+  trainingSession = {
+    /**
+     * @description Start training session. It makes new training session with finished status set to false. If training session with given id already exists, then response is always success - before creating new training session, it is required to use /training-session/end endpoint.
+     *
+     * @tags Training Session
+     * @name StartCreate
+     * @request POST:/training-session/start
+     * @secure
+     */
+    startCreate: (obj: StartTrainingSessionRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/training-session/start`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Ends training session, setting its finished status to true.
+     *
+     * @tags Training Session
+     * @name PostTrainingSession
+     * @request POST:/training-session/end
+     * @secure
+     */
+    postTrainingSession: (obj: EndTrainingSessionRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/training-session/end`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Get all questions for training session that were not answered, and were created after creation of training session. This endpoint should be used to get questions for training session that is started or continued (when previous was not finished) using endpoint /training-session/start
+     *
+     * @tags Training Session
+     * @name QuestionsDetail
+     * @request GET:/training-session/{trainingSessionId}/questions
+     * @secure
+     */
+    questionsDetail: (trainingSessionId: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/training-session/${trainingSessionId}/questions`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Get all training sessions done or started by user - it should be used on screen where all training session history is shown - endpoint doesn
+     *
+     * @tags Training Session
+     * @name GetTrainingSession
+     * @request GET:/training-session/all
+     * @secure
+     */
+    getTrainingSession: (params: RequestParams = {}) =>
+      this.request<any, any>({
+        path: `/training-session/all`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Get single training session with all the details for it
+     *
+     * @tags Training Session
+     * @name TrainingSessionDetail
+     * @request GET:/training-session/{trainingSessionId}
+     * @secure
+     */
+    trainingSessionDetail: (trainingSessionId: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/training-session/${trainingSessionId}`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+  };
+  tag = {
+    /**
+     * @description Get all available tags for training.
+     *
+     * @tags Tags
+     * @name GetTag
+     * @request GET:/tag
+     * @secure
+     */
+    getTag: (params: RequestParams = {}) =>
+      this.request<TagsResponse, any>({
+        path: `/tag`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Create new tag.
+     *
+     * @tags Tags
+     * @name PostTag
+     * @request POST:/tag
+     * @secure
+     */
+    postTag: (
+      body: {
+        /** @example any */
+        name?: any;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/tag`,
+        method: "POST",
+        body: body,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Get all available tags for training.
+     *
+     * @tags Tags
+     * @name GetTag2
+     * @request GET:/tag/{trainingId}
+     * @originalName getTag
+     * @duplicate
+     * @secure
+     */
+    getTag2: (trainingId: string, params: RequestParams = {}) =>
+      this.request<TagsResponse, any>({
+        path: `/tag/${trainingId}`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+  };
+  question = {
+    /**
+     * @description Get all questions for training, with or without answers. This endpoint should be used when browsing list of all trainings.
+     *
+     * @tags Question
+     * @name GetQuestion
+     * @request GET:/question/all/{trainingId}
+     * @secure
+     */
+    getQuestion: (
+      trainingId: string,
+      query: {
+        /** If questions should include answers or no. */
+        withAnswers: string;
+        description?: string;
+        schema?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetQuestionsResponse, any>({
+        path: `/question/all/${trainingId}`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Get one question details, with all answers.
+     *
+     * @tags Question
+     * @name QuestionDetail
+     * @request GET:/question/{questionId}
+     * @secure
+     */
+    questionDetail: (questionId: string, params: RequestParams = {}) =>
+      this.request<GetQuestionResponse, any>({
+        path: `/question/${questionId}`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Remove question
+     *
+     * @tags Question
+     * @name QuestionDelete
+     * @request DELETE:/question/{questionId}
+     * @secure
+     */
+    questionDelete: (
+      questionId: string,
+      body: {
+        /** @example any */
+        questionId?: any;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/question/${questionId}`,
+        method: "DELETE",
+        body: body,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Create question
+     *
+     * @tags Question
+     * @name QuestionCreate
+     * @request POST:/question
+     * @secure
+     */
+    questionCreate: (obj: AddQuestionRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/question`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Edit question.
+     *
+     * @tags Question
+     * @name QuestionUpdate
+     * @request PUT:/question
+     * @secure
+     */
+    questionUpdate: (obj: EditQuestionRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/question`,
+        method: "PUT",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Create question with answers
+     *
+     * @tags Question
+     * @name WithAnswersCreate
+     * @request POST:/question/with-answers
+     * @secure
+     */
+    withAnswersCreate: (obj: AddQuestionWithAnswersRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/question/with-answers`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+  };
+  userAnswer = {
+    /**
+     * @description Add answer to question. This endpoint should be used when responding to question, answers should be an array.
+     *
+     * @tags User Answer
+     * @name UserAnswerCreate
+     * @request POST:/user-answer
+     * @secure
+     */
+    userAnswerCreate: (obj: AddUserAnswerRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/user-answer`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+  };
+  questionAnswer = {
+    /**
+     * @description Remove question answer
+     *
+     * @tags Answer
+     * @name QuestionAnswerDelete
+     * @request DELETE:/question-answer/{questionAnswerId}
+     * @secure
+     */
+    questionAnswerDelete: (
+      questionAnswerId: string,
+      body: {
+        /** @example any */
+        questionAnswerId?: any;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/question-answer/${questionAnswerId}`,
+        method: "DELETE",
+        body: body,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Add answer for question
+     *
+     * @tags Answer
+     * @name QuestionAnswerCreate
+     * @request POST:/question-answer
+     * @secure
+     */
+    questionAnswerCreate: (obj: AddQuestionAnswerRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/question-answer`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Edit question answer.
+     *
+     * @tags Answer
+     * @name QuestionAnswerUpdate
+     * @request PUT:/question-answer
+     * @secure
+     */
+    questionAnswerUpdate: (obj: EditQuestionAnswerRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/question-answer`,
+        method: "PUT",
+        body: obj,
+        secure: true,
         type: ContentType.Json,
         ...params,
       }),
@@ -457,6 +1097,154 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/profile`,
         method: "POST",
         secure: true,
+        ...params,
+      }),
+  };
+  admin = {
+    /**
+     * @description Create new tag.
+     *
+     * @tags Admin-Tags
+     * @name PostAdmin
+     * @request POST:/admin/tag
+     * @secure
+     */
+    postAdmin: (
+      body: {
+        /** @example any */
+        name?: any;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/admin/tag`,
+        method: "POST",
+        body: body,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Edit tag.
+     *
+     * @tags Admin-Tags
+     * @name PutAdmin
+     * @request PUT:/admin/tag
+     * @secure
+     */
+    putAdmin: (
+      body: {
+        /** @example any */
+        name?: any;
+        /** @example any */
+        tagId?: any;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/admin/tag`,
+        method: "PUT",
+        body: body,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Accept new tag.
+     *
+     * @tags Admin-Tags
+     * @name TagAcceptUpdate
+     * @request PUT:/admin/tag/accept
+     * @secure
+     */
+    tagAcceptUpdate: (
+      body: {
+        /** @example any */
+        tagId?: any;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/admin/tag/accept`,
+        method: "PUT",
+        body: body,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Reject tag.
+     *
+     * @tags Admin-Tags
+     * @name TagRejectUpdate
+     * @request PUT:/admin/tag/reject
+     * @secure
+     */
+    tagRejectUpdate: (
+      body: {
+        /** @example any */
+        tagId?: any;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/admin/tag/reject`,
+        method: "PUT",
+        body: body,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Get All Users.
+     *
+     * @tags Admin-Users
+     * @name UserAllList
+     * @request GET:/admin/user/all
+     * @secure
+     */
+    userAllList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/admin/user/all`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Block selected user for given time.
+     *
+     * @tags Admin-Users
+     * @name UserBlockCreate
+     * @request POST:/admin/user/block
+     * @secure
+     */
+    userBlockCreate: (obj: BlockUserRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/admin/user/block`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Unlock given user.
+     *
+     * @tags Admin-Users
+     * @name UserUnlockCreate
+     * @request POST:/admin/user/unlock
+     * @secure
+     */
+    userUnlockCreate: (obj: UnlockUserRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/admin/user/unlock`,
+        method: "POST",
+        body: obj,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
   };

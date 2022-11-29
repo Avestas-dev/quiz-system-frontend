@@ -32,6 +32,10 @@ export const UserContextProvider: React.FC<{
   const [refreshToken, setRefreshToken] = useState(
     localStorage.getItem("refreshToken") || ""
   )
+  if (localStorage.getItem("token") && localStorage.getItem("refreshToken")) {
+    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem("token")}`
+    axios.defaults.headers.common.Refresh = localStorage.getItem("refreshToken")
+  }
 
   const login = ({
     token,
