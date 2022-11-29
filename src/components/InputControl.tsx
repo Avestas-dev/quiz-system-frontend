@@ -9,12 +9,13 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
 export const InputControl = <TFieldValues extends FieldValues = FieldValues>({
   control,
   name,
+  defaultValue,
   ...rest
 }: InputProps<TFieldValues> & TextFieldProps) => (
   <Controller
     name={name}
     control={control}
-    defaultValue={(rest?.defaultValue as any) || undefined}
+    defaultValue={(defaultValue as any) || undefined}
     render={({ field: { onChange, value, ref }, formState }) => (
       <TextField
         onChange={onChange}
