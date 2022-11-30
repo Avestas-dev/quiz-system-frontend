@@ -31,6 +31,8 @@ export interface LoginGoogleRequest {
 }
 
 export interface LoginGoogleResponse {
+  /** @example kamilporeba@hotmail.com */
+  email?: string;
   /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE2NjYxMDQzMTIsImV4cCI6MTc1MjEwNDMxMn0.H7E3TQPh8Nc0O5JWqPyMfRNHYoTPy57kc8z-2IJd0cc */
   token?: string;
   /** @example 5f3c44c9-eac1-4ffd-a112-ae5a1fe38fed */
@@ -38,24 +40,30 @@ export interface LoginGoogleResponse {
 }
 
 export interface RegisterGoogleResponse {
-  /** @example kamilporeba@hotmail.com */
-  email?: string;
-  /** @example googleSub */
-  googleSub?: string;
-  /** @example 1 */
+  /** @example 4 */
   id?: number;
-  /** @example password */
+  /** @example kamilporeba1998@gmail.com */
+  email?: string;
+  /** @example  */
   password?: string;
-  /** @example 2017-07-21 */
-  passwordResetDate?: string;
-  /** @example resetToken */
-  passwordResetToken?: string;
   /** @example refreshToken */
   refreshToken?: string;
+  /** @example resetToken */
+  passwordResetToken?: string;
+  /** @example 2022-11-30T17:05:41.166Z */
+  passwordResetDate?: string;
+  /** @example 105081556580525628106 */
+  googleSub?: string;
+  /** @example false */
+  isAdmin?: boolean;
+  /** @example 2022-11-30T17:05:41.166Z */
+  createdAt?: string;
+  /** @example 2022-11-30T17:05:41.166Z */
+  updatedAt?: string;
 }
 
 export interface RegisterGoogleRequest {
-  /** @example token */
+  /** @example tokenId */
   tokenId?: string;
 }
 
@@ -69,20 +77,26 @@ export interface RegisterRequest {
 }
 
 export interface RegisterResponse {
-  /** @example kamilporeba@hotmail.com */
-  email?: string;
-  /** @example googleSub */
-  googleSub?: string;
-  /** @example 1 */
+  /** @example 4 */
   id?: number;
+  /** @example kamilporeba1998@gmail.com */
+  email?: string;
   /** @example password */
   password?: string;
-  /** @example 2017-07-21 */
-  passwordResetDate?: string;
-  /** @example resetToken */
-  passwordResetToken?: string;
   /** @example refreshToken */
   refreshToken?: string;
+  /** @example resetToken */
+  passwordResetToken?: string;
+  /** @example 2022-11-30T17:05:41.167Z */
+  passwordResetDate?: string;
+  /** @example 105081556580525628106 */
+  googleSub?: string;
+  /** @example false */
+  isAdmin?: boolean;
+  /** @example 2022-11-30T17:05:41.167Z */
+  createdAt?: string;
+  /** @example 2022-11-30T17:05:41.167Z */
+  updatedAt?: string;
 }
 
 export interface ProfileResponse {
@@ -93,7 +107,7 @@ export interface ProfileResponse {
 }
 
 export interface RefreshTokenResponse {
-  /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE2NjYxMDQzMTIsImV4cCI6MTc1MjEwNDMxMn0.H7E3TQPh8Nc0O5JWqPyMfRNHYoTPy57kc8z-2IJd0cc */
+  /** @example token */
   token?: string;
 }
 
@@ -102,7 +116,7 @@ export interface ResetStartRequest {
   email?: string;
 }
 
-export interface ResetRequest {
+export interface ResetPasswordRequest {
   /** @example kamilporeba@hotmail.com */
   email?: string;
   /** @example e31ace7a-99fd-45e1-91c7-855e02d54983 */
@@ -136,40 +150,48 @@ export interface EditTrainingRequest {
 export type GetAllTrainingsResponse = {
   /** @example 1 */
   id?: number;
-  /** @example Training name */
+  /** @example 2022-11-30T17:05:41.179Z */
+  createdAt?: string;
+  /** @example test */
   name?: string;
+  /** @example 2022-11-30T17:05:41.179Z */
+  updatedAt?: string;
+  /** @example 1 */
+  userId?: number;
   /** @example true */
   visibility?: boolean;
-  /** @example 4 */
-  userId?: number;
+  /** @example true */
+  likedTraining?: boolean;
+  tagTraining?: {
+    /** @example 1 */
+    tagId?: number;
+    /** @example tagName */
+    tagName?: string;
+  }[];
 }[];
-
-export interface GetOneTrainingRequest {
-  /** @example 1 */
-  trainingId?: number;
-}
 
 export interface GetOneTrainingResponse {
   /** @example 1 */
   id?: number;
-  /** @example Training name */
+  /** @example 2022-11-30T17:05:41.180Z */
+  createdAt?: string;
+  /** @example test */
   name?: string;
-  /** @example true */
-  visibility?: boolean;
-  /** @example 4 */
-  userId?: number;
-}
-
-export type GetOneTrainingsResponse = {
+  /** @example 2022-11-30T17:05:41.180Z */
+  updatedAt?: string;
   /** @example 1 */
-  id?: number;
-  /** @example Training name */
-  name?: string;
+  userId?: number;
   /** @example true */
   visibility?: boolean;
-  /** @example 4 */
-  userId?: number;
-}[];
+  /** @example true */
+  likedTraining?: boolean;
+  tagTraining?: {
+    /** @example 1 */
+    tagId?: number;
+    /** @example tagName */
+    tagName?: string;
+  }[];
+}
 
 export interface AddQuestionRequest {
   /** @example Sample question */
@@ -187,6 +209,21 @@ export interface AddQuestionAnswerRequest {
   isCorrect?: boolean;
 }
 
+export interface AddQuestionAnswerResponse {
+  /** @example answer */
+  answer?: string;
+  /** @example 2022-11-30T17:05:41.162Z */
+  createdAt?: string;
+  /** @example 1 */
+  id?: number;
+  /** @example true */
+  isCorrect?: boolean;
+  /** @example 1 */
+  questionId?: number;
+  /** @example 2022-11-30T17:05:41.162Z */
+  updatedAt?: string;
+}
+
 export type GetQuestionsResponse = {
   /** @example 1 */
   id?: number;
@@ -194,6 +231,10 @@ export type GetQuestionsResponse = {
   question?: string;
   /** @example 1 */
   trainingId?: number;
+  /** @example 2022-11-30T17:05:41.173Z */
+  createdAt?: string;
+  /** @example 2022-11-30T17:05:41.173Z */
+  updatedAt?: string;
   QuestionAnswer?: {
     /** @example 1 */
     id?: number;
@@ -203,6 +244,10 @@ export type GetQuestionsResponse = {
     answer?: string;
     /** @example true */
     isCorrect?: boolean;
+    /** @example 2022-11-30T17:05:41.173Z */
+    createdAt?: string;
+    /** @example 2022-11-30T17:05:41.173Z */
+    updatedAt?: string;
   }[];
 }[];
 
@@ -213,6 +258,10 @@ export interface GetQuestionResponse {
   question?: string;
   /** @example 1 */
   trainingId?: number;
+  /** @example 2022-11-30T17:05:41.172Z */
+  createdAt?: string;
+  /** @example 2022-11-30T17:05:41.172Z */
+  updatedAt?: string;
   QuestionAnswer?: {
     /** @example 1 */
     id?: number;
@@ -222,6 +271,10 @@ export interface GetQuestionResponse {
     answer?: string;
     /** @example true */
     isCorrect?: boolean;
+    /** @example 2022-11-30T17:05:41.172Z */
+    createdAt?: string;
+    /** @example 2022-11-30T17:05:41.172Z */
+    updatedAt?: string;
   }[];
 }
 
@@ -259,6 +312,11 @@ export interface StartTrainingSessionRequest {
   trainingId?: number;
 }
 
+export interface StartTrainingSessionResponse {
+  /** @example 1 */
+  trainingSessionId?: number;
+}
+
 export interface EndTrainingSessionRequest {
   /** @example 1 */
   trainingId?: number;
@@ -274,18 +332,18 @@ export interface AddUserAnswerRequest {
 }
 
 export type TagsResponse = {
-  /** @example 1 */
+  /** @example 3 */
   id?: number;
-  /** @example Tag name */
+  /** @example testTag3 */
   name?: string;
-  /** @example 1 */
-  trainingId?: number;
+  /** @example pending */
+  tagStatus?: string;
 }[];
 
 export interface BlockUserRequest {
   /** @example 1 */
   userId?: number;
-  /** @example 2022-11-09T18:43:24.642Z */
+  /** @example 2022-11-30T17:05:41.184Z */
   blockedTo?: string;
 }
 
@@ -293,6 +351,125 @@ export interface UnlockUserRequest {
   /** @example 1 */
   userId?: number;
 }
+
+export interface GetTrainingSessionQuestionsResponse {
+  questions?: {
+    /** @example [] */
+    questionAnswer?: any[];
+    /** @example 34 */
+    id?: number;
+    /** @example Sample question */
+    question?: string;
+    /** @example 1000000 */
+    trainingId?: number;
+    /** @example 2022-11-30T17:05:41.181Z */
+    createdAt?: string;
+    /** @example 2022-11-30T17:05:41.181Z */
+    updatedAt?: string;
+  }[];
+  /** @example 0 */
+  answeredQuestionCount?: number;
+  /** @example 5 */
+  totalQuestionCount?: number;
+}
+
+export type GetUserTrainingSessionsResponse = {
+  /** @example 5 */
+  id?: number;
+  /** @example true */
+  finished?: boolean;
+  /** @example 1000000 */
+  trainingId?: number;
+  /** @example Init training 1 */
+  trainingName?: string;
+  trainingQuestions?: {
+    /** @example 1000000 */
+    trainingQuestionId?: number;
+    /** @example Init question 1 */
+    question?: string;
+    /** @example incorrect */
+    answerStatus?: string;
+  }[];
+  /** @example 1 */
+  correctQuestionCount?: number;
+  /** @example 3 */
+  totalQuestionCount?: number;
+}[];
+
+export type GetUserTrainingSessionResponse = {
+  /** @example 5 */
+  id?: number;
+  /** @example true */
+  finished?: boolean;
+  /** @example 1000000 */
+  trainingId?: number;
+  /** @example Init training 1 */
+  trainingName?: string;
+  trainingQuestions?: {
+    /** @example 1000000 */
+    trainingQuestionId?: number;
+    /** @example Init question 1 */
+    question?: string;
+    /** @example incorrect */
+    answerStatus?: string;
+  }[];
+  /** @example 1 */
+  correctQuestionCount?: number;
+  /** @example 3 */
+  totalQuestionCount?: number;
+}[];
+
+export interface AddTagRequest {
+  /** @example tagName */
+  name?: string;
+}
+
+export interface AddTagAdminRequest {
+  /** @example tagName */
+  name?: string;
+}
+
+export interface RejectTagRequest {
+  /** @example 1 */
+  tagId?: number;
+}
+
+export type GetAllTagsForTrainingResponse = {
+  /** @example 3 */
+  id?: number;
+  /** @example testTag3 */
+  name?: string;
+  /** @example pending */
+  tagStatus?: string;
+}[];
+
+export interface AcceptTagRequest {
+  /** @example 1 */
+  tagId?: number;
+}
+
+export interface EditTagRequest {
+  /** @example newTagName */
+  name?: string;
+  /** @example 1 */
+  tagId?: number;
+}
+
+export type GetAllUsersResponse = {
+  /** @example 7 */
+  id?: number;
+  /** @example 2022-11-30T17:05:41.184Z */
+  createdAt?: string;
+  /** @example 2022-11-30T17:05:41.184Z */
+  updatedAt?: string;
+  /** @example kamilporeba5@hotmail.com */
+  email?: string;
+  /** @example 2022-11-30T17:05:41.184Z */
+  passwordResetDate?: string;
+  /** @example true */
+  isAdmin?: boolean;
+  googleSub?: any;
+}[];
 
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
@@ -339,7 +516,7 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = "https://quiz-system-backend-h.herokuapp.com";
+  public baseUrl: string = "http://localhost:8000";
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
@@ -505,7 +682,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title Quiz System Api
  * @version 1.0.0
- * @baseUrl https://quiz-system-backend-h.herokuapp.com
+ * @baseUrl http://localhost:8000
  *
  * Project made for Internet Application classes.
  */
@@ -523,6 +700,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/login`,
         method: "POST",
         body: obj,
+        type: ContentType.Json,
         ...params,
       }),
   };
@@ -585,7 +763,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name ResetCreate
      * @request POST:/reset
      */
-    resetCreate: (obj: ResetRequest, params: RequestParams = {}) =>
+    resetCreate: (obj: ResetPasswordRequest, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/reset`,
         method: "POST",
@@ -596,17 +774,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   loginGoogle = {
     /**
-     * @description Endpoint to sign in a specific user
+     * @description Endpoint to sign in a specific user using Google
      *
      * @tags Auth
      * @name LoginGoogleCreate
      * @request POST:/login-google
      */
-    loginGoogleCreate: (obj: LoginRequest, params: RequestParams = {}) =>
-      this.request<LoginResponse, any>({
+    loginGoogleCreate: (obj: LoginGoogleRequest, params: RequestParams = {}) =>
+      this.request<LoginGoogleResponse, any>({
         path: `/login-google`,
         method: "POST",
         body: obj,
+        type: ContentType.Json,
         ...params,
       }),
   };
@@ -651,9 +830,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     getTraining: (
-      query: {
+      query?: {
         /** Set to true, if only liked one should be displayed */
-        onlyLiked: string;
+        onlyLiked?: string;
         /** Set to search query */
         search?: string;
         /** Set tags */
@@ -747,7 +926,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     startCreate: (obj: StartTrainingSessionRequest, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<StartTrainingSessionResponse, any>({
         path: `/training-session/start`,
         method: "POST",
         body: obj,
@@ -783,7 +962,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     questionsDetail: (trainingSessionId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<GetTrainingSessionQuestionsResponse, any>({
         path: `/training-session/${trainingSessionId}/questions`,
         method: "GET",
         secure: true,
@@ -799,7 +978,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     getTrainingSession: (params: RequestParams = {}) =>
-      this.request<any, any>({
+      this.request<GetUserTrainingSessionsResponse, any>({
         path: `/training-session/all`,
         method: "GET",
         secure: true,
@@ -815,7 +994,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     trainingSessionDetail: (trainingSessionId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<GetUserTrainingSessionResponse, any>({
         path: `/training-session/${trainingSessionId}`,
         method: "GET",
         secure: true,
@@ -840,25 +1019,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Create new tag.
+     * @description Create new tag with status pending, to be accepted by admin.
      *
      * @tags Tags
      * @name PostTag
      * @request POST:/tag
      * @secure
      */
-    postTag: (
-      body: {
-        /** @example any */
-        name?: any;
-      },
-      params: RequestParams = {},
-    ) =>
+    postTag: (obj: AddTagRequest, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/tag`,
         method: "POST",
-        body: body,
+        body: obj,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -873,7 +1047,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     getTag2: (trainingId: string, params: RequestParams = {}) =>
-      this.request<TagsResponse, any>({
+      this.request<GetAllTagsForTrainingResponse, any>({
         path: `/tag/${trainingId}`,
         method: "GET",
         secure: true,
@@ -882,7 +1056,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   question = {
     /**
-     * @description Get all questions for training, with or without answers. This endpoint should be used when browsing list of all trainings.
+     * @description Get all questions for training, when withAnswers=true then also includes answers. This endpoint should be used when browsing list of all trainings.
      *
      * @tags Question
      * @name GetQuestion
@@ -891,9 +1065,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getQuestion: (
       trainingId: string,
-      query: {
-        /** If questions should include answers or no. */
-        withAnswers: string;
+      query?: {
+        /** Set to true when questions should include answers. */
+        withAnswers?: string;
         description?: string;
         schema?: string;
       },
@@ -931,25 +1105,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/question/{questionId}
      * @secure
      */
-    questionDelete: (
-      questionId: string,
-      body: {
-        /** @example any */
-        questionId?: any;
-      },
-      params: RequestParams = {},
-    ) =>
+    questionDelete: (questionId: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/question/${questionId}`,
         method: "DELETE",
-        body: body,
         secure: true,
-        type: ContentType.Json,
         ...params,
       }),
 
     /**
-     * @description Create question
+     * @description Create question, if user owns training, or is admin.
      *
      * @tags Question
      * @name QuestionCreate
@@ -1102,25 +1267,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   admin = {
     /**
-     * @description Create new tag.
+     * @description Create new tag, that is already accepted.
      *
      * @tags Admin-Tags
      * @name PostAdmin
      * @request POST:/admin/tag
      * @secure
      */
-    postAdmin: (
-      body: {
-        /** @example any */
-        name?: any;
-      },
-      params: RequestParams = {},
-    ) =>
+    postAdmin: (obj: AddTagAdminRequest, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/admin/tag`,
         method: "POST",
-        body: body,
+        body: obj,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -1132,19 +1292,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/admin/tag
      * @secure
      */
-    putAdmin: (
-      body: {
-        /** @example any */
-        name?: any;
-        /** @example any */
-        tagId?: any;
-      },
-      params: RequestParams = {},
-    ) =>
+    putAdmin: (obj: EditTagRequest, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/admin/tag`,
         method: "PUT",
-        body: body,
+        body: obj,
         secure: true,
         type: ContentType.Json,
         ...params,
@@ -1158,18 +1310,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/admin/tag/accept
      * @secure
      */
-    tagAcceptUpdate: (
-      body: {
-        /** @example any */
-        tagId?: any;
-      },
-      params: RequestParams = {},
-    ) =>
+    tagAcceptUpdate: (obj: AcceptTagRequest, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/admin/tag/accept`,
         method: "PUT",
-        body: body,
+        body: obj,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -1181,18 +1328,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/admin/tag/reject
      * @secure
      */
-    tagRejectUpdate: (
-      body: {
-        /** @example any */
-        tagId?: any;
-      },
-      params: RequestParams = {},
-    ) =>
+    tagRejectUpdate: (obj: RejectTagRequest, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/admin/tag/reject`,
         method: "PUT",
-        body: body,
+        body: obj,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -1205,7 +1347,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     userAllList: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<GetAllUsersResponse, any>({
         path: `/admin/user/all`,
         method: "GET",
         secure: true,
