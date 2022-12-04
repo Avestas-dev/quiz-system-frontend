@@ -9,6 +9,7 @@ import ShareIcon from "@mui/icons-material/Share"
 import { useNavigate } from "react-router"
 import { useContext } from "react"
 import { UserContext } from "../../../contexts/UserContext"
+import { DeleteTraining } from "../DeleteTraining"
 interface QuizProps {
   id?: number
   name?: string
@@ -25,16 +26,16 @@ export default function QuizListItem({
 
   return (
     <div className="flex flex-col bg-white border-1 border-gray-400 rounded-xl">
-      <div
-        onClick={() => {
-          navigate(`/training/${id}`)
-        }}
-        className="h-5/6 p-2 space-x-2"
-      >
+      <div className="h-5/6 p-2 space-x-2 ">
         <div className="float-left  bg-gray-300 h-24   p-2 rounded-xl">
           Obrazek quizu
         </div>
-        <div className="float-left flex flex-col mt-2 ">
+        <div
+          onClick={() => {
+            navigate(`/training/${id}`)
+          }}
+          className="float-left flex flex-col mt-2 "
+        >
           <div className="flex flex-row">
             <p className="text-gray-500 text-[10px] mt-1">QUIZ</p>
             <div className="flex flex-row rounded bg-yellow-400 text-yellow-500 text-[10px]">
@@ -55,7 +56,11 @@ export default function QuizListItem({
           </div>
         </div>
         <div className="float-right bg-gray-300 rounded-xl">
-          <Delete />
+          {id != undefined ? (
+            <DeleteTraining trainingId={id.toString()} />
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
       <div className="p-2">
