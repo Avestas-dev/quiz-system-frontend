@@ -90,6 +90,7 @@ export const GetAllQuestions = ({
       )}
       <div className="space-y-2">
         {data &&
+          data.length > 0 &&
           data?.map((e) => (
             <div key={e.question}>
               <QuestionListItem
