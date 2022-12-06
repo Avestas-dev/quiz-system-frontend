@@ -6,6 +6,7 @@ export const PATHS = {
   trainings: "/trainings",
   training: "/training/:id",
   editTraining: "/training/edit/:id",
+  startTraining: "/training/start/:id",
   editQuestion: "/question/edit/:id",
   createTraining: "/training/create/:type",
   createQuestion: "/question/create/",

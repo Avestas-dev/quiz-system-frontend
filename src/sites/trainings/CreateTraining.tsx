@@ -3,11 +3,21 @@ import Delete from "@mui/icons-material/DeleteOutlined"
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
 import { GetAllQuestions } from "./GetAllQuestions"
 import { useNavigate, useParams } from "react-router"
-import { Button, IconButton, Input, TextField } from "@mui/material"
-import { useMutation } from "react-query"
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material"
+import { useMutation, useQuery } from "react-query"
 import axios from "axios"
 import { toast } from "react-toastify"
-import { AddTrainingRequest } from "../../models/Api"
+import { AddTrainingRequest, TagsResponse } from "../../models/Api"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { InputControl } from "../../components/InputControl"
@@ -38,6 +48,28 @@ export const CreateTraining = () => {
         toast.error(error?.response?.data?.message || "Add question error.", {
           autoClose: 2000,
         })
+      },
+    }
+  )
+
+  const { data } = useQuery<any, any, TagsResponse>(
+    "/tag",
+    async () => {
+      const res = await axios.get("/tag")
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("tags loaded succesfully", { autoClose: 3000 })
+      },
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+            "There was an error while getting tags",
+          {
+            autoClose: 2000,
+          }
+        )
       },
     }
   )
@@ -88,8 +120,23 @@ export const CreateTraining = () => {
               <IconButton>
                 <CreateOutlinedIcon />
               </IconButton>
+              <Box sx={{ maxWidth: 230 }}>
+                <FormControl size="small" fullWidth>
+                  <InputLabel id="demo-simple-select-label">tag</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value=""
+                    label="Age"
+                    onChange={() => {}}
+                  >
+                    {data?.map((tag) => (
+                      <MenuItem>{tag.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
             </form>
-            publiczny polski 30s
           </div>
         </div>
       </div>
