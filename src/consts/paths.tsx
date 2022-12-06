@@ -9,6 +9,6 @@ export const PATHS = {
   startTraining: "/training/start/:id",
   editQuestion: "/question/edit/:id",
   createTraining: "/training/create/:type",
-  createQuestion: "/question/create/",
+  createQuestion: "/question/create/:trainingId",
   "forget-password": "/forget-password",
 }

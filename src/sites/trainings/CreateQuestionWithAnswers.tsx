@@ -18,7 +18,7 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined"
 import FunctionsOutlinedIcon from "@mui/icons-material/FunctionsOutlined"
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined"
 import RadioButtonUncheckedOutlinedIcon from "@mui/icons-material/RadioButtonUncheckedOutlined"
-import { useNavigate } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { useForm } from "react-hook-form"
 import { InputControl } from "../../components/InputControl"
 import { useMutation, useQuery } from "react-query"
@@ -39,6 +39,8 @@ type CreateQuestionWithAnswersFormProps = {
 export const CreateQuestionWithAnswers = () => {
   const { control, handleSubmit, watch } =
     useForm<CreateQuestionWithAnswersFormProps>({})
+
+  const { trainingId } = useParams()
 
   const navigate = useNavigate()
   const answers: {
@@ -63,7 +65,7 @@ export const CreateQuestionWithAnswers = () => {
     {
       onSuccess: async (response) => {
         toast.success("Added questions succesfully!", { autoClose: 2000 })
-        navigate("/login")
+        navigate(-1)
       },
       onError: (error) => {
         toast.error(error?.response?.data?.message || "Add question error.", {
@@ -75,6 +77,8 @@ export const CreateQuestionWithAnswers = () => {
 
   const onSubmit = (props: CreateQuestionWithAnswersFormProps) => {
     console.log(props)
+
+    props.trainingId = Number(trainingId)
     createQuestionMutation.mutate(props)
   }
 
@@ -118,10 +122,13 @@ export const CreateQuestionWithAnswers = () => {
             </div>
             <div className="flex flex-row space-x-8">
               {answers.map((answer, index) => (
-                <div key={answer.answer} className="flex flex-col ">
+                <div key={answer.answer} className="flex ">
                   <div className=" bg-purple-500 rounded-xl">
-                    {/* <div className="float-right">
-                      <Checkbox
+                    <div className="flex">
+                      <CheckboxControl
+                        control={control}
+                        name={`answers.${index}.isCorrect`}
+                        aria-label="test"
                         icon={
                           <RadioButtonUncheckedOutlinedIcon fontSize="small" />
                         }
@@ -131,28 +138,20 @@ export const CreateQuestionWithAnswers = () => {
                             fontSize="small"
                           />
                         }
-                      />
-
-                    </div> */}
-                    <div className="float-right">
-                      <CheckboxControl
-                        control={control}
-                        name={`answers.${index}.isCorrect`}
-                        aria-label="test"
                         defaultChecked={false}
                       />
                     </div>
-                    <div className="float-left ">
+                    <div className="">
                       <IconButton>
                         <DeleteOutlineOutlinedIcon fontSize="small" />
                       </IconButton>
                     </div>
-                    <div className="float-left ">
+                    <div className="">
                       <IconButton>
                         <ImageOutlinedIcon fontSize="small" />
                       </IconButton>
                     </div>
-                    <div className="float-left ">
+                    <div className="">
                       <IconButton>
                         <FunctionsOutlinedIcon fontSize="small" />
                       </IconButton>
@@ -174,8 +173,8 @@ export const CreateQuestionWithAnswers = () => {
               ))}
             </div>
           </div>
-          <div className="w-[60%] space-x-2 mt-2">
-            <div className="float-right">
+          <div className="w-[60%] ">
+            <div className="float-right p-2 ">
               <Button
                 variant="contained"
                 style={{
@@ -185,8 +184,8 @@ export const CreateQuestionWithAnswers = () => {
                 Anuluj
               </Button>
             </div>
-            <div className="float-right">
-              <Button
+            <div className="float-right p-2">
+              {/* <Button
                 onClick={() => {
                   handleSubmit(onSubmit)
                   // navigate(-1)
@@ -195,6 +194,15 @@ export const CreateQuestionWithAnswers = () => {
                 style={{
                   backgroundColor: "black",
                 }}
+              >
+                Zapisz
+              </Button> */}
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "black",
+                }}
+                onClick={handleSubmit(onSubmit)}
               >
                 Zapisz
               </Button>

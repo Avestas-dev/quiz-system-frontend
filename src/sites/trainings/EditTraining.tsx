@@ -28,7 +28,7 @@ export const EditTraining = () => {
           <div className="float-right m-2">
             <button
               onClick={() => {
-                navigate(`/question/create/`)
+                navigate(`/question/create/${id}`)
               }}
               className="bg-yellow-200 border-2 border-gray-400 rounded-xl p-1"
             >
