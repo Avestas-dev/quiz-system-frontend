@@ -76,28 +76,15 @@ export const CreateTraining = () => {
 
   const onSubmit = (props: CreateTrainingFormProps) => {
     props.tagIds = [1]
-    props.visibility = true
+    props.visibility = false
     createTrainingMutation.mutate(props)
   }
 
   return (
     <div className="bg-gray-300 h-screen">
       <EditTrainingTopBar saveButtonFunction={handleSubmit(onSubmit)} />
-      <div className="flex flex-row  p-2 space-x-2">
-        <div className=" w-[50%] grid place-items-center">
-          <div className="float-right m-2">
-            <button
-              onClick={() => {
-                navigate(`/question/create/`)
-              }}
-              className="bg-yellow-200 border-2 border-gray-400 rounded-xl p-1"
-            >
-              Dodaj pytanie
-            </button>
-          </div>
-          <div className="w-[100%]"></div>
-        </div>
-        <div className="w-[50%] bg-gray-300 mt-[50px] flex flex-col rounded-xl h-full border-2 border-gray-400">
+      <div className="p-2 items-center">
+        <div className="w-[50%] bg-gray-300 p-5 flex flex-col rounded-xl h-full border-2 border-gray-400">
           <div className="flex flex-row">
             <div className="grid place-items-center rounded-xl bg-gray-400 m-2 w-[85%] ml-8 h-48">
               zdjecie quizu
@@ -117,6 +104,12 @@ export const CreateTraining = () => {
                 inputProps={{ inputMode: "email" }}
                 defaultValue="nazwa treningu"
               />
+              {/* <InputControl
+                control={control}
+                name="visibility"
+                label="widocznosc"
+                autoFocus
+              /> */}
               <IconButton>
                 <CreateOutlinedIcon />
               </IconButton>

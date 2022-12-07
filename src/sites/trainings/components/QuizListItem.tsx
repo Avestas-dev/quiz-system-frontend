@@ -10,22 +10,25 @@ import { useNavigate } from "react-router"
 import { useContext } from "react"
 import { UserContext } from "../../../contexts/UserContext"
 import { DeleteTraining } from "../DeleteTraining"
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline"
 interface QuizProps {
   id?: number
   name?: string
   visibility?: boolean
+  withButtons?: boolean
 }
 
 export default function QuizListItem({
   id,
   name,
   visibility = true,
+  withButtons = true,
 }: QuizProps) {
   const navigate = useNavigate()
   const userContext = useContext(UserContext)
 
   return (
-    <div className="flex flex-col bg-white border-1 border-gray-400 rounded-xl">
+    <div className="flex flex-col bg-white border-1 border-gray-400 rounded-xl hover:drop-shadow-2xl">
       <div className="h-5/6 p-2 space-x-2 ">
         <div className="float-left  bg-gray-300 h-24   p-2 rounded-xl">
           Obrazek quizu
@@ -68,17 +71,23 @@ export default function QuizListItem({
           <AccountCircleIcon color="disabled" fontSize="large" />
           <p className="text-[10px] mt-3">Autor: {userContext.email}</p>
         </div>
-        <div className="float-right flex flex-row mt-2 ml-2">
-          <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200">
-            <button
-              className="mt-1"
-              onClick={() => {
-                navigate(`/training/edit/${id}`)
-              }}
-            >
-              Edytuj
-            </button>
-          </div>
+        <div>
+          {withButtons == true ? (
+            <div className="float-right flex flex-row mt-2 ml-2">
+              <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200">
+                <button
+                  className="mt-1"
+                  onClick={() => {
+                    navigate(`/training/edit/${id}`)
+                  }}
+                >
+                  Edytuj
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
           <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
@@ -105,6 +114,17 @@ export default function QuizListItem({
             <FavoriteBorderIcon fontSize="small" />
             <p className="mt-1">0</p>
           </div>
+        </div>
+        <div className="float-right flex flex-row mt-2 ml-2">
+          <button
+            onClick={() => {
+              navigate(`/training/start/${id}`)
+            }}
+            className="bg-green-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-green-400"
+          >
+            <PlayCircleOutlineIcon fontSize="small" />
+            <p className="mt-1">Rozpocznij quiz</p>
+          </button>
         </div>
       </div>
     </div>

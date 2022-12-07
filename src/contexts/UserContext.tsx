@@ -14,10 +14,13 @@ export const UserContext = createContext({
   setRefreshToken: (prevState: string) => {},
   email: "",
   setEmail: (prevState: string) => {},
+  userId: number,
+  setUserId: (prevState: number) => {},
   login: ({
     token,
     refreshToken,
     email,
+    userId,
     remember,
   }: LoginResponse & { remember: boolean }) => {},
   logout: () => {},
@@ -28,12 +31,15 @@ export const UserContextProvider: React.FC<{
 }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [email, setEmail] = useState(localStorage.getItem("email") || "")
+  const [userId, setUserId] = useState(localStorage.getItem("userId") || "")
   const [token, setToken] = useState(localStorage.getItem("token") || "")
   const [refreshToken, setRefreshToken] = useState(
     localStorage.getItem("refreshToken") || ""
   )
   if (localStorage.getItem("token") && localStorage.getItem("refreshToken")) {
-    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem("token")}`
+    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
+      "token"
+    )}`
     axios.defaults.headers.common.Refresh = localStorage.getItem("refreshToken")
   }
 
@@ -41,6 +47,7 @@ export const UserContextProvider: React.FC<{
     token,
     refreshToken,
     email,
+    userId,
     remember,
   }: LoginResponse & { remember: boolean }) => {
     if (token && refreshToken && email) {

@@ -124,7 +124,7 @@ export const CreateQuestionWithAnswers = () => {
               {answers.map((answer, index) => (
                 <div key={answer.answer} className="flex ">
                   <div className=" bg-purple-500 rounded-xl">
-                    <div className="flex">
+                    <div className="float-right">
                       <CheckboxControl
                         control={control}
                         name={`answers.${index}.isCorrect`}
@@ -141,17 +141,17 @@ export const CreateQuestionWithAnswers = () => {
                         defaultChecked={false}
                       />
                     </div>
-                    <div className="">
+                    <div className="float-left">
                       <IconButton>
                         <DeleteOutlineOutlinedIcon fontSize="small" />
                       </IconButton>
                     </div>
-                    <div className="">
+                    <div className="float-left">
                       <IconButton>
                         <ImageOutlinedIcon fontSize="small" />
                       </IconButton>
                     </div>
-                    <div className="">
+                    <div className="float-left">
                       <IconButton>
                         <FunctionsOutlinedIcon fontSize="small" />
                       </IconButton>
