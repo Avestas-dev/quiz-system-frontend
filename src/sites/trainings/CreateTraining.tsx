@@ -76,7 +76,7 @@ export const CreateTraining = () => {
 
   const onSubmit = (props: CreateTrainingFormProps) => {
     props.tagIds = [1]
-    props.visibility = false
+    props.visibility = true
     createTrainingMutation.mutate(props)
   }
 
