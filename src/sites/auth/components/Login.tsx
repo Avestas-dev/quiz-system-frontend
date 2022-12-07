@@ -82,6 +82,7 @@ export const Login = () => {
           email: response?.email,
           refreshToken: response?.refreshToken,
           token: response?.token,
+          userId: response?.userId,
         })
         toast.success("Logged in successfully!", { autoClose: 3000 })
         navigate("/panel")
@@ -106,6 +107,7 @@ export const Login = () => {
           email: response?.email,
           refreshToken: response?.refreshToken,
           token: response?.token,
+          userId: response?.userId,
         })
         toast.success("Logged in successfully!", { autoClose: 3000 })
         navigate("/panel")
