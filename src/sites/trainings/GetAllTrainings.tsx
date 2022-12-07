@@ -18,7 +18,7 @@ export const GetAllTrainings = ({
 }: GetAllTrainingsProps) => {
   const userContext = useContext(UserContext)
 
-  const withButtons = userContext
+  console.log(userContext.userId)
 
   const { data } = useQuery<any, any, GetAllTrainingsResponse>(
     "/training/all",
@@ -47,10 +47,15 @@ export const GetAllTrainings = ({
   return (
     <div className="space-y-2">
       {data
-        ?.filter((e) => e.visibility == true)
+        ?.filter((e) => e.visibility === true)
         .map((e) => (
           <div key={e.name}>
-            <QuizListItem id={e.id} name={e.name} />
+            <QuizListItem
+              id={e.id}
+              name={e.name}
+              withButtons={userContext.userId === e.userId}
+              userId={e.userId}
+            />
           </div>
         ))}
     </div>

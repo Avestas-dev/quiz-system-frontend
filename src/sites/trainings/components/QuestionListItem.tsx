@@ -60,7 +60,7 @@ export const QuestionListItem = ({
             </div>
           </div>
           <div className="float-right ml-2">
-            {id != undefined ? (
+            {id !== undefined ? (
               <DeleteQuestion questionId={id.toString()} />
             ) : (
               <div></div>

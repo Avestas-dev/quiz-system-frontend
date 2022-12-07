@@ -16,6 +16,7 @@ interface QuizProps {
   name?: string
   visibility?: boolean
   withButtons?: boolean
+  userId?: number
 }
 
 export default function QuizListItem({
@@ -23,6 +24,7 @@ export default function QuizListItem({
   name,
   visibility = true,
   withButtons = true,
+  userId,
 }: QuizProps) {
   const navigate = useNavigate()
   const userContext = useContext(UserContext)
@@ -59,7 +61,7 @@ export default function QuizListItem({
           </div>
         </div>
         <div className="float-right bg-gray-300 rounded-xl">
-          {id != undefined ? (
+          {id !== undefined && userContext.userId == userId ? (
             <DeleteTraining trainingId={id.toString()} />
           ) : (
             <div></div>
@@ -72,7 +74,7 @@ export default function QuizListItem({
           <p className="text-[10px] mt-3">Autor: {userContext.email}</p>
         </div>
         <div>
-          {withButtons == true ? (
+          {withButtons ? (
             <div className="float-right flex flex-row mt-2 ml-2">
               <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200">
                 <button
