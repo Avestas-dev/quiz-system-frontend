@@ -19,8 +19,9 @@ import axios from "axios"
 import { toast } from "react-toastify"
 import { AddTrainingRequest, TagsResponse } from "../../models/Api"
 import { useRef } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { InputControl } from "../../components/InputControl"
+import { SelectControl } from "../../components/SelectControl"
 
 type CreateTrainingFormProps = {
   name: string
@@ -104,31 +105,23 @@ export const CreateTraining = () => {
                 inputProps={{ inputMode: "email" }}
                 defaultValue="nazwa treningu"
               />
-              {/* <InputControl
+              <Controller
+                name="tagIds"
                 control={control}
-                name="visibility"
-                label="widocznosc"
-                autoFocus
-              /> */}
+                defaultValue={[]}
+                render={() => (
+                  <Select>
+                    {data?.map((e) => (
+                      <MenuItem value={e.id} key={e.id}>
+                        {e.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              />
               <IconButton>
                 <CreateOutlinedIcon />
               </IconButton>
-              <Box sx={{ maxWidth: 230 }}>
-                <FormControl size="small" fullWidth>
-                  <InputLabel id="demo-simple-select-label">tag</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value=""
-                    label="Age"
-                    onChange={() => {}}
-                  >
-                    {data?.map((tag) => (
-                      <MenuItem>{tag.name}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
             </form>
           </div>
         </div>
