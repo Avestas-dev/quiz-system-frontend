@@ -6,6 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { TablePagination } from "@mui/material";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { TagsResponse } from "../../../models/Api";
@@ -19,33 +20,44 @@ export function TagsTable() {
   return (
     <div>
       <h1>Tagi</h1>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Nazwa taga</TableCell>
-              <TableCell>Akcje</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
+      <Paper>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Nazwa taga</TableCell>
+                <TableCell>Akcje</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {data?.map((e) => (
                 <>
-                  <TableCell>{e.id}</TableCell>
-                  <TableCell>{e.name}</TableCell>
-                  <TableCell>
-                    <Stack spacing={2} direction="row">
-                      <Button>Zaakceptuj</Button>
-                      <Button>Usuń</Button>
-                    </Stack>
-                  </TableCell>
+                  <TableRow>
+                    <TableCell>{e.id}</TableCell>
+                    <TableCell>{e.name}</TableCell>
+                    <TableCell>
+                      <Stack spacing={2} direction="row">
+                        <Button>Zaakceptuj</Button>
+                        <Button>Usuń</Button>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
                 </>
               ))}
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableBody>
+          </Table>
+          {/* <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={data?.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          /> */}
+        </TableContainer>
+      </Paper>
     </div>
   );
 }

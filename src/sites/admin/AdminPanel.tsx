@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import { Layout } from "../../components/layout/Layout";
+import Sidebar from "../../components/Sidebar";
 import { TagsTable } from "./components/TagsTable";
 import { UserTable } from "./components/UserTable";
 
@@ -22,7 +23,10 @@ const DrawQuizPanel = () => {
 export const AdminPanel = () => {
   return (
     <Layout>
-      <DrawQuizPanel />
+      <div className="flex flex-row space-x-2 h-full bg-gray-300">
+        <Sidebar />
+        <DrawQuizPanel />
+      </div>
     </Layout>
   );
 };
