@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router"
-import DropdownButton from "./DropdownButton"
+import { useNavigate } from "react-router";
+import DropdownButton from "./DropdownButton";
 
 export default function Sidebar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <aside className="flex bg-white">
       <div className=" h-screen">
@@ -24,8 +24,14 @@ export default function Sidebar() {
           >
             Ustawienia
           </li>
+          <li
+            className="hover:bg-gray-300 p-1 "
+            onClick={() => navigate("/adminPanel")}
+          >
+            Panel administratora
+          </li>
         </ul>
       </div>
     </aside>
-  )
+  );
 }
