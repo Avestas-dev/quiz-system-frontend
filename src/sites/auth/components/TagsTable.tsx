@@ -29,18 +29,20 @@ export function TagsTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.map((e) => (
-              <>
-                <TableCell>{e.id}</TableCell>
-                <TableCell>{e.name}</TableCell>
-                <TableCell>
-                  <Stack spacing={2} direction="row">
-                    <Button>Zaakceptuj</Button>
-                    <Button>Usuń</Button>
-                  </Stack>
-                </TableCell>
-              </>
-            ))}
+            <TableRow>
+              {data?.map((e) => (
+                <>
+                  <TableCell>{e.id}</TableCell>
+                  <TableCell>{e.name}</TableCell>
+                  <TableCell>
+                    <Stack spacing={2} direction="row">
+                      <Button>Zaakceptuj</Button>
+                      <Button>Usuń</Button>
+                    </Stack>
+                  </TableCell>
+                </>
+              ))}
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
