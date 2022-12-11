@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, TextField } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,8 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { TablePagination } from "@mui/material";
 import axios from "axios";
-import { useQuery } from "react-query";
-import { TagsResponse } from "../../../models/Api";
+import { useMutation, useQuery } from "react-query";
+import { AddTagAdminRequest, TagsResponse } from "../../../models/Api";
+import { toast } from "react-toastify";
+import { useRef } from "react";
 
 export function TagsTable() {
   const { data } = useQuery<any, any, TagsResponse>("/tag", async () => {
@@ -47,15 +49,6 @@ export function TagsTable() {
               ))}
             </TableBody>
           </Table>
-          {/* <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={data?.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          /> */}
         </TableContainer>
       </Paper>
     </div>

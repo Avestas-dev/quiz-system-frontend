@@ -1,3 +1,4 @@
+import { Button, Stack, TableFooter } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,10 +9,10 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { ProfileResponse } from "../../../models/Api";
+import { GetAllUsersResponse, ProfileResponse } from "../../../models/Api";
 
 export function UserTable() {
-  const { data } = useQuery<any, any, ProfileResponse>(
+  const { data } = useQuery<any, any, GetAllUsersResponse>(
     "/admin/user/all",
     async () => {
       const res = await axios.get(`/admin/user/all`);
@@ -28,15 +29,30 @@ export function UserTable() {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>E-mail</TableCell>
+              <TableCell>Admin</TableCell>
+              <TableCell>Stworzony</TableCell>
+              <TableCell>Zaktualizowany</TableCell>
               <TableCell>Akcje</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row">{data?.email}</TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
-            </TableRow>
+            {data?.map((e) => (
+              <>
+                <TableRow>
+                  <TableCell>{e.id}</TableCell>
+                  <TableCell>{e.email}</TableCell>
+                  <TableCell>{e.isAdmin ? "Tak" : "Nie"}</TableCell>
+                  <TableCell>{e.createdAt}</TableCell>
+                  <TableCell>{e.updatedAt}</TableCell>
+                  <TableCell>
+                    <Stack spacing={2} direction="row">
+                      <Button>Zablokuj</Button>
+                      <Button>Odblokuj</Button>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              </>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
