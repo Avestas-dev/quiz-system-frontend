@@ -1,55 +1,59 @@
-import AdbIcon from "@mui/icons-material/Adb"
-import MenuIcon from "@mui/icons-material/Menu"
-import AppBar from "@mui/material/AppBar"
-import Avatar from "@mui/material/Avatar"
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Container from "@mui/material/Container"
-import IconButton from "@mui/material/IconButton"
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
-import Toolbar from "@mui/material/Toolbar"
-import Tooltip from "@mui/material/Tooltip"
-import Typography from "@mui/material/Typography"
-import * as React from "react"
-import { useContext } from "react"
-import { Link } from "react-router-dom"
-import { PATHS } from "../../consts/paths"
-import { UserContext } from "../../contexts/UserContext"
+import AdbIcon from "@mui/icons-material/Adb";
+import MenuIcon from "@mui/icons-material/Menu";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { PATHS } from "../../consts/paths";
+import { UserContext } from "../../contexts/UserContext";
 
 const pages: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
+  { name: "Search", path: PATHS.search },
   { name: "Login", path: PATHS.login },
   { name: "Register", path: PATHS.register },
   { name: "Trainings", path: PATHS.trainings },
-]
+];
 const settings: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
+  { name: "Search", path: PATHS.search },
   { name: "Login", path: PATHS.login },
   { name: "Register", path: PATHS.register },
   { name: "Trainings", path: PATHS.trainings },
-]
+];
 
 export const ResponsiveAppBar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
-  )
-  const userContext = useContext(UserContext)
+  );
+  const userContext = useContext(UserContext);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
-  }
+    setAnchorElNav(event.currentTarget);
+  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
-  }
+    setAnchorElUser(event.currentTarget);
+  };
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
+    setAnchorElNav(null);
+  };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+    setAnchorElUser(null);
+  };
 
   return (
     <AppBar position="static">
@@ -173,8 +177,8 @@ export const ResponsiveAppBar = () => {
               ))}
               <MenuItem
                 onClick={() => {
-                  userContext.logout()
-                  handleCloseUserMenu()
+                  userContext.logout();
+                  handleCloseUserMenu();
                 }}
               >
                 <Typography textAlign="center">Logout</Typography>
@@ -184,5 +188,5 @@ export const ResponsiveAppBar = () => {
         </Toolbar>
       </Container>
     </AppBar>
-  )
-}
+  );
+};

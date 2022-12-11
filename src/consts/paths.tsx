@@ -3,6 +3,7 @@ export const PATHS = {
   login: "/login",
   register: "/register",
   panel: "/panel",
+  search: "/search",
   adminPanel: "/adminPanel",
   trainings: "/trainings",
   training: "/training/:id",
@@ -10,5 +11,6 @@ export const PATHS = {
   editQuestion: "/question/edit/:id",
   createTraining: "/training/create/:type",
   createQuestion: "/question/create/",
+
   "forget-password": "/forget-password",
 };
