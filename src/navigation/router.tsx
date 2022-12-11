@@ -4,7 +4,7 @@ import { Auth } from "../sites/auth/Auth"
 import { Panel } from "../sites/auth/Panel"
 import { Home } from "../sites/Home"
 <<<<<<< HEAD
-import { AdminPanel } from "../sites/auth/AdminPanel"
+import { AdminPanel } from "../sites/admin/AdminPanel"
 =======
 import { EditTraining } from "../sites/trainings/EditTraining"
 import { EditQuestion } from "../sites/trainings/EditQuestion"
