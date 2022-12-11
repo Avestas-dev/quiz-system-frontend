@@ -1,9 +1,11 @@
 import { Layout } from "../components/layout/Layout"
+import Sidebar from "../components/Sidebar"
 
 export const Home = () => {
   return (
     <Layout>
-      <div className="flex flex-col max-w-[70%]">
+      <div className="flex flex-row ">
+        <Sidebar />
         <div>
           <p className="text-red-500 text-2xl font-bold">TODO</p>
         </div>
