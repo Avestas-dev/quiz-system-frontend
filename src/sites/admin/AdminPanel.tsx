@@ -3,17 +3,21 @@ import { Layout } from "../../components/layout/Layout";
 import Sidebar from "../../components/Sidebar";
 import { TagsTable } from "./components/TagsTable";
 import { UserTable } from "./components/UserTable";
+import { AdminPostTag } from "./components/AdminPostTag";
 
-const DrawQuizPanel = () => {
+const DrawAdminPanel = () => {
   return (
-    <div className="flex">
+    <div>
       <Stack spacing={2} direction="row">
-        <div className="w-1/2">
+        <div>
           <UserTable />
         </div>
         <div className="grow" />
-        <div className="w-1/2">
-          <TagsTable />
+        <div>
+          <Stack spacing={2}>
+            <TagsTable />
+            <AdminPostTag />
+          </Stack>
         </div>
       </Stack>
     </div>
@@ -25,7 +29,7 @@ export const AdminPanel = () => {
     <Layout>
       <div className="flex flex-row space-x-2 h-full bg-gray-300">
         <Sidebar />
-        <DrawQuizPanel />
+        <DrawAdminPanel />
       </div>
     </Layout>
   );
