@@ -5,6 +5,7 @@ import { Panel } from "../sites/auth/Panel";
 import { Home } from "../sites/Home";
 import { AdminPanel } from "../sites/admin/AdminPanel";
 import { SearchView } from "../sites/search/SearchView";
+import { UserSettings } from "../sites/settings/UserSettings";
 import { EditTraining } from "../sites/trainings/EditTraining";
 import { EditQuestion } from "../sites/trainings/EditQuestion";
 import { TrainingList } from "../sites/trainings/TrainingList";
@@ -21,6 +22,7 @@ export const AppRouter = () => {
       <Route path={PATHS.panel} element={<Panel />} />
       <Route path={PATHS.adminPanel} element={<AdminPanel />} />
       <Route path={PATHS.search} element={<SearchView />} />
+      <Route path={PATHS.settings} element={<UserSettings />} />
       <Route path={PATHS.trainings} element={<TrainingList />} />
       <Route path={PATHS.training} element={<TrainingView />} />
       <Route path={PATHS.editQuestion} element={<EditQuestion />} />

@@ -30,6 +30,12 @@ export default function Sidebar() {
           >
             Panel administratora
           </li>
+          <li
+            className="hover:bg-gray-300 p-1 "
+            onClick={() => navigate("/settings")}
+          >
+            Ustawienia
+          </li>
         </ul>
       </div>
     </aside>

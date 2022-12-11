@@ -5,6 +5,7 @@ export const PATHS = {
   panel: "/panel",
   search: "/search",
   adminPanel: "/adminPanel",
+  settings: "/settings",
   trainings: "/trainings",
   training: "/training/:id",
   editTraining: "/training/edit/:id",
