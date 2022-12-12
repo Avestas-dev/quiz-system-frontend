@@ -25,6 +25,8 @@ export interface LoginResponse {
   email?: string;
   /** @example 1 */
   userId?: number;
+  /** @example false */
+  isAdmin?: boolean;
 }
 
 export interface LoginGoogleRequest {
@@ -41,6 +43,8 @@ export interface LoginGoogleResponse {
   refreshToken?: string;
   /** @example 1 */
   userId?: number;
+  /** @example true */
+  isAdmin?: boolean;
 }
 
 export interface RegisterGoogleResponse {
@@ -54,15 +58,15 @@ export interface RegisterGoogleResponse {
   refreshToken?: string;
   /** @example resetToken */
   passwordResetToken?: string;
-  /** @example 2022-12-07T13:37:51.045Z */
+  /** @example 2022-12-12T13:27:37.797Z */
   passwordResetDate?: string;
   /** @example 105081556580525628106 */
   googleSub?: string;
   /** @example false */
   isAdmin?: boolean;
-  /** @example 2022-12-07T13:37:51.045Z */
+  /** @example 2022-12-12T13:27:37.797Z */
   createdAt?: string;
-  /** @example 2022-12-07T13:37:51.045Z */
+  /** @example 2022-12-12T13:27:37.797Z */
   updatedAt?: string;
 }
 
@@ -91,15 +95,15 @@ export interface RegisterResponse {
   refreshToken?: string;
   /** @example resetToken */
   passwordResetToken?: string;
-  /** @example 2022-12-07T13:37:51.046Z */
+  /** @example 2022-12-12T13:27:37.798Z */
   passwordResetDate?: string;
   /** @example 105081556580525628106 */
   googleSub?: string;
   /** @example false */
   isAdmin?: boolean;
-  /** @example 2022-12-07T13:37:51.046Z */
+  /** @example 2022-12-12T13:27:37.798Z */
   createdAt?: string;
-  /** @example 2022-12-07T13:37:51.046Z */
+  /** @example 2022-12-12T13:27:37.798Z */
   updatedAt?: string;
 }
 
@@ -154,11 +158,11 @@ export interface EditTrainingRequest {
 export type GetAllTrainingsResponse = {
   /** @example 1 */
   id?: number;
-  /** @example 2022-12-07T13:37:51.057Z */
+  /** @example 2022-12-12T13:27:37.806Z */
   createdAt?: string;
   /** @example test */
   name?: string;
-  /** @example 2022-12-07T13:37:51.057Z */
+  /** @example 2022-12-12T13:27:37.806Z */
   updatedAt?: string;
   /** @example 1 */
   userId?: number;
@@ -166,6 +170,12 @@ export type GetAllTrainingsResponse = {
   visibility?: boolean;
   /** @example true */
   likedTraining?: boolean;
+  user?: {
+    /** @example kamilporeba@hotmail.com */
+    email?: string;
+    /** @example 1 */
+    id?: number;
+  };
   tagTraining?: {
     /** @example 1 */
     tagId?: number;
@@ -175,11 +185,11 @@ export type GetAllTrainingsResponse = {
   trainingSession?: {
     /** @example 1 */
     id?: number;
-    /** @example 2022-12-07T13:37:51.057Z */
+    /** @example 2022-12-12T13:27:37.806Z */
     createdAt?: string;
     /** @example false */
     finished?: boolean;
-    /** @example 2022-12-07T13:37:51.057Z */
+    /** @example 2022-12-12T13:27:37.806Z */
     updatedAt?: string;
   }[];
 }[];
@@ -187,11 +197,11 @@ export type GetAllTrainingsResponse = {
 export interface GetOneTrainingResponse {
   /** @example 1 */
   id?: number;
-  /** @example 2022-12-07T13:37:51.059Z */
+  /** @example 2022-12-12T13:27:37.807Z */
   createdAt?: string;
   /** @example test */
   name?: string;
-  /** @example 2022-12-07T13:37:51.059Z */
+  /** @example 2022-12-12T13:27:37.807Z */
   updatedAt?: string;
   /** @example 1 */
   userId?: number;
@@ -199,6 +209,12 @@ export interface GetOneTrainingResponse {
   visibility?: boolean;
   /** @example true */
   likedTraining?: boolean;
+  user?: {
+    /** @example kamilporeba@hotmail.com */
+    email?: string;
+    /** @example 1 */
+    id?: number;
+  };
   tagTraining?: {
     /** @example 1 */
     tagId?: number;
@@ -208,11 +224,11 @@ export interface GetOneTrainingResponse {
   trainingSession?: {
     /** @example 1 */
     id?: number;
-    /** @example 2022-12-07T13:37:51.059Z */
+    /** @example 2022-12-12T13:27:37.807Z */
     createdAt?: string;
     /** @example false */
     finished?: boolean;
-    /** @example 2022-12-07T13:37:51.059Z */
+    /** @example 2022-12-12T13:27:37.807Z */
     updatedAt?: string;
   }[];
 }
@@ -236,7 +252,7 @@ export interface AddQuestionAnswerRequest {
 export interface AddQuestionAnswerResponse {
   /** @example answer */
   answer?: string;
-  /** @example 2022-12-07T13:37:51.042Z */
+  /** @example 2022-12-12T13:27:37.792Z */
   createdAt?: string;
   /** @example 1 */
   id?: number;
@@ -244,7 +260,7 @@ export interface AddQuestionAnswerResponse {
   isCorrect?: boolean;
   /** @example 1 */
   questionId?: number;
-  /** @example 2022-12-07T13:37:51.042Z */
+  /** @example 2022-12-12T13:27:37.792Z */
   updatedAt?: string;
 }
 
@@ -255,9 +271,9 @@ export type GetQuestionsResponse = {
   question?: string;
   /** @example 1 */
   trainingId?: number;
-  /** @example 2022-12-07T13:37:51.051Z */
+  /** @example 2022-12-12T13:27:37.802Z */
   createdAt?: string;
-  /** @example 2022-12-07T13:37:51.051Z */
+  /** @example 2022-12-12T13:27:37.802Z */
   updatedAt?: string;
   QuestionAnswer?: {
     /** @example 1 */
@@ -268,9 +284,9 @@ export type GetQuestionsResponse = {
     answer?: string;
     /** @example true */
     isCorrect?: boolean;
-    /** @example 2022-12-07T13:37:51.051Z */
+    /** @example 2022-12-12T13:27:37.802Z */
     createdAt?: string;
-    /** @example 2022-12-07T13:37:51.051Z */
+    /** @example 2022-12-12T13:27:37.802Z */
     updatedAt?: string;
   }[];
 }[];
@@ -282,9 +298,9 @@ export interface GetQuestionResponse {
   question?: string;
   /** @example 1 */
   trainingId?: number;
-  /** @example 2022-12-07T13:37:51.051Z */
+  /** @example 2022-12-12T13:27:37.801Z */
   createdAt?: string;
-  /** @example 2022-12-07T13:37:51.051Z */
+  /** @example 2022-12-12T13:27:37.801Z */
   updatedAt?: string;
   QuestionAnswer?: {
     /** @example 1 */
@@ -295,9 +311,9 @@ export interface GetQuestionResponse {
     answer?: string;
     /** @example true */
     isCorrect?: boolean;
-    /** @example 2022-12-07T13:37:51.051Z */
+    /** @example 2022-12-12T13:27:37.801Z */
     createdAt?: string;
-    /** @example 2022-12-07T13:37:51.051Z */
+    /** @example 2022-12-12T13:27:37.801Z */
     updatedAt?: string;
   }[];
 }
@@ -367,7 +383,7 @@ export type TagsResponse = {
 export interface BlockUserRequest {
   /** @example 1 */
   userId?: number;
-  /** @example 2022-12-07T13:37:51.062Z */
+  /** @example 2022-12-12T13:27:37.812Z */
   blockedTo?: string;
 }
 
@@ -386,9 +402,9 @@ export interface GetTrainingSessionQuestionsResponse {
     question?: string;
     /** @example 1000000 */
     trainingId?: number;
-    /** @example 2022-12-07T13:37:51.060Z */
+    /** @example 2022-12-12T13:27:37.809Z */
     createdAt?: string;
-    /** @example 2022-12-07T13:37:51.060Z */
+    /** @example 2022-12-12T13:27:37.809Z */
     updatedAt?: string;
   }[];
   /** @example 0 */
@@ -482,13 +498,13 @@ export interface EditTagRequest {
 export type GetAllUsersResponse = {
   /** @example 7 */
   id?: number;
-  /** @example 2022-12-07T13:37:51.062Z */
+  /** @example 2022-12-12T13:27:37.812Z */
   createdAt?: string;
-  /** @example 2022-12-07T13:37:51.062Z */
+  /** @example 2022-12-12T13:27:37.812Z */
   updatedAt?: string;
   /** @example kamilporeba5@hotmail.com */
   email?: string;
-  /** @example 2022-12-07T13:37:51.062Z */
+  /** @example 2022-12-12T13:27:37.812Z */
   passwordResetDate?: string;
   /** @example true */
   isAdmin?: boolean;
