@@ -140,7 +140,10 @@ export const CreateQuestionWithAnswers = () => {
             <div className="flex flex-row space-x-8">
               {answers.map((answer, index) => (
                 <div key={answer.answer} className="flex ">
-                  <div className={`bg-[${answer.color}] rounded-xl`}>
+                  <div
+                    style={{ backgroundColor: `${answer.color}` }}
+                    className={" rounded-xl"}
+                  >
                     <div className="float-right">
                       <CheckboxControl
                         control={control}
