@@ -84,7 +84,7 @@ export const CreateTraining = () => {
   return (
     <div className="bg-gray-300 h-screen">
       <EditTrainingTopBar saveButtonFunction={handleSubmit(onSubmit)} />
-      <div className="p-2 items-center">
+      <div className="p-2 flex justify-center pt-20">
         <div className="w-[50%] bg-gray-300 p-5 flex flex-col rounded-xl h-full border-2 border-gray-400">
           <div className="flex flex-row">
             <div className="grid place-items-center rounded-xl bg-gray-400 m-2 w-[85%] ml-8 h-48">
@@ -119,9 +119,6 @@ export const CreateTraining = () => {
                   </Select>
                 )}
               />
-              <IconButton>
-                <CreateOutlinedIcon />
-              </IconButton>
             </form>
           </div>
         </div>

@@ -14,26 +14,6 @@ export const StartTrainingSession = () => {
 
   const endTraining: TrainingSessionProps = { trainingId: Number(id) }
 
-  useEffect(() => {
-    const { data } = useQuery<any, any, any>(
-      "/training-session/end",
-      async () => {
-        const res = await axios.post("/training-session/end", endTraining)
-        return res.data
-      },
-      {
-        onSuccess: async (response) => {
-          //toast.success("Added training succesfully!", { autoClose: 2000 })
-        },
-        onError: (error) => {
-          toast.error(error?.response?.data?.message || "Add question error.", {
-            autoClose: 2000,
-          })
-        },
-      }
-    )
-  }, [])
-
   console.log(id)
 
   return (

@@ -34,14 +34,13 @@ export const DeleteQuestion = ({ questionId }: DeleteQuestionProps) => {
   )
 
   return (
-    <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 ">
-      <IconButton
-        onClick={() => {
-          deleteMutation.mutate({ questionId })
-        }}
-      >
-        <DeleteOutlined fontSize="small" />
-      </IconButton>
-    </div>
+    <button
+      onClick={() => {
+        deleteMutation.mutate({ questionId })
+      }}
+      className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 "
+    >
+      <DeleteOutlined fontSize="small" />
+    </button>
   )
 }

@@ -17,11 +17,12 @@ import { Link } from "react-router-dom"
 import { PATHS } from "../../consts/paths"
 import { UserContext } from "../../contexts/UserContext"
 
-const pages: { name: string; path: string }[] = [
-  { name: "Home", path: PATHS.home },
-  { name: "Login", path: PATHS.login },
-  { name: "Register", path: PATHS.register },
-  { name: "Trainings", path: PATHS.trainings },
+const pages: { name: string; path: string; isLoggedIn?: boolean }[] = [
+  { name: "Home", path: PATHS.home, isLoggedIn: false },
+  { name: "Login", path: PATHS.login, isLoggedIn: false },
+  { name: "Register", path: PATHS.register, isLoggedIn: false },
+  { name: "Trainings", path: PATHS.trainings, isLoggedIn: false },
+  { name: "Trainings", path: PATHS.trainings, isLoggedIn: false },
 ]
 const settings: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
@@ -73,7 +74,6 @@ export const ResponsiveAppBar = () => {
           >
             LOGO
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
