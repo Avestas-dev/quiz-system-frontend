@@ -4,28 +4,30 @@ import { Control, Controller, FieldPath, FieldValues } from "react-hook-form"
 type SelectControlProps<TFieldValues extends FieldValues = FieldValues> = {
   name: FieldPath<TFieldValues>
   control: Control<TFieldValues>
-  label?: string
-  defaultValue: FieldPath<TFieldValues>
 }
 
 export const SelectControl = <TFieldValues extends FieldValues = FieldValues>({
   name,
   control,
-  label,
   defaultValue,
   children,
   ...props
 }: SelectControlProps<TFieldValues> & SelectProps) => {
-  const labelId = `${name}-label`
   return (
     <Controller
+      name={name}
       control={control}
       render={({ field: { onChange, value, ref }, formState }) => (
-        <Select labelId={labelId} label={label} {...props}>
+        <Select
+          error={!!formState.errors[name]}
+          onChange={onChange}
+          value={value || ""}
+          ref={ref}
+          {...props}
+        >
           {children}
         </Select>
       )}
-      name={name}
       defaultValue={(defaultValue as any) || undefined}
     />
   )

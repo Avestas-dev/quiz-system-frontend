@@ -43,15 +43,32 @@ export const CreateQuestionWithAnswers = () => {
   const { trainingId } = useParams()
 
   const navigate = useNavigate()
+
+  function getRandomHtmlColor(): string {
+    const letters = "0123456789ABCDEF"
+    let color = "#"
+
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)]
+    }
+
+    return color
+  }
+
   const answers: {
     answer?: string
     isCorrect?: boolean
+    color?: string
   }[] = [
-    { answer: "odpowiedz1", isCorrect: false },
-    { answer: "odpowiedz2", isCorrect: false },
-    { answer: "odpowiedz3", isCorrect: false },
-    { answer: "odpowiedz4", isCorrect: false },
+    { answer: "odpowiedz1", isCorrect: false, color: getRandomHtmlColor() },
+    { answer: "odpowiedz2", isCorrect: false, color: getRandomHtmlColor() },
+    { answer: "odpowiedz3", isCorrect: false, color: getRandomHtmlColor() },
+    { answer: "odpowiedz4", isCorrect: false, color: getRandomHtmlColor() },
   ]
+
+  answers.forEach((answer) => {
+    console.log(`bg-[${answer.color}]`)
+  })
 
   const createQuestionMutation = useMutation<
     any,
@@ -123,7 +140,7 @@ export const CreateQuestionWithAnswers = () => {
             <div className="flex flex-row space-x-8">
               {answers.map((answer, index) => (
                 <div key={answer.answer} className="flex ">
-                  <div className=" bg-purple-500 rounded-xl">
+                  <div className={`bg-[${answer.color}] rounded-xl`}>
                     <div className="float-right">
                       <CheckboxControl
                         control={control}
@@ -185,18 +202,6 @@ export const CreateQuestionWithAnswers = () => {
               </Button>
             </div>
             <div className="float-right p-2">
-              {/* <Button
-                onClick={() => {
-                  handleSubmit(onSubmit)
-                  // navigate(-1)
-                }}
-                variant="contained"
-                style={{
-                  backgroundColor: "black",
-                }}
-              >
-                Zapisz
-              </Button> */}
               <Button
                 variant="contained"
                 style={{
