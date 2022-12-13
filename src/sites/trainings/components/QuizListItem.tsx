@@ -11,6 +11,10 @@ import { useContext } from "react"
 import { UserContext } from "../../../contexts/UserContext"
 import { DeleteTraining } from "../DeleteTraining"
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline"
+import axios from "axios"
+import { useMutation } from "react-query"
+import { toast } from "react-toastify"
+import { StartTrainingSessionResponse } from "../../../models/Api"
 interface QuizProps {
   id?: number
   name?: string
@@ -18,6 +22,10 @@ interface QuizProps {
   withButtons?: boolean
   userId?: number
   userEmail?: string
+}
+
+interface TrainingSessionProps {
+  trainingId: number
 }
 
 export default function QuizListItem({
@@ -29,7 +37,32 @@ export default function QuizListItem({
   userEmail,
 }: QuizProps) {
   const navigate = useNavigate()
+
   const userContext = useContext(UserContext)
+
+  const startTraining: TrainingSessionProps = { trainingId: id! }
+
+  const startTrainingMutation = useMutation<
+    StartTrainingSessionResponse,
+    any,
+    TrainingSessionProps
+  >(
+    async () => {
+      const res = await axios.post("/training-session/start", startTraining)
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Training session started!", { autoClose: 2000 })
+        navigate(`/training-session/${response.trainingSessionId}`)
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || "Session start error", {
+          autoClose: 2000,
+        })
+      },
+    }
+  )
 
   return (
     <div className="flex flex-col bg-white border-1 border-gray-400 rounded-xl hover:drop-shadow-2xl">
@@ -122,7 +155,7 @@ export default function QuizListItem({
         <div className="float-right flex flex-row mt-2 ml-2">
           <button
             onClick={() => {
-              navigate(`/training/start/${id}`)
+              startTrainingMutation.mutate(startTraining)
             }}
             className="bg-green-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-green-400"
           >

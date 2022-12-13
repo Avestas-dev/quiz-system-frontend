@@ -22,7 +22,6 @@ const pages: { name: string; path: string; isLoggedIn?: boolean }[] = [
   { name: "Login", path: PATHS.login, isLoggedIn: false },
   { name: "Register", path: PATHS.register, isLoggedIn: false },
   { name: "Trainings", path: PATHS.trainings, isLoggedIn: false },
-  { name: "Trainings", path: PATHS.trainings, isLoggedIn: false },
 ]
 const settings: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
