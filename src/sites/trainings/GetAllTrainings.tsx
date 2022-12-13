@@ -55,6 +55,7 @@ export const GetAllTrainings = ({
               name={e.name}
               withButtons={userContext.userId === e.userId}
               userId={e.userId}
+              userEmail={e.user?.email}
             />
           </div>
         ))}

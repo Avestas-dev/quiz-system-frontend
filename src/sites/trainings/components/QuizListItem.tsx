@@ -17,6 +17,7 @@ interface QuizProps {
   visibility?: boolean
   withButtons?: boolean
   userId?: number
+  userEmail?: string
 }
 
 export default function QuizListItem({
@@ -25,6 +26,7 @@ export default function QuizListItem({
   visibility = true,
   withButtons = true,
   userId,
+  userEmail,
 }: QuizProps) {
   const navigate = useNavigate()
   const userContext = useContext(UserContext)
@@ -71,7 +73,7 @@ export default function QuizListItem({
       <div className="p-2">
         <div className="float-left flex flex-row">
           <AccountCircleIcon color="disabled" fontSize="large" />
-          <p className="text-[10px] mt-3">Autor: {userContext.email}</p>
+          <p className="text-[10px] mt-3">Autor: {userEmail}</p>
         </div>
         <div>
           {withButtons ? (
