@@ -16,6 +16,8 @@ import ListIcon from "@mui/icons-material/List"
 import IconButton from "@mui/material/IconButton"
 import { GetAllQuestions } from "./GetAllQuestions"
 import { QuestionListItem } from "./components/QuestionListItem"
+import { useContext } from "react"
+import { UserContext } from "../../contexts/UserContext"
 
 export const TrainingView = () => {
   const { id } = useParams()
@@ -30,13 +32,22 @@ export const TrainingView = () => {
     }
   )
 
+  const userContext = useContext(UserContext)
+
   return (
     <Layout>
       <div className="flex flex-row space-x-2 bg-gray-200">
         <Sidebar />
         <div className="flex flex-col w-1/2 mt-2 ">
           <div className="">
-            {data && <QuizListItem id={data?.id} name={data?.name} />}
+            {data && (
+              <QuizListItem
+                id={data?.id}
+                name={data?.name}
+                withButtons={userContext.userId === data?.userId}
+                userEmail={data.user?.email}
+              />
+            )}
           </div>
 
           <div className="">
