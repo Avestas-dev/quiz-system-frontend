@@ -9,14 +9,14 @@ import { EditTrainingTopBar } from "./EditTrainingTopBar"
 import { useQuery } from "react-query"
 import axios from "axios"
 import { toast } from "react-toastify"
-import { GetQuestionsResponse } from "../../../models/Api"
+import { GetQuestionResponse, GetQuestionsResponse } from "../../../models/Api"
 import { CheckboxControl } from "../../../components/CheckboxControl"
 
 interface TrainingSessionQuestionProps {
   id?: number
   trainingId?: number
   trainingName?: string
-  trainingQuestionId?: number
+  questionId?: number
   question?: string
   answerStatus?: string
   withAnswers?: boolean
@@ -24,7 +24,7 @@ interface TrainingSessionQuestionProps {
 
 export const TrainingSessionQuestion = ({
   trainingId,
-  trainingQuestionId,
+  questionId,
   question,
   withAnswers = true,
 }: TrainingSessionQuestionProps) => {
@@ -39,12 +39,10 @@ export const TrainingSessionQuestion = ({
     return color
   }
 
-  const { data } = useQuery<any, any, GetQuestionsResponse>(
-    `/chuj`,
+  const { data } = useQuery<any, any, GetQuestionResponse>(
+    `/question/${questionId}`,
     async () => {
-      const res = await axios.get(
-        `/question/all/${trainingId}?withAnswers=${withAnswers}`
-      )
+      const res = await axios.get(`/question/${questionId}`)
       return res.data
     },
     {
@@ -55,7 +53,7 @@ export const TrainingSessionQuestion = ({
       onError: (error) => {
         toast.error(
           error?.response?.data?.message ||
-            "There was an error while getting questions",
+            "There was an error while getting question",
           {
             autoClose: 2000,
           }
@@ -65,21 +63,18 @@ export const TrainingSessionQuestion = ({
   )
 
   return (
-    <div className="flex flex-row w-[80%] h-[80%] p-8 space-x-8">
-      <div className="flex  flex-col w-[80%] space-y-8  rounded-2xl bg-yellow-300">
-        <div className="flex h-48 items-center justify-center rounded-xl border-4 border-yellow-200">
-          <div>{data?.find((x) => x !== undefined)?.question}</div>
-        </div>
-        <div className="flex flex-row space-x-8 pl-2 pr-2">
-          {data
-            ?.find((x) => x !== undefined)
-            ?.QuestionAnswer?.map((answer, index) => (
-              <div key={answer.answer} className="flex flex-col w-[25%]">
-                <div
-                  style={{ backgroundColor: `${getRandomHtmlColor()}` }}
-                  className="rounded-xl flex flex-col"
-                >
-                  {/* <div className="float-right">
+    <div className="flex flex-col w-[80%] p-2 rounded-2xl bg-yellow-300">
+      <div className="flex items-center h-[70%] justify-center rounded-xl border-4 border-yellow-200">
+        <div>{data?.question}</div>
+      </div>
+      <div className="flex h-full flex-row space-x-8 ">
+        {data?.QuestionAnswer?.map((answer, index) => (
+          <div key={answer.answer} className="flex p-2 flex-col w-[25%] h-full">
+            <div
+              style={{ backgroundColor: `${getRandomHtmlColor()}` }}
+              className="rounded-xl flex flex-col h-full"
+            >
+              {/* <div className="float-right">
                       <CheckboxControl
                         control={control}
                         name={`answers.${index}.isCorrect`}
@@ -96,33 +91,31 @@ export const TrainingSessionQuestion = ({
                         defaultChecked={false}
                       />
                     </div> */}
-                  <div>
-                    <div className="float-left">
-                      <IconButton>
-                        <DeleteOutlineOutlinedIcon fontSize="small" />
-                      </IconButton>
-                    </div>
-                    <div className="float-left">
-                      <IconButton>
-                        <ImageOutlinedIcon fontSize="small" />
-                      </IconButton>
-                    </div>
-                    <div className="float-left">
-                      <IconButton>
-                        <FunctionsOutlinedIcon fontSize="small" />
-                      </IconButton>
-                    </div>
-                  </div>
-
-                  <div className="flex rounded-xl h-48 items-center justify-center">
-                    <div>{answer && answer?.answer}</div>
-                  </div>
+              <div>
+                <div className="float-left">
+                  <IconButton>
+                    <DeleteOutlineOutlinedIcon fontSize="small" />
+                  </IconButton>
+                </div>
+                <div className="float-left">
+                  <IconButton>
+                    <ImageOutlinedIcon fontSize="small" />
+                  </IconButton>
+                </div>
+                <div className="float-left">
+                  <IconButton>
+                    <FunctionsOutlinedIcon fontSize="small" />
+                  </IconButton>
                 </div>
               </div>
-            ))}
-        </div>
+
+              <div className="flex rounded-xl h-full items-center justify-center">
+                <div>{answer && answer?.answer}</div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-      <TrainingSessionButtons />
     </div>
   )
 }
