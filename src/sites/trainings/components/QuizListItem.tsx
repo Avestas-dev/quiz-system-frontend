@@ -127,30 +127,28 @@ export default function QuizListItem({
           )}
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
-          <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
+          <button className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200">
             <ShareIcon fontSize="small" />
             <p className="mt-1">Udostępnij</p>
-          </div>
+          </button>
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
-          <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
+          <button
+            onClick={() => {
+              navigate("/")
+            }}
+            className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200"
+          >
             <FolderOpenIcon fontSize="small" />
-            <button
-              onClick={() => {
-                navigate("/")
-              }}
-              className="mt-1"
-            >
-              Zapisz
-            </button>
-          </div>
+            <p className="mt-1">Zapisz</p>
+          </button>
         </div>
 
         <div className="float-right flex flex-row mt-2 ml-2">
-          <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
+          <button className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-red-200">
             <FavoriteBorderIcon fontSize="small" />
             <p className="mt-1">0</p>
-          </div>
+          </button>
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
           <button
