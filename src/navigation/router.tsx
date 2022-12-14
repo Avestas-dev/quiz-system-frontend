@@ -10,6 +10,7 @@ import { TrainingView } from "../sites/trainings/TrainingView"
 import { CreateTraining } from "../sites/trainings/CreateTraining"
 import { CreateQuestionWithAnswers } from "../sites/trainings/CreateQuestionWithAnswers"
 import { TrainingSession } from "../sites/trainings/TrainingSession"
+import { TrainingSessionQuestion } from "../sites/trainings/components/TrainingSessionQuestion"
 
 export const AppRouter = () => {
   return (
@@ -23,6 +24,10 @@ export const AppRouter = () => {
       <Route path={PATHS.editQuestion} element={<EditQuestion />} />
       <Route path={PATHS.editTraining} element={<EditTraining />} />
       <Route path={PATHS.trainingSession} element={<TrainingSession />} />
+      <Route
+        path={PATHS.trainingSessionQuestion}
+        element={<TrainingSessionQuestion />}
+      />
       <Route path={PATHS.createTraining} element={<CreateTraining />} />
       <Route
         path={PATHS.createQuestion}

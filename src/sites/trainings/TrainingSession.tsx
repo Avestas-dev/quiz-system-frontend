@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect } from "react"
 import { useMutation, useQuery } from "react-query"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { toast } from "react-toastify"
 import { GetUserTrainingSessionResponse } from "../../models/Api"
 import { EditTrainingTopBar } from "./components/EditTrainingTopBar"
@@ -14,6 +14,8 @@ export interface TrainingSessionProps {
 export const TrainingSession = () => {
   const { trainingSessionId } = useParams()
 
+  const navigate = useNavigate()
+
   const { data } = useQuery<any, any, GetUserTrainingSessionResponse>(
     `/training-session/${trainingSessionId}`,
     async () => {
@@ -22,9 +24,9 @@ export const TrainingSession = () => {
     },
     {
       onSuccess: async (response) => {
-        toast.success("Training session data loaded succesfully", {
-          autoClose: 3000,
-        })
+        // toast.success("Training session data loaded succesfully", {
+        //   autoClose: 3000,
+        // })
       },
       onError: (error) => {
         toast.error(
@@ -38,15 +40,27 @@ export const TrainingSession = () => {
     }
   )
 
-  console.log(trainingSessionId)
-
   return (
     <div>
       <EditTrainingTopBar />
-      <div className="flex flex-col h-screen w-screen items-center bg-gray-700">
-        <TrainingSessionQuestion
-        //question={data![0].trainingQuestions![0].question}
-        />
+      <div className="flex flex-col h-screen w-screen justify-center items-center bg-gray-700">
+        {/* <button
+          className="bg-green-500"
+          onClick={() => {
+            if (data !== undefined)
+              navigate(
+                `/training-session/${trainingSessionId}/question/${
+                  data?.trainingQuestions?.find((x) => x !== undefined)
+                    ?.trainingQuestionId
+                }`
+              )
+          }}
+        >
+          rozpocznij quiz
+        </button> */}
+        {data?.trainingId && (
+          <TrainingSessionQuestion trainingId={data.trainingId} />
+        )}
       </div>
     </div>
   )

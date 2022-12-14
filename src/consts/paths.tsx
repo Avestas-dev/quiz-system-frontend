@@ -7,6 +7,8 @@ export const PATHS = {
   training: "/training/:id",
   editTraining: "/training/edit/:id",
   trainingSession: "/training-session/:trainingSessionId",
+  trainingSessionQuestion:
+    "/training-session/:trainingSessionId/question/:questionId",
   editQuestion: "/question/edit/:id",
   createTraining: "/training/create/:type",
   createQuestion: "/question/create/:trainingId",
