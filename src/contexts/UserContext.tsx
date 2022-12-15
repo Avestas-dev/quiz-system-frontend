@@ -6,6 +6,8 @@ import { PATHS } from "../consts/paths"
 import { LoginResponse, ProfileResponse } from "../models/Api"
 
 export const UserContext = createContext({
+  userId: -1,
+  setUserId: (prevState: number) => {},
   isLoggedIn: false,
   setIsLoggedIn: (prevState: boolean) => {},
   token: "",
@@ -15,6 +17,7 @@ export const UserContext = createContext({
   email: "",
   setEmail: (prevState: string) => {},
   login: ({
+    userId,
     token,
     refreshToken,
     email,
@@ -28,12 +31,17 @@ export const UserContextProvider: React.FC<{
 }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [email, setEmail] = useState(localStorage.getItem("email") || "")
+  const [userId, setUserId] = useState(
+    Number(localStorage.getItem("userId")) || -1
+  )
   const [token, setToken] = useState(localStorage.getItem("token") || "")
   const [refreshToken, setRefreshToken] = useState(
     localStorage.getItem("refreshToken") || ""
   )
   if (localStorage.getItem("token") && localStorage.getItem("refreshToken")) {
-    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem("token")}`
+    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
+      "token"
+    )}`
     axios.defaults.headers.common.Refresh = localStorage.getItem("refreshToken")
   }
 
@@ -42,8 +50,11 @@ export const UserContextProvider: React.FC<{
     refreshToken,
     email,
     remember,
+    userId,
   }: LoginResponse & { remember: boolean }) => {
     if (token && refreshToken && email) {
+      if (userId !== undefined) setUserId(userId)
+      console.log("user ID", userId)
       setEmail(email)
       setToken(token)
       setRefreshToken(refreshToken)
@@ -54,6 +65,8 @@ export const UserContextProvider: React.FC<{
         localStorage.setItem("token", token)
         localStorage.setItem("refreshToken", refreshToken)
         localStorage.setItem("email", email)
+        if (userId !== undefined)
+          localStorage.setItem("userId", userId.toString())
       } else {
         localStorage.removeItem("token")
         localStorage.removeItem("refreshToken")
@@ -95,9 +108,11 @@ export const UserContextProvider: React.FC<{
     setEmail("")
     setToken("")
     setRefreshToken("")
+    setUserId(-1)
     localStorage.removeItem("token")
     localStorage.removeItem("refreshToken")
     localStorage.removeItem("email")
+    localStorage.removeItem("userId")
     axios.defaults.headers.common.Authorization = null
     axios.defaults.headers.common.Refresh = null
     setIsLoggedIn(false)
@@ -109,6 +124,8 @@ export const UserContextProvider: React.FC<{
       value={{
         isLoggedIn: isLoggedIn,
         setIsLoggedIn: setIsLoggedIn,
+        userId: userId,
+        setUserId: setUserId,
         email: email,
         token: token,
         refreshToken: refreshToken,

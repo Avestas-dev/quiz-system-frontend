@@ -3,14 +3,25 @@ import Delete from "@mui/icons-material/DeleteOutlined"
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
 import { GetAllQuestions } from "./GetAllQuestions"
 import { useNavigate, useParams } from "react-router"
-import { Button, IconButton, Input, TextField } from "@mui/material"
-import { useMutation } from "react-query"
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material"
+import { useMutation, useQuery } from "react-query"
 import axios from "axios"
 import { toast } from "react-toastify"
-import { AddTrainingRequest } from "../../models/Api"
+import { AddTrainingRequest, TagsResponse } from "../../models/Api"
 import { useRef } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { InputControl } from "../../components/InputControl"
+import { SelectControl } from "../../components/SelectControl"
 
 type CreateTrainingFormProps = {
   name: string
@@ -42,6 +53,28 @@ export const CreateTraining = () => {
     }
   )
 
+  const { data } = useQuery<any, any, TagsResponse>(
+    "/tag",
+    async () => {
+      const res = await axios.get("/tag")
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("tags loaded succesfully", { autoClose: 3000 })
+      },
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+            "There was an error while getting tags",
+          {
+            autoClose: 2000,
+          }
+        )
+      },
+    }
+  )
+
   const onSubmit = (props: CreateTrainingFormProps) => {
     props.tagIds = [1]
     props.visibility = true
@@ -51,21 +84,8 @@ export const CreateTraining = () => {
   return (
     <div className="bg-gray-300 h-screen">
       <EditTrainingTopBar saveButtonFunction={handleSubmit(onSubmit)} />
-      <div className="flex flex-row  p-2 space-x-2">
-        <div className=" w-[50%] grid place-items-center">
-          <div className="float-right m-2">
-            <button
-              onClick={() => {
-                navigate(`/question/create/`)
-              }}
-              className="bg-yellow-200 border-2 border-gray-400 rounded-xl p-1"
-            >
-              Dodaj pytanie
-            </button>
-          </div>
-          <div className="w-[100%]"></div>
-        </div>
-        <div className="w-[50%] bg-gray-300 mt-[50px] flex flex-col rounded-xl h-full border-2 border-gray-400">
+      <div className="p-2 flex justify-center pt-20">
+        <div className="w-[50%] bg-gray-300 p-5 flex flex-col rounded-xl h-full border-2 border-gray-400">
           <div className="flex flex-row">
             <div className="grid place-items-center rounded-xl bg-gray-400 m-2 w-[85%] ml-8 h-48">
               zdjecie quizu
@@ -85,11 +105,21 @@ export const CreateTraining = () => {
                 inputProps={{ inputMode: "email" }}
                 defaultValue="nazwa treningu"
               />
-              <IconButton>
-                <CreateOutlinedIcon />
-              </IconButton>
+              <Controller
+                name="tagIds"
+                control={control}
+                defaultValue={[]}
+                render={() => (
+                  <Select>
+                    {data?.map((e) => (
+                      <MenuItem value={e.id} key={e.id}>
+                        {e.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              />
             </form>
-            publiczny polski 30s
           </div>
         </div>
       </div>

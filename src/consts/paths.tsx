@@ -6,8 +6,13 @@ export const PATHS = {
   trainings: "/trainings",
   training: "/training/:id",
   editTraining: "/training/edit/:id",
+  trainingSession: "/training-session/:trainingSessionId",
+  trainingSessionQuestion:
+    "/training-session/:trainingSessionId/question/:questionId",
   editQuestion: "/question/edit/:id",
   createTraining: "/training/create/:type",
-  createQuestion: "/question/create/",
+  createQuestion: "/question/create/:trainingId",
   "forget-password": "/forget-password",
+  "admin-tags": "/admin/tags",
+  "admin-users": "/admin/users",
 }

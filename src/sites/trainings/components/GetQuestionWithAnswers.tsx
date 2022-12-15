@@ -32,6 +32,17 @@ export const GetQuestionWithAnswers = ({
 }: GetQuestionWithAnswers) => {
   const navigate = useNavigate()
 
+  function getRandomHtmlColor(): string {
+    const letters = "0123456789ABCDEF"
+    let color = "#"
+
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)]
+    }
+
+    return color
+  }
+
   const { data } = useQuery<any, any, GetQuestionResponse>(
     "/questions/all",
     async () => {
@@ -73,12 +84,6 @@ export const GetQuestionWithAnswers = ({
             </div>
           </div>
           <div className="w-4/5 rounded-xl border-4 border-yellow-200">
-            {/* <input
-              placeholder={data?.question}
-              id="large-input"
-              className="placeholder:text-black placeholder:text-center bg-yellow-300 rounded-xl  w-full h-full"
-              type="text"
-            /> */}
             <TextField
               placeholder={data?.question}
               fullWidth
@@ -93,8 +98,11 @@ export const GetQuestionWithAnswers = ({
         </div>
         <div className="flex flex-row space-x-8">
           {data?.QuestionAnswer?.map((e) => (
-            <div key={e.id} className="flex flex-col ">
-              <div className=" bg-purple-500 rounded-xl">
+            <div key={e.id} className="flex flex-col w-[25%] ">
+              <div
+                style={{ backgroundColor: `${getRandomHtmlColor()}` }}
+                className=" rounded-xl"
+              >
                 <div className="float-right">
                   <Checkbox
                     icon={<RadioButtonUncheckedOutlinedIcon fontSize="small" />}
@@ -128,60 +136,6 @@ export const GetQuestionWithAnswers = ({
         </div>
       </div>
       <div className="w-[60%] space-x-2 mt-2">
-        <div className="float-left">
-          <h1>tagi:</h1>
-        </div>
-        <div className="float-left">
-          <Box sx={{ minWidth: 240 }}>
-            <FormControl size="small" fullWidth>
-              <InputLabel id="demo-simple-select-label">Typ</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value=""
-                label="Age"
-                onChange={() => {}}
-              >
-                <MenuItem value={10}>Wielokrotnego wyboru</MenuItem>
-                <MenuItem value={10}>Jednokrotnego wyboru</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
-        <div className="float-left">
-          <Box sx={{ minWidth: 180 }}>
-            <FormControl size="small" fullWidth>
-              <InputLabel id="demo-simple-select-label">Czas</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value=""
-                label="Age"
-                onChange={() => {}}
-              >
-                <MenuItem value={10}>Czas: 30 sekund</MenuItem>
-                <MenuItem value={10}>Czas: 60 sekund</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
-        <div className="float-left">
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl size="small" fullWidth>
-              <InputLabel id="demo-simple-select-label">Temat</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value=""
-                label="Age"
-                onChange={() => {}}
-              >
-                <MenuItem value={10}>Temat1</MenuItem>
-                <MenuItem value={10}>Temat2</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
         <div className="float-right">
           <Button
             variant="contained"

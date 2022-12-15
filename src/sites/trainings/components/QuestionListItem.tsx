@@ -3,6 +3,7 @@ import { useNavigate } from "react-router"
 import AccessTimeIcon from "@mui/icons-material/AccessTime"
 import Delete from "@mui/icons-material/DeleteOutlined"
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined"
+import { DeleteQuestion } from "../DeleteQuestion"
 
 interface QuestionProps {
   id?: number
@@ -59,9 +60,11 @@ export const QuestionListItem = ({
             </div>
           </div>
           <div className="float-right ml-2">
-            <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 ">
-              <Delete fontSize="small" />
-            </div>
+            {id !== undefined ? (
+              <DeleteQuestion questionId={id.toString()} />
+            ) : (
+              <div></div>
+            )}
           </div>
           <div className="float-right ml-2">
             <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-2">

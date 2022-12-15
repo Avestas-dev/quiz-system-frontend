@@ -4,6 +4,8 @@ import { useNavigate } from "react-router"
 import QuizListItem from "./components/QuizListItem"
 import { GetAllTrainingsResponse } from "../../models/Api"
 import { toast } from "react-toastify"
+import { useContext } from "react"
+import { UserContext } from "../../contexts/UserContext"
 export interface GetAllTrainingsProps {
   onlyLiked?: boolean
   search?: string
@@ -14,6 +16,10 @@ export const GetAllTrainings = ({
   search = "",
   tags = [],
 }: GetAllTrainingsProps) => {
+  const userContext = useContext(UserContext)
+
+  console.log(userContext.userId)
+
   const { data } = useQuery<any, any, GetAllTrainingsResponse>(
     "/training/all",
     async () => {
@@ -40,11 +46,19 @@ export const GetAllTrainings = ({
 
   return (
     <div className="space-y-2">
-      {data?.map((e) => (
-        <div key={e.name}>
-          <QuizListItem id={e.id} name={e.name} />
-        </div>
-      ))}
+      {data
+        ?.filter((e) => e.visibility === true)
+        .map((e) => (
+          <div key={e.name}>
+            <QuizListItem
+              id={e.id}
+              name={e.name}
+              withButtons={userContext.userId === e.userId}
+              userId={e.userId}
+              userEmail={e.user?.email}
+            />
+          </div>
+        ))}
     </div>
   )
 }

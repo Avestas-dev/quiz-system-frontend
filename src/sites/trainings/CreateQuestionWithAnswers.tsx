@@ -18,15 +18,16 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined"
 import FunctionsOutlinedIcon from "@mui/icons-material/FunctionsOutlined"
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined"
 import RadioButtonUncheckedOutlinedIcon from "@mui/icons-material/RadioButtonUncheckedOutlined"
-import { useNavigate } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { useForm } from "react-hook-form"
 import { InputControl } from "../../components/InputControl"
-import { useMutation } from "react-query"
+import { useMutation, useQuery } from "react-query"
 import axios from "axios"
 import { toast } from "react-toastify"
-import { AddQuestionWithAnswersRequest } from "../../models/Api"
+import { AddQuestionWithAnswersRequest, TagsResponse } from "../../models/Api"
+import { CheckboxControl } from "../../components/CheckboxControl"
 
-type CreateQuestionFormProps = {
+type CreateQuestionWithAnswersFormProps = {
   question: string
   trainingId: number
   answers: {
@@ -36,10 +37,38 @@ type CreateQuestionFormProps = {
 }
 
 export const CreateQuestionWithAnswers = () => {
-  const { control, handleSubmit, watch } = useForm<CreateQuestionFormProps>({})
+  const { control, handleSubmit, watch } =
+    useForm<CreateQuestionWithAnswersFormProps>({})
+
+  const { trainingId } = useParams()
 
   const navigate = useNavigate()
-  const questions = ["odpowiedz1", "odpowiedz2", "odpowiedz3", "odpowiedz4"]
+
+  function getRandomHtmlColor(): string {
+    const letters = "0123456789ABCDEF"
+    let color = "#"
+
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)]
+    }
+
+    return color
+  }
+
+  const answers: {
+    answer?: string
+    isCorrect?: boolean
+    color?: string
+  }[] = [
+    { answer: "odpowiedz1", isCorrect: false, color: getRandomHtmlColor() },
+    { answer: "odpowiedz2", isCorrect: false, color: getRandomHtmlColor() },
+    { answer: "odpowiedz3", isCorrect: false, color: getRandomHtmlColor() },
+    { answer: "odpowiedz4", isCorrect: false, color: getRandomHtmlColor() },
+  ]
+
+  answers.forEach((answer) => {
+    console.log(`bg-[${answer.color}]`)
+  })
 
   const createQuestionMutation = useMutation<
     any,
@@ -53,7 +82,7 @@ export const CreateQuestionWithAnswers = () => {
     {
       onSuccess: async (response) => {
         toast.success("Added questions succesfully!", { autoClose: 2000 })
-        navigate("/login")
+        navigate(-1)
       },
       onError: (error) => {
         toast.error(error?.response?.data?.message || "Add question error.", {
@@ -63,7 +92,10 @@ export const CreateQuestionWithAnswers = () => {
     }
   )
 
-  const onSubmit = (props: CreateQuestionFormProps) => {
+  const onSubmit = (props: CreateQuestionWithAnswersFormProps) => {
+    console.log(props)
+
+    props.trainingId = Number(trainingId)
     createQuestionMutation.mutate(props)
   }
 
@@ -89,14 +121,11 @@ export const CreateQuestionWithAnswers = () => {
                 </div>
               </div>
               <div className="w-4/5 rounded-xl border-4 border-yellow-200">
-                {/* <input
-                  placeholder={"pytanie"}
-                  id="large-input"
-                  className="placeholder:text-black placeholder:text-center bg-yellow-300 rounded-xl  w-full h-full"
-                  type="text"
-                /> */}
-                <TextField
-                  placeholder={"pytanie"}
+                <InputControl
+                  placeholder={"question"}
+                  control={control}
+                  name="question"
+                  label="question"
                   fullWidth
                   multiline
                   rows={6}
@@ -104,15 +133,22 @@ export const CreateQuestionWithAnswers = () => {
                     padding: "0.25rem",
                     height: "",
                   }}
+                  autoFocus
                 />
               </div>
             </div>
             <div className="flex flex-row space-x-8">
-              {questions.map((question) => (
-                <div key={question} className="flex flex-col ">
-                  <div className=" bg-purple-500 rounded-xl">
+              {answers.map((answer, index) => (
+                <div key={answer.answer} className="flex ">
+                  <div
+                    style={{ backgroundColor: `${answer.color}` }}
+                    className={" rounded-xl"}
+                  >
                     <div className="float-right">
-                      <Checkbox
+                      <CheckboxControl
+                        control={control}
+                        name={`answers.${index}.isCorrect`}
+                        aria-label="test"
                         icon={
                           <RadioButtonUncheckedOutlinedIcon fontSize="small" />
                         }
@@ -122,91 +158,43 @@ export const CreateQuestionWithAnswers = () => {
                             fontSize="small"
                           />
                         }
+                        defaultChecked={false}
                       />
                     </div>
-                    <div className="float-left ">
+                    <div className="float-left">
                       <IconButton>
                         <DeleteOutlineOutlinedIcon fontSize="small" />
                       </IconButton>
                     </div>
-                    <div className="float-left ">
+                    <div className="float-left">
                       <IconButton>
                         <ImageOutlinedIcon fontSize="small" />
                       </IconButton>
                     </div>
-                    <div className="float-left ">
+                    <div className="float-left">
                       <IconButton>
                         <FunctionsOutlinedIcon fontSize="small" />
                       </IconButton>
                     </div>
-                    {/* <textarea
-                      placeholder={question}
-                      className="w-full p-2 placeholder:align-middle placeholder:text-black placeholder:text-center  rounded-xl bg-purple-500"
-                      cols={30}
-                      rows={10}
-                    ></textarea> */}
-                    <TextField placeholder={question} rows={10} multiline />
+                    <InputControl
+                      placeholder={answer.answer}
+                      control={control}
+                      name={`answers.${index}.answer`}
+                      multiline
+                      rows={8}
+                      style={{
+                        padding: "0.25rem",
+                        height: "",
+                      }}
+                      autoFocus
+                    />
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="w-[60%] space-x-2 mt-2">
-            <div className="float-left">
-              <h1>tagi:</h1>
-            </div>
-            <div className="float-left">
-              <Box sx={{ minWidth: 240 }}>
-                <FormControl size="small" fullWidth>
-                  <InputLabel id="demo-simple-select-label">Typ</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value=""
-                    label="Age"
-                    onChange={() => {}}
-                  >
-                    <MenuItem value={10}>Wielokrotnego wyboru</MenuItem>
-                    <MenuItem value={10}>Jednokrotnego wyboru</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </div>
-            <div className="float-left">
-              <Box sx={{ minWidth: 180 }}>
-                <FormControl size="small" fullWidth>
-                  <InputLabel id="demo-simple-select-label">Czas</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value=""
-                    label="Age"
-                    onChange={() => {}}
-                  >
-                    <MenuItem value={10}>Czas: 30 sekund</MenuItem>
-                    <MenuItem value={10}>Czas: 60 sekund</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </div>
-            <div className="float-left">
-              <Box sx={{ minWidth: 120 }}>
-                <FormControl size="small" fullWidth>
-                  <InputLabel id="demo-simple-select-label">Temat</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value=""
-                    label="Age"
-                    onChange={() => {}}
-                  >
-                    <MenuItem value={10}>Temat1</MenuItem>
-                    <MenuItem value={10}>Temat2</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </div>
-            <div className="float-right">
+          <div className="w-[60%] ">
+            <div className="float-right p-2 ">
               <Button
                 variant="contained"
                 style={{
@@ -216,15 +204,13 @@ export const CreateQuestionWithAnswers = () => {
                 Anuluj
               </Button>
             </div>
-            <div className="float-right">
+            <div className="float-right p-2">
               <Button
-                onClick={() => {
-                  navigate("/trainings")
-                }}
                 variant="contained"
                 style={{
                   backgroundColor: "black",
                 }}
+                onClick={handleSubmit(onSubmit)}
               >
                 Zapisz
               </Button>

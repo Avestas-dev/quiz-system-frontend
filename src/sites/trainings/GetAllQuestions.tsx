@@ -37,7 +37,7 @@ export const GetAllQuestions = ({
     },
     {
       onSuccess: async (response) => {
-        toast.success("Questions loaded succesfully", { autoClose: 3000 })
+        //toast.success("Questions loaded succesfully", { autoClose: 3000 })
       },
       onError: (error) => {
         toast.error(
