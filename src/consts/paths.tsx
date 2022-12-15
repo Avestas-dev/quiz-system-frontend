@@ -13,4 +13,5 @@ export const PATHS = {
   createTraining: "/training/create/:type",
   createQuestion: "/question/create/:trainingId",
   "forget-password": "/forget-password",
+  "admin-tags": "/admin/tags",
 }

@@ -22,12 +22,14 @@ const pages: { name: string; path: string; isLoggedIn?: boolean }[] = [
   { name: "Login", path: PATHS.login, isLoggedIn: false },
   { name: "Register", path: PATHS.register, isLoggedIn: false },
   { name: "Trainings", path: PATHS.trainings, isLoggedIn: false },
+  { name: "Tags", path: PATHS["admin-tags"] },
 ]
 const settings: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
   { name: "Login", path: PATHS.login },
   { name: "Register", path: PATHS.register },
   { name: "Trainings", path: PATHS.trainings },
+  { name: "Tags", path: PATHS["admin-tags"] },
 ]
 
 export const ResponsiveAppBar = () => {

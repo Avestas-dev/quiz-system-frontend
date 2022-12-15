@@ -1,18 +1,18 @@
-import { useNavigate, useParams } from "react-router"
-import { GetAllQuestions } from "./GetAllQuestions"
-import { EditTrainingTopBar } from "./components/EditTrainingTopBar"
 import Delete from "@mui/icons-material/DeleteOutlined"
+import { MenuItem, Select } from "@mui/material"
 import axios from "axios"
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query"
+import { Controller, useForm } from "react-hook-form"
+import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useNavigate, useParams } from "react-router"
+import { toast } from "react-toastify"
+import { InputControl } from "../../components/InputControl"
 import {
   EditTrainingRequest,
   GetOneTrainingResponse,
   TagsResponse,
 } from "../../models/Api"
-import { InputControl } from "../../components/InputControl"
-import { Controller, useForm } from "react-hook-form"
-import { MenuItem, Select } from "@mui/material"
-import { toast } from "react-toastify"
+import { EditTrainingTopBar } from "./components/EditTrainingTopBar"
+import { GetAllQuestions } from "./GetAllQuestions"
 
 type EditTrainingFormProps = {
   trainingId: number
