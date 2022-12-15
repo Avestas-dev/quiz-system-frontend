@@ -40,7 +40,7 @@ export const TrainingSessionQuestion = ({
   }
 
   const { data } = useQuery<any, any, GetQuestionResponse>(
-    `/question/${questionId}`,
+    "/question",
     async () => {
       const res = await axios.get(`/question/${questionId}`)
       return res.data

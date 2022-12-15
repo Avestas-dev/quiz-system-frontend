@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useMutation, useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useNavigate, useParams } from "react-router"
 import { toast } from "react-toastify"
 import { GetUserTrainingSessionResponse } from "../../models/Api"
@@ -14,6 +14,8 @@ export interface TrainingSessionProps {
 
 export const TrainingSession = () => {
   const { trainingSessionId } = useParams()
+
+  const queryClient = useQueryClient()
 
   const { data } = useQuery<any, any, GetUserTrainingSessionResponse>(
     `/training-session/${trainingSessionId}`,
@@ -42,10 +44,12 @@ export const TrainingSession = () => {
   const [questionIndex, setQuestionIndex] = useState(0)
 
   const handleNextClick = () => {
+    queryClient.removeQueries("/question")
     setQuestionIndex(questionIndex + 1)
   }
 
   const handlePreviousClick = () => {
+    queryClient.removeQueries("/question")
     setQuestionIndex(questionIndex - 1)
   }
 
