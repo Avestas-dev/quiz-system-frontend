@@ -1,6 +1,18 @@
 import Delete from "@mui/icons-material/DeleteOutlined"
-import { MenuItem, Select } from "@mui/material"
+import {
+  Box,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  Theme,
+  useTheme,
+} from "@mui/material"
 import axios from "axios"
+import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useNavigate, useParams } from "react-router"
@@ -13,6 +25,26 @@ import {
 } from "../../models/Api"
 import { EditTrainingTopBar } from "./components/EditTrainingTopBar"
 import { GetAllQuestions } from "./GetAllQuestions"
+
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+}
+
+function getStyles(tag: string, tags: string[], theme: Theme) {
+  return {
+    fontWeight:
+      tags.indexOf(tag) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  }
+}
 
 type EditTrainingFormProps = {
   trainingId: number
@@ -27,6 +59,10 @@ export const EditTraining = () => {
   const { id } = useParams()
 
   const navigate = useNavigate()
+
+  const theme = useTheme()
+
+  const [tagName, setTagName] = React.useState<string[]>([])
 
   const queryClient = useQueryClient()
 
@@ -60,7 +96,17 @@ export const EditTraining = () => {
     }
   )
 
-  console.log(tagData)
+  const defaultTags: string[] = tagData!.map((tag) => tag.name!)
+
+  const handleChange = (event: SelectChangeEvent<typeof tagName>) => {
+    const {
+      target: { value },
+    } = event
+    setTagName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    )
+  }
 
   const editTrainingMutation = useMutation<any, any, EditTrainingRequest>(
     async (editTrainingData) => {
@@ -82,7 +128,15 @@ export const EditTraining = () => {
 
   const onSubmit = (props: EditTrainingFormProps) => {
     props.trainingId = data?.id!
-    props.tagIds = [1]
+    let tagIds: number[] = []
+    for (let i = 0; i < tagData!.length; i++) {
+      for (let j = 0; j < tagName.length; j++) {
+        if (tagData![i].name === tagName[j]) {
+          tagIds.push(tagData![i].id!)
+        }
+      }
+    }
+    props.tagIds = tagIds
     props.visibility = true
     editTrainingMutation.mutate(props)
   }
@@ -132,36 +186,37 @@ export const EditTraining = () => {
                 inputProps={{ inputMode: "email" }}
                 defaultValue={data?.name}
               />
-              {data?.tagTraining?.map((e) => (
-                <Controller
-                  name="tagIds"
-                  control={control}
-                  defaultValue={[e.tagId!]}
-                  render={() => (
-                    <Select>
-                      {tagData?.map((e) => (
-                        <MenuItem value={e.id} key={e.id}>
-                          {e.name}
-                        </MenuItem>
+              <FormControl sx={{ width: 220 }}>
+                <InputLabel id="demo-multiple-chip-label">Tag</InputLabel>
+                <Select
+                  labelId="demo-multiple-chip-label"
+                  id="demo-multiple-chip"
+                  multiple
+                  value={tagName}
+                  onChange={handleChange}
+                  input={
+                    <OutlinedInput id="select-multiple-chip" label="Chip" />
+                  }
+                  renderValue={(selected) => (
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
                       ))}
-                    </Select>
+                    </Box>
                   )}
-                />
-              ))}
-              <Controller
-                name="tagIds"
-                control={control}
-                defaultValue={[]}
-                render={() => (
-                  <Select>
-                    {tagData?.map((e) => (
-                      <MenuItem value={e.id} key={e.id}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-              />
+                  MenuProps={MenuProps}
+                >
+                  {tagData?.map((tag) => (
+                    <MenuItem
+                      key={tag.id}
+                      value={tag.name}
+                      style={getStyles(tag.name!, tagName, theme)}
+                    >
+                      {tag.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </form>
           </div>
         </div>
