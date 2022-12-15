@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import { PATHS } from "../consts/paths"
 import Tags from "../sites/admin/Tags/Tags"
+import Users from "../sites/admin/Users/Users"
 import { Auth } from "../sites/auth/Auth"
 import { Panel } from "../sites/auth/Panel"
 import { Home } from "../sites/Home"
@@ -31,6 +32,7 @@ export const AppRouter = () => {
       />
       <Route path={PATHS.createTraining} element={<CreateTraining />} />
       <Route path={PATHS["admin-tags"]} element={<Tags />} />
+      <Route path={PATHS["admin-users"]} element={<Users />} />
       <Route
         path={PATHS.createQuestion}
         element={<CreateQuestionWithAnswers />}

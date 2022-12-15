@@ -23,6 +23,7 @@ const pages: { name: string; path: string; isLoggedIn?: boolean }[] = [
   { name: "Register", path: PATHS.register, isLoggedIn: false },
   { name: "Trainings", path: PATHS.trainings, isLoggedIn: false },
   { name: "Tags", path: PATHS["admin-tags"] },
+  { name: "Users", path: PATHS["admin-users"] },
 ]
 const settings: { name: string; path: string }[] = [
   { name: "Home", path: PATHS.home },
@@ -30,6 +31,7 @@ const settings: { name: string; path: string }[] = [
   { name: "Register", path: PATHS.register },
   { name: "Trainings", path: PATHS.trainings },
   { name: "Tags", path: PATHS["admin-tags"] },
+  { name: "Users", path: PATHS["admin-users"] },
 ]
 
 export const ResponsiveAppBar = () => {

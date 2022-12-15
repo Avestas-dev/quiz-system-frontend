@@ -1,3 +1,5 @@
+import { LocalizationProvider } from "@mui/x-date-pickers"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { gapi } from "gapi-script"
 import { useEffect } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
@@ -22,14 +24,16 @@ function App() {
   // initializing token and refresh token
   const queryClient = new QueryClient()
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <UserContextProvider>
-          <AppLoader />
-        </UserContextProvider>
-      </BrowserRouter>
-      <ToastContainer />
-    </QueryClientProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <UserContextProvider>
+            <AppLoader />
+          </UserContextProvider>
+        </BrowserRouter>
+        <ToastContainer />
+      </QueryClientProvider>
+    </LocalizationProvider>
   )
 }
 

@@ -20,20 +20,9 @@ import {
   RejectTagRequest,
   TagsResponse,
 } from "../../../models/Api"
+import { modalStyle } from "../../../styles/globalStyles"
 import { TagRowButtons } from "./TagRowButtons"
-const style = {
-  position: "absolute" as "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
-}
+
 const columns = [
   { name: "Id", options: { filter: false } },
   { name: "Tag name", options: { filter: false } },
@@ -82,7 +71,12 @@ const Tags = () => {
         refetchTags()
       },
       onError: (error) => {
-        console.log("error")
+        toast.error(
+          (error?.response?.data as any)?.message || "Edit tag error.",
+          {
+            autoClose: 2000,
+          }
+        )
       },
     }
   )
@@ -223,7 +217,7 @@ const Tags = () => {
           />
 
           <Modal open={isModalOpen} onClose={handleCloseModal}>
-            <Box sx={{ ...style, width: 400 }}>
+            <Box sx={{ ...modalStyle, width: 400 }}>
               <h2 id="parent-modal-title">
                 {modalMode === "edit" ? "Edit tag" : "Add tag"}
               </h2>

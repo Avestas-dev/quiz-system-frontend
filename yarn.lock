@@ -1711,6 +1711,69 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@date-io/core@npm:^2.15.0, @date-io/core@npm:^2.16.0":
+  version: 2.16.0
+  resolution: "@date-io/core@npm:2.16.0"
+  checksum: 336d0dd90fd0848116472cfb0e694e85860b2916952304201bb4d3a23d453d44589d346494584faba0fc05751cc38f1880889ce48cd982377aac2bfb20469b8a
+  languageName: node
+  linkType: hard
+
+"@date-io/date-fns@npm:^2.15.0":
+  version: 2.16.0
+  resolution: "@date-io/date-fns@npm:2.16.0"
+  dependencies:
+    "@date-io/core": ^2.16.0
+  peerDependencies:
+    date-fns: ^2.0.0
+  peerDependenciesMeta:
+    date-fns:
+      optional: true
+  checksum: aedb23c07da6f1e38a81ffe77ca1cb95167e1a175a3d65561cf244fbd1a5a0b961e84df88fe00b9cfa4bd32eda6d430e6d14567e2b040257198cd12748d5fcc5
+  languageName: node
+  linkType: hard
+
+"@date-io/dayjs@npm:^2.15.0":
+  version: 2.16.0
+  resolution: "@date-io/dayjs@npm:2.16.0"
+  dependencies:
+    "@date-io/core": ^2.16.0
+  peerDependencies:
+    dayjs: ^1.8.17
+  peerDependenciesMeta:
+    dayjs:
+      optional: true
+  checksum: bb8192207addbf6430c35da7664b97761f87d2c6cf4a3eaf464584a980e6cecaede581af1a40c5ba0a0189dc6bff2ac16408a95ec88e542b16915430191298c8
+  languageName: node
+  linkType: hard
+
+"@date-io/luxon@npm:^2.15.0":
+  version: 2.16.1
+  resolution: "@date-io/luxon@npm:2.16.1"
+  dependencies:
+    "@date-io/core": ^2.16.0
+  peerDependencies:
+    luxon: ^1.21.3 || ^2.x || ^3.x
+  peerDependenciesMeta:
+    luxon:
+      optional: true
+  checksum: ac3f667ff122728e7559fac96f75bc85109d0054bf3955c1aea9d8365e08bd49ed51780f7f3900160773c0ed584db21556ea7d49acf075c61a30eb0b0e5da935
+  languageName: node
+  linkType: hard
+
+"@date-io/moment@npm:^2.15.0":
+  version: 2.16.1
+  resolution: "@date-io/moment@npm:2.16.1"
+  dependencies:
+    "@date-io/core": ^2.16.0
+  peerDependencies:
+    moment: ^2.24.0
+  peerDependenciesMeta:
+    moment:
+      optional: true
+  checksum: 37a541661c504e1005904fab27b7b01d0c5d6c9c8c8a3b0a69d42a578aee8c52de7c181f917ad7acb14a9d7356d240c7e107777edf10efa11a453535977fc905
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.10.5":
   version: 11.10.5
   resolution: "@emotion/babel-plugin@npm:11.10.5"
@@ -2551,7 +2614,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/utils@npm:^5.11.0":
+"@mui/utils@npm:^5.10.3, @mui/utils@npm:^5.11.0":
   version: 5.11.0
   resolution: "@mui/utils@npm:5.11.0"
   dependencies:
@@ -2563,6 +2626,50 @@ __metadata:
   peerDependencies:
     react: ^17.0.0 || ^18.0.0
   checksum: de0dd7403d99735a93fe11581311cc14e498d87234c95bebae21a0b728fc9d36fdaa9a3d77e90eb034fb776a48088c69302546e3f1a9653892c538d5bab7a7c6
+  languageName: node
+  linkType: hard
+
+"@mui/x-date-pickers@npm:^5.0.10":
+  version: 5.0.10
+  resolution: "@mui/x-date-pickers@npm:5.0.10"
+  dependencies:
+    "@babel/runtime": ^7.18.9
+    "@date-io/core": ^2.15.0
+    "@date-io/date-fns": ^2.15.0
+    "@date-io/dayjs": ^2.15.0
+    "@date-io/luxon": ^2.15.0
+    "@date-io/moment": ^2.15.0
+    "@mui/utils": ^5.10.3
+    "@types/react-transition-group": ^4.4.5
+    clsx: ^1.2.1
+    prop-types: ^15.7.2
+    react-transition-group: ^4.4.5
+    rifm: ^0.12.1
+  peerDependencies:
+    "@emotion/react": ^11.9.0
+    "@emotion/styled": ^11.8.1
+    "@mui/material": ^5.4.1
+    "@mui/system": ^5.4.1
+    date-fns: ^2.25.0
+    dayjs: ^1.10.7
+    luxon: ^1.28.0 || ^2.0.0 || ^3.0.0
+    moment: ^2.29.1
+    react: ^17.0.2 || ^18.0.0
+    react-dom: ^17.0.2 || ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/react":
+      optional: true
+    "@emotion/styled":
+      optional: true
+    date-fns:
+      optional: true
+    dayjs:
+      optional: true
+    luxon:
+      optional: true
+    moment:
+      optional: true
+  checksum: 1632c67468bebb2969d8f804b8aa8d8dc0cb5749faf7f717110dde9e839bbafde0e40bd1780f357bcc4614a69ad6ed956c313436634121e12aa26d0c9db0cb29
   languageName: node
   linkType: hard
 
@@ -5386,6 +5493,13 @@ __metadata:
     whatwg-mimetype: ^2.3.0
     whatwg-url: ^8.0.0
   checksum: 97caf828aac25e25e04ba6869db0f99c75e6859bb5b424ada28d3e7841941ebf08ddff3c1b1bb4585986bd507a5d54c2a716853ea6cb98af877400e637393e71
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.7":
+  version: 1.11.7
+  resolution: "dayjs@npm:1.11.7"
+  checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
   languageName: node
   linkType: hard
 
@@ -11073,6 +11187,7 @@ __metadata:
     "@hookform/resolvers": ^2.9.8
     "@mui/icons-material": ^5.11.0
     "@mui/material": ^5.11.0
+    "@mui/x-date-pickers": ^5.0.10
     "@types/mui-datatables": ^3.7.9
     "@types/node": ^16.11.64
     "@types/react": ^18.0.21
@@ -11080,6 +11195,7 @@ __metadata:
     "@types/react-modal": ^3.13.1
     autoprefixer: ^10.4.12
     axios: ^1.1.3
+    dayjs: ^1.11.7
     gapi-script: ^1.2.0
     mui-datatables: ^4.2.2
     postcss: ^8.4.17
@@ -11874,6 +11990,15 @@ __metadata:
   version: 1.0.4
   resolution: "reusify@npm:1.0.4"
   checksum: c3076ebcc22a6bc252cb0b9c77561795256c22b757f40c0d8110b1300723f15ec0fc8685e8d4ea6d7666f36c79ccc793b1939c748bf36f18f542744a4e379fcc
+  languageName: node
+  linkType: hard
+
+"rifm@npm:^0.12.1":
+  version: 0.12.1
+  resolution: "rifm@npm:0.12.1"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 7f11621b6a14885bdee0b49c21174627272a5f683f74aaf8444570dae319f86de38d2af55c17e08af1ebb837bf956894971cceadeaca890e4c9cd1d46f02a385
   languageName: node
   linkType: hard
 
