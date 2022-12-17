@@ -1,24 +1,42 @@
+import { Checkbox, IconButton } from "@mui/material"
 import axios from "axios"
-import { useEffect, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useNavigate, useParams } from "react-router"
 import { toast } from "react-toastify"
-import { GetUserTrainingSessionResponse } from "../../models/Api"
-import { EditTrainingTopBar } from "./components/EditTrainingTopBar"
-import { TrainingSessionButtons } from "./components/TrainingSessionButtons"
-import { TrainingSessionQuestion } from "./components/TrainingSessionQuestion"
+import {
+  AddUserAnswerRequest,
+  GetQuestionsResponse,
+  GetTrainingSessionQuestionsResponse,
+  GetUserTrainingSessionResponse,
+} from "../../models/Api"
+
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined"
+import FunctionsOutlinedIcon from "@mui/icons-material/FunctionsOutlined"
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined"
+import RadioButtonUncheckedOutlinedIcon from "@mui/icons-material/RadioButtonUncheckedOutlined"
+import React from "react"
+import ChevronRightIcon from "@mui/icons-material/ChevronRight"
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
+import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
 
 export interface TrainingSessionProps {
-  trainingSessionId: number
+  trainingId: number
 }
 
 export const TrainingSession = () => {
-  const { trainingSessionId } = useParams()
-
   const queryClient = useQueryClient()
 
-  const { data } = useQuery<any, any, GetUserTrainingSessionResponse>(
-    `/training-session/${trainingSessionId}`,
+  const { trainingSessionId, questionindex, trainingId } = useParams()
+
+  const navigate = useNavigate()
+
+  const { data: userTrainingSessionData } = useQuery<
+    any,
+    any,
+    GetUserTrainingSessionResponse
+  >(
+    `/training-session`,
     async () => {
       const res = await axios.get(`/training-session/${trainingSessionId}`)
       return res.data
@@ -41,45 +59,302 @@ export const TrainingSession = () => {
     }
   )
 
-  const [questionIndex, setQuestionIndex] = useState(0)
+  const { data: questionsWithAnswers } = useQuery<
+    any,
+    any,
+    GetQuestionsResponse
+  >(
+    "/questions/all",
+    async () => {
+      const res = await axios.get(
+        `/question/all/${trainingId}?withAnswers=${true}`
+      )
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Question loaded succesfully", { autoClose: 3000 })
+      },
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+            "There was an error while getting Question",
+          {
+            autoClose: 2000,
+          }
+        )
+      },
+    }
+  )
+
+  const { data: trainingSessionData } = useQuery<
+    any,
+    any,
+    GetTrainingSessionQuestionsResponse
+  >(
+    `/training-session/questions`,
+    async () => {
+      const res = await axios.get(
+        `/training-session/${trainingSessionId}/questions`
+      )
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        // toast.success("Training session data loaded succesfully", {
+        //   autoClose: 3000,
+        // })
+      },
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+            "There was an error while getting training session data",
+          {
+            autoClose: 2000,
+          }
+        )
+      },
+    }
+  )
+
+  const endTraining: TrainingSessionProps = {
+    trainingId: userTrainingSessionData?.trainingId!,
+  }
+
+  const endTrainingMutation = useMutation<any, any, TrainingSessionProps>(
+    async () => {
+      const res = await axios.post("/training-session/end", endTraining)
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Training session ended!", { autoClose: 2000 })
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || "Session start error", {
+          autoClose: 2000,
+        })
+      },
+    }
+  )
+
+  const addTrainingSessionAnswersMutation = useMutation<
+    any,
+    any,
+    AddUserAnswerRequest
+  >(
+    async (userAnswerData) => {
+      const res = await axios.post("/user-answer", userAnswerData)
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Added answer succesfully!", { autoClose: 2000 })
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || "Add answer error.", {
+          autoClose: 2000,
+        })
+      },
+    }
+  )
 
   const handleNextClick = () => {
-    queryClient.removeQueries("/question")
-    setQuestionIndex(questionIndex + 1)
+    if (
+      userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
+        .answerStatus == "not_answered" &&
+      answersId.length !== 0
+    ) {
+      addTrainingSessionAnswersMutation.mutate({
+        trainingSessionId: Number(trainingSessionId),
+        questionId: trainingSessionData?.questions?.[Number(questionindex)].id,
+        questionAnswerIds: answersId,
+      })
+    }
+    setAnswersId([])
+    navigate(
+      `/training-session/${trainingSessionId}/training/${trainingId}/question/${
+        Number(questionindex) + 1
+      }`
+    )
   }
 
   const handlePreviousClick = () => {
-    queryClient.removeQueries("/question")
-    setQuestionIndex(questionIndex - 1)
+    if (
+      userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
+        .answerStatus === "not_answered" &&
+      answersId.length !== 0
+    ) {
+      addTrainingSessionAnswersMutation.mutate({
+        trainingSessionId: Number(trainingSessionId),
+        questionId: questionsWithAnswers?.[Number(questionindex)].id,
+        questionAnswerIds: answersId,
+      })
+    }
+    setAnswersId([])
+    navigate(
+      `/training-session/${trainingSessionId}/training/${trainingId}/question/${
+        Number(questionindex) - 1
+      }`
+    )
   }
 
-  const handlePauseClick = () => {}
+  const handlePauseClick = () => {
+    //TODO
+    //navigate("/trainings")
+  }
 
-  const handleFinishClick = () => {}
+  const handleFinishClick = () => {
+    queryClient.removeQueries("/training-session")
+    if (
+      userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
+        .answerStatus === "not_answered" &&
+      Number(questionindex) == questionsWithAnswers?.length! - 1 &&
+      answersId.length != 0
+    ) {
+      addTrainingSessionAnswersMutation.mutate({
+        trainingSessionId: Number(trainingSessionId),
+        questionId: questionsWithAnswers?.[Number(questionindex)].id,
+        questionAnswerIds: answersId,
+      })
+    }
+    alert(userTrainingSessionData?.totalQuestionCount)
+    endTrainingMutation.mutate(endTraining)
+    navigate("/trainings")
+  }
 
-  console.log("indeks", questionIndex)
+  const [answersId, setAnswersId] = React.useState<number[]>([])
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked, value } = event.target
+    if (checked) {
+      setAnswersId([...answersId, Number(value)])
+    } else {
+      setAnswersId(answersId.filter((item) => item !== Number(value)))
+    }
+  }
+  // console.log("qyestion with answer", questionsWithAnswers)
+
+  // console.log(
+  //   "answer status",
+  //   userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
+  //     .answerStatus
+  // )
+
+  // console.log("training sesion data", trainingSessionData)
+
+  // console.log("answers ids", answersId)
 
   return (
     <div>
-      <EditTrainingTopBar />
+      <div className="bg-yellow-300 space-x-3 pl-4 pr-4 h-12">
+        <div className="mt-3 float-left">
+          <p className="">QuizzMe</p>
+        </div>
+        <div className="mt-3 float-left text-[10px] content-center space-x-1">
+          <button className="">Kategoria</button>
+          <CreateOutlinedIcon fontSize="small" />
+        </div>
+      </div>
       <div className="flex h-screen w-screen justify-center items-center bg-gray-700">
         <div className="flex flex-row w-[70%] h-[80%] p-8 space-x-8">
-          {data?.trainingId && data?.trainingQuestions?.[questionIndex] && (
-            <TrainingSessionQuestion
-              trainingId={data.trainingId}
-              questionId={
-                data.trainingQuestions?.[questionIndex].trainingQuestionId
-              }
-            />
-          )}
-          <TrainingSessionButtons
-            isFirst={questionIndex == 0}
-            isLast={questionIndex == data?.trainingQuestions?.length}
-            next={handleNextClick}
-            previous={handlePreviousClick}
-            finish={handleFinishClick}
-            pause={handlePauseClick}
-          />
+          <div className="flex flex-col w-[80%] p-2 rounded-2xl bg-yellow-300">
+            <div className="flex items-center h-[70%] justify-center rounded-xl border-4 border-yellow-200">
+              <div>
+                {questionsWithAnswers?.[Number(questionindex)].question}
+              </div>
+            </div>
+            <div className="flex h-full flex-row space-x-8 ">
+              {questionsWithAnswers?.[
+                Number(questionindex)
+              ].QuestionAnswer?.map((answer) => (
+                <div
+                  key={answer.id}
+                  className="flex p-2 flex-col w-[25%] h-full"
+                >
+                  <div
+                    // style={{ backgroundColor: `${getRandomHtmlColor()}` }}
+                    className="rounded-xl bg-purple-400 flex flex-col h-full"
+                  >
+                    <div>
+                      <div className="float-right">
+                        <Checkbox
+                          onChange={handleChange}
+                          checked={answersId.includes(answer.id!)}
+                          value={answer.id!}
+                          icon={
+                            <RadioButtonUncheckedOutlinedIcon fontSize="small" />
+                          }
+                          checkedIcon={
+                            <CheckCircleOutlineOutlinedIcon
+                              color="success"
+                              fontSize="small"
+                            />
+                          }
+                          defaultChecked={false}
+                        />
+                      </div>
+                      <div className="float-left">
+                        <IconButton>
+                          <DeleteOutlineOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                      <div className="float-left">
+                        <IconButton>
+                          <ImageOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                      <div className="float-left">
+                        <IconButton>
+                          <FunctionsOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                    </div>
+
+                    <div className="flex rounded-xl h-full items-center justify-center">
+                      <div>{answer && answer?.answer}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col space-y-2 w-[20%]">
+            {Number(questionindex) == 0 ? (
+              <div></div>
+            ) : (
+              <button
+                onClick={handlePreviousClick}
+                className="flex flex-col justify-center items-center rounded-2xl hover:bg-green-500 bg-gray-800 h-[35%] border-2 border-gray-100"
+              >
+                <ChevronLeftIcon fontSize="large" />
+                <p className="pl-2 pr-2 pb-2">Poprzednie</p>
+              </button>
+            )}
+            {Number(questionindex) == questionsWithAnswers?.length! - 1 ? (
+              <div></div>
+            ) : (
+              <button
+                onClick={handleNextClick}
+                className="flex flex-col justify-center items-center rounded-2xl hover:bg-green-500 bg-gray-800 h-[35%] border-2 border-gray-100"
+              >
+                <ChevronRightIcon fontSize="large" />
+                <p className="pl-2 pr-2 pb-2">Następne</p>
+              </button>
+            )}
+            <button
+              onClick={handlePauseClick}
+              className="flex flex-col justify-center items-center rounded-2xl hover:bg-yellow-500 bg-gray-800 h-[15%] border-2 border-gray-100"
+            >
+              <p>Przerwij</p>
+            </button>
+            <button
+              onClick={handleFinishClick}
+              className="flex flex-col justify-center items-center rounded-2xl hover:bg-red-500 bg-gray-800 h-[15%] border-2 border-gray-100"
+            >
+              <p>Zakończ</p>
+            </button>
+          </div>
         </div>
       </div>
     </div>

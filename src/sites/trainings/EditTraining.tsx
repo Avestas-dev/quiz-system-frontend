@@ -96,7 +96,7 @@ export const EditTraining = () => {
     }
   )
 
-  const defaultTags: string[] = tagData!.map((tag) => tag.name!)
+  //const defaultTags: string[] = tagData!.map((tag) => tag.name!)
 
   const handleChange = (event: SelectChangeEvent<typeof tagName>) => {
     const {

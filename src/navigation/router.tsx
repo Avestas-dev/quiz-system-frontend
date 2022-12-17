@@ -26,10 +26,6 @@ export const AppRouter = () => {
       <Route path={PATHS.editQuestion} element={<EditQuestion />} />
       <Route path={PATHS.editTraining} element={<EditTraining />} />
       <Route path={PATHS.trainingSession} element={<TrainingSession />} />
-      <Route
-        path={PATHS.trainingSessionQuestion}
-        element={<TrainingSessionQuestion />}
-      />
       <Route path={PATHS.createTraining} element={<CreateTraining />} />
       <Route path={PATHS["admin-tags"]} element={<Tags />} />
       <Route path={PATHS["admin-users"]} element={<Users />} />

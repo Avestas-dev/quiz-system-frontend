@@ -62,7 +62,9 @@ export default function QuizListItem({
     {
       onSuccess: async (response) => {
         toast.success("Training session started!", { autoClose: 2000 })
-        navigate(`/training-session/${response.trainingSessionId}`)
+        navigate(
+          `/training-session/${response.trainingSessionId}/training/${id}/question/0`
+        )
       },
       onError: (error) => {
         toast.error(error?.response?.data?.message || "Session start error", {
