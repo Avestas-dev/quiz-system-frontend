@@ -15,6 +15,7 @@ import axios from "axios"
 import { useMutation } from "react-query"
 import { toast } from "react-toastify"
 import { StartTrainingSessionResponse } from "../../../models/Api"
+import { Box, Chip } from "@mui/material"
 interface QuizProps {
   id?: number
   name?: string
@@ -22,6 +23,12 @@ interface QuizProps {
   withButtons?: boolean
   userId?: number
   userEmail?: string
+  tags?:
+    | {
+        tagId?: number | undefined
+        tagName?: string | undefined
+      }[]
+    | undefined
 }
 
 interface TrainingSessionProps {
@@ -35,6 +42,7 @@ export default function QuizListItem({
   withButtons = true,
   userId,
   userEmail,
+  tags,
 }: QuizProps) {
   const navigate = useNavigate()
 
@@ -67,7 +75,7 @@ export default function QuizListItem({
   return (
     <div className="flex flex-col bg-white border-1 border-gray-400 rounded-xl hover:drop-shadow-2xl">
       <div className="h-5/6 p-2 space-x-2 ">
-        <div className="float-left  bg-gray-300 h-24   p-2 rounded-xl">
+        <div className="float-left  bg-gray-300 h-24  p-2 rounded-xl">
           Obrazek quizu
         </div>
         <div
@@ -77,15 +85,19 @@ export default function QuizListItem({
           className="float-left flex flex-col mt-2 "
         >
           <div className="flex flex-row">
-            <p className="text-gray-500 text-[10px] mt-1">QUIZ</p>
-            <div className="flex flex-row rounded bg-yellow-400 text-yellow-500 text-[10px]">
-              <div className="text-[12px]">
-                <Bolt fontSize="inherit"></Bolt>
-              </div>
-              <p className="mt-1">HARD</p>
-            </div>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              {tags &&
+                tags?.map((tag) => (
+                  <Chip
+                    color="warning"
+                    variant="outlined"
+                    key={tag.tagName}
+                    label={tag.tagName}
+                  />
+                ))}
+            </Box>
           </div>
-          <div>{name}</div>
+          <h2>{name}</h2>
           <div className="flex flex-row text-[10px]">
             <PrecisionManufacturingIcon fontSize="inherit" />
             <p> 0% poprawność odpowiedzi</p>
@@ -143,7 +155,6 @@ export default function QuizListItem({
             <p className="mt-1">Zapisz</p>
           </button>
         </div>
-
         <div className="float-right flex flex-row mt-2 ml-2">
           <button className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-red-200">
             <FavoriteBorderIcon fontSize="small" />
