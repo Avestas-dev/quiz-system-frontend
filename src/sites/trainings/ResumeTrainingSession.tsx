@@ -1,4 +1,3 @@
-import { Checkbox, IconButton } from "@mui/material"
 import axios from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useNavigate, useParams } from "react-router"
@@ -9,27 +8,27 @@ import {
   GetTrainingSessionQuestionsResponse,
   GetUserTrainingSessionResponse,
 } from "../../models/Api"
-
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined"
 import FunctionsOutlinedIcon from "@mui/icons-material/FunctionsOutlined"
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined"
 import RadioButtonUncheckedOutlinedIcon from "@mui/icons-material/RadioButtonUncheckedOutlined"
-import React from "react"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
+import { Checkbox, IconButton } from "@mui/material"
+import React from "react"
 
 export interface TrainingSessionProps {
   trainingId: number
 }
 
-export const TrainingSession = () => {
-  const queryClient = useQueryClient()
-
-  const { trainingSessionId, questionindex, trainingId } = useParams()
+export const ResumeTrainingSession = () => {
+  const { trainingSessionId, trainingId, questionIndex } = useParams()
 
   const navigate = useNavigate()
+
+  const queryClient = useQueryClient()
 
   const { data: userTrainingSessionData } = useQuery<
     any,
@@ -39,6 +38,36 @@ export const TrainingSession = () => {
     `/training-session`,
     async () => {
       const res = await axios.get(`/training-session/${trainingSessionId}`)
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        // toast.success("Training session data loaded succesfully", {
+        //   autoClose: 3000,
+        // })
+      },
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+            "There was an error while getting training session data",
+          {
+            autoClose: 2000,
+          }
+        )
+      },
+    }
+  )
+
+  const { data: trainingSessionData } = useQuery<
+    any,
+    any,
+    GetTrainingSessionQuestionsResponse
+  >(
+    `/training-session/questions`,
+    async () => {
+      const res = await axios.get(
+        `/training-session/${trainingSessionId}/questions`
+      )
       return res.data
     },
     {
@@ -87,38 +116,8 @@ export const TrainingSession = () => {
     }
   )
 
-  const { data: trainingSessionData } = useQuery<
-    any,
-    any,
-    GetTrainingSessionQuestionsResponse
-  >(
-    `/training-session/questions`,
-    async () => {
-      const res = await axios.get(
-        `/training-session/${trainingSessionId}/questions`
-      )
-      return res.data
-    },
-    {
-      onSuccess: async (response) => {
-        // toast.success("Training session data loaded succesfully", {
-        //   autoClose: 3000,
-        // })
-      },
-      onError: (error) => {
-        toast.error(
-          error?.response?.data?.message ||
-            "There was an error while getting training session data",
-          {
-            autoClose: 2000,
-          }
-        )
-      },
-    }
-  )
-
   const endTraining: TrainingSessionProps = {
-    trainingId: userTrainingSessionData?.trainingId!,
+    trainingId: Number(trainingId),
   }
 
   const endTrainingMutation = useMutation<any, any, TrainingSessionProps>(
@@ -161,40 +160,40 @@ export const TrainingSession = () => {
 
   const handleNextClick = () => {
     if (
-      userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
+      userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
         .answerStatus == "not_answered" &&
       answersId.length !== 0
     ) {
       addTrainingSessionAnswersMutation.mutate({
         trainingSessionId: Number(trainingSessionId),
-        questionId: questionsWithAnswers?.[Number(questionindex)].id,
+        questionId: remainingQuestions?.[Number(questionIndex)].id,
         questionAnswerIds: answersId,
       })
     }
     setAnswersId([])
     navigate(
-      `/training-session/${trainingSessionId}/training/${trainingId}/question/${
-        Number(questionindex) + 1
+      `/training-session/resume/${trainingSessionId}/training/${trainingId}/question/${
+        Number(questionIndex) + 1
       }`
     )
   }
 
   const handlePreviousClick = () => {
     if (
-      userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
+      userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
         .answerStatus === "not_answered" &&
       answersId.length !== 0
     ) {
       addTrainingSessionAnswersMutation.mutate({
         trainingSessionId: Number(trainingSessionId),
-        questionId: questionsWithAnswers?.[Number(questionindex)].id,
+        questionId: remainingQuestions?.[Number(questionIndex)].id,
         questionAnswerIds: answersId,
       })
     }
     setAnswersId([])
     navigate(
-      `/training-session/${trainingSessionId}/training/${trainingId}/question/${
-        Number(questionindex) - 1
+      `/training-session/resume/${trainingSessionId}/training/${trainingId}/question/${
+        Number(questionIndex) - 1
       }`
     )
   }
@@ -207,14 +206,14 @@ export const TrainingSession = () => {
   const handleFinishClick = () => {
     queryClient.removeQueries("/training-session")
     if (
-      userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
+      userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
         .answerStatus === "not_answered" &&
-      Number(questionindex) == questionsWithAnswers?.length! - 1 &&
+      Number(questionIndex) == questionsWithAnswers?.length! - 1 &&
       answersId.length != 0
     ) {
       addTrainingSessionAnswersMutation.mutate({
         trainingSessionId: Number(trainingSessionId),
-        questionId: questionsWithAnswers?.[Number(questionindex)].id,
+        questionId: remainingQuestions?.[Number(questionIndex)].id,
         questionAnswerIds: answersId,
       })
     }
@@ -233,17 +232,16 @@ export const TrainingSession = () => {
       setAnswersId(answersId.filter((item) => item !== Number(value)))
     }
   }
-  // console.log("qyestion with answer", questionsWithAnswers)
 
-  // console.log(
-  //   "answer status",
-  //   userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
-  //     .answerStatus
-  // )
+  const remainingQuestions = questionsWithAnswers?.filter((el) => {
+    return trainingSessionData?.questions?.some((q) => {
+      return q.question === el.question
+    })
+  })
 
-  // console.log("training sesion data", trainingSessionData)
-
-  // console.log("answers ids", answersId)
+  console.log("odpowiedzi z pytaniami wszystkie:", questionsWithAnswers)
+  console.log("odpowiedzi z pytaniami pozostałe:", trainingSessionData)
+  console.log("pozostale", remainingQuestions)
 
   return (
     <div>
@@ -261,66 +259,69 @@ export const TrainingSession = () => {
           <div className="flex flex-col w-[80%] p-2 rounded-2xl bg-yellow-300">
             <div className="flex items-center h-[70%] justify-center rounded-xl border-4 border-yellow-200">
               <div>
-                {questionsWithAnswers?.[Number(questionindex)].question}
+                {remainingQuestions?.[Number(questionIndex)].question !==
+                  undefined &&
+                  remainingQuestions?.[Number(questionIndex)].question}
               </div>
             </div>
             <div className="flex h-full flex-row space-x-8 ">
-              {questionsWithAnswers?.[
-                Number(questionindex)
-              ].QuestionAnswer?.map((answer) => (
-                <div
-                  key={answer.id}
-                  className="flex p-2 flex-col w-[25%] h-full"
-                >
-                  <div
-                    // style={{ backgroundColor: `${getRandomHtmlColor()}` }}
-                    className="rounded-xl bg-purple-400 flex flex-col h-full"
-                  >
-                    <div>
-                      <div className="float-right">
-                        <Checkbox
-                          onChange={handleChange}
-                          checked={answersId.includes(answer.id!)}
-                          value={answer.id!}
-                          icon={
-                            <RadioButtonUncheckedOutlinedIcon fontSize="small" />
-                          }
-                          checkedIcon={
-                            <CheckCircleOutlineOutlinedIcon
-                              color="success"
-                              fontSize="small"
+              {remainingQuestions !== undefined &&
+                remainingQuestions?.[Number(questionIndex)].QuestionAnswer?.map(
+                  (answer) => (
+                    <div
+                      key={answer.id}
+                      className="flex p-2 flex-col w-[25%] h-full"
+                    >
+                      <div
+                        // style={{ backgroundColor: `${getRandomHtmlColor()}` }}
+                        className="rounded-xl bg-purple-400 flex flex-col h-full"
+                      >
+                        <div>
+                          <div className="float-right">
+                            <Checkbox
+                              onChange={handleChange}
+                              checked={answersId.includes(answer.id!)}
+                              value={answer.id!}
+                              icon={
+                                <RadioButtonUncheckedOutlinedIcon fontSize="small" />
+                              }
+                              checkedIcon={
+                                <CheckCircleOutlineOutlinedIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              }
+                              defaultChecked={false}
                             />
-                          }
-                          defaultChecked={false}
-                        />
-                      </div>
-                      <div className="float-left">
-                        <IconButton>
-                          <DeleteOutlineOutlinedIcon fontSize="small" />
-                        </IconButton>
-                      </div>
-                      <div className="float-left">
-                        <IconButton>
-                          <ImageOutlinedIcon fontSize="small" />
-                        </IconButton>
-                      </div>
-                      <div className="float-left">
-                        <IconButton>
-                          <FunctionsOutlinedIcon fontSize="small" />
-                        </IconButton>
-                      </div>
-                    </div>
+                          </div>
+                          <div className="float-left">
+                            <IconButton>
+                              <DeleteOutlineOutlinedIcon fontSize="small" />
+                            </IconButton>
+                          </div>
+                          <div className="float-left">
+                            <IconButton>
+                              <ImageOutlinedIcon fontSize="small" />
+                            </IconButton>
+                          </div>
+                          <div className="float-left">
+                            <IconButton>
+                              <FunctionsOutlinedIcon fontSize="small" />
+                            </IconButton>
+                          </div>
+                        </div>
 
-                    <div className="flex rounded-xl h-full items-center justify-center">
-                      <div>{answer && answer?.answer}</div>
+                        <div className="flex rounded-xl h-full items-center justify-center">
+                          <div>{answer && answer?.answer}</div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  )
+                )}
             </div>
           </div>
           <div className="flex flex-col space-y-2 w-[20%]">
-            {Number(questionindex) == 0 ? (
+            {Number(questionIndex) == 0 ? (
               <div></div>
             ) : (
               <button
@@ -331,7 +332,7 @@ export const TrainingSession = () => {
                 <p className="pl-2 pr-2 pb-2">Poprzednie</p>
               </button>
             )}
-            {Number(questionindex) == questionsWithAnswers?.length! - 1 ? (
+            {Number(questionIndex) == remainingQuestions?.length! - 1 ? (
               <div></div>
             ) : (
               <button

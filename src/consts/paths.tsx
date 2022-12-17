@@ -8,8 +8,8 @@ export const PATHS = {
   editTraining: "/training/edit/:id",
   trainingSession:
     "/training-session/:trainingSessionId/training/:trainingId/question/:questionindex",
-  trainingSessionQuestion:
-    "/training-session/:trainingSessionId/question/:questionId",
+  trainingSessionResume:
+    "/training-session/resume/:trainingSessionId/training/:trainingId/question/:questionIndex",
   editQuestion: "/question/edit/:id",
   createTraining: "/training/create/:type",
   createQuestion: "/question/create/:trainingId",

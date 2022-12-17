@@ -12,13 +12,22 @@ import { UserContext } from "../../../contexts/UserContext"
 import { DeleteTraining } from "../DeleteTraining"
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline"
 import axios from "axios"
-import { useMutation } from "react-query"
+import { useMutation, useQuery } from "react-query"
 import { toast } from "react-toastify"
-import { StartTrainingSessionResponse } from "../../../models/Api"
+import {
+  GetUserTrainingSessionResponse,
+  StartTrainingSessionResponse,
+} from "../../../models/Api"
 import { Box, Chip } from "@mui/material"
 interface QuizProps {
   id?: number
   name?: string
+  trainingSession?: {
+    id?: number
+    createdAt?: string
+    finished?: boolean
+    updatedAt?: string
+  }
   visibility?: boolean
   withButtons?: boolean
   userId?: number
@@ -38,6 +47,7 @@ interface TrainingSessionProps {
 export default function QuizListItem({
   id,
   name,
+  trainingSession,
   visibility = true,
   withButtons = true,
   userId,
@@ -164,15 +174,30 @@ export default function QuizListItem({
           </button>
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
-          <button
-            onClick={() => {
-              startTrainingMutation.mutate(startTraining)
-            }}
-            className="bg-green-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-green-400"
-          >
-            <PlayCircleOutlineIcon fontSize="small" />
-            <p className="mt-1">Rozpocznij quiz</p>
-          </button>
+          {trainingSession?.finished || trainingSession === undefined ? (
+            <button
+              onClick={() => {
+                startTrainingMutation.mutate(startTraining)
+              }}
+              className="bg-green-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-green-400"
+            >
+              <PlayCircleOutlineIcon fontSize="small" />
+              <p className="mt-1">Rozpocznij quiz</p>
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                navigate(
+                  `/training-session/resume/${trainingSession.id}/training/${id}/question/0`
+                )
+                console.log("halo")
+              }}
+              className="bg-yellow-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-yellow-400"
+            >
+              <PlayCircleOutlineIcon fontSize="small" />
+              <p className="mt-1">Wznów sesję treningową</p>
+            </button>
+          )}
         </div>
       </div>
     </div>

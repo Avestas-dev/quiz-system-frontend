@@ -44,6 +44,8 @@ export const GetAllTrainings = ({
     }
   )
 
+  console.log("wszysttkie treningi:", data)
+
   return (
     <div className="space-y-2">
       {data
@@ -53,6 +55,7 @@ export const GetAllTrainings = ({
             <QuizListItem
               id={e.id}
               name={e.name}
+              trainingSession={e.trainingSession?.[0]}
               withButtons={userContext.userId === e.userId}
               userId={e.userId}
               userEmail={e.user?.email}

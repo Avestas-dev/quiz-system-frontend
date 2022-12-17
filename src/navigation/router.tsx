@@ -9,6 +9,7 @@ import { CreateQuestionWithAnswers } from "../sites/trainings/CreateQuestionWith
 import { CreateTraining } from "../sites/trainings/CreateTraining"
 import { EditQuestion } from "../sites/trainings/EditQuestion"
 import { EditTraining } from "../sites/trainings/EditTraining"
+import { ResumeTrainingSession } from "../sites/trainings/ResumeTrainingSession"
 import { TrainingList } from "../sites/trainings/TrainingList"
 import { TrainingSession } from "../sites/trainings/TrainingSession"
 import { TrainingView } from "../sites/trainings/TrainingView"
@@ -25,6 +26,10 @@ export const AppRouter = () => {
       <Route path={PATHS.editQuestion} element={<EditQuestion />} />
       <Route path={PATHS.editTraining} element={<EditTraining />} />
       <Route path={PATHS.trainingSession} element={<TrainingSession />} />
+      <Route
+        path={PATHS.trainingSessionResume}
+        element={<ResumeTrainingSession />}
+      />
       <Route path={PATHS.createTraining} element={<CreateTraining />} />
       <Route path={PATHS["admin-tags"]} element={<Tags />} />
       <Route path={PATHS["admin-users"]} element={<Users />} />
