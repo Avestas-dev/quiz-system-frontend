@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios"
-import React, { createContext, ReactElement, useEffect, useState } from "react"
+import React, { ReactElement, createContext, useEffect, useState } from "react"
 import { useMutation } from "react-query"
 import { useNavigate } from "react-router"
 import { PATHS } from "../consts/paths"
@@ -10,6 +10,8 @@ export const UserContext = createContext({
   setUserId: (prevState: number) => {},
   isLoggedIn: false,
   setIsLoggedIn: (prevState: boolean) => {},
+  isAdmin: false,
+  setIsAdmin: (prevState: boolean) => {},
   token: "",
   setToken: (prevState: string) => {},
   refreshToken: "",
@@ -30,6 +32,9 @@ export const UserContextProvider: React.FC<{
   children: ReactElement<any, any>
 }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(
+    localStorage.getItem("isAdmin") === "true"
+  )
   const [email, setEmail] = useState(localStorage.getItem("email") || "")
   const [userId, setUserId] = useState(
     Number(localStorage.getItem("userId")) || -1
@@ -51,6 +56,7 @@ export const UserContextProvider: React.FC<{
     email,
     remember,
     userId,
+    isAdmin,
   }: LoginResponse & { remember: boolean }) => {
     if (token && refreshToken && email) {
       if (userId !== undefined) setUserId(userId)
@@ -59,18 +65,21 @@ export const UserContextProvider: React.FC<{
       setToken(token)
       setRefreshToken(refreshToken)
       setIsLoggedIn(true)
+      setIsAdmin(!!isAdmin)
       axios.defaults.headers.common.Authorization = `Bearer ${token}`
       axios.defaults.headers.common.Refresh = refreshToken
       if (remember) {
         localStorage.setItem("token", token)
         localStorage.setItem("refreshToken", refreshToken)
         localStorage.setItem("email", email)
+        localStorage.setItem("isAdmin", isAdmin?.toString() || "false")
         if (userId !== undefined)
           localStorage.setItem("userId", userId.toString())
       } else {
         localStorage.removeItem("token")
         localStorage.removeItem("refreshToken")
         localStorage.removeItem("email")
+        localStorage.removeItem("isAdmin")
       }
     }
   }
@@ -92,6 +101,7 @@ export const UserContextProvider: React.FC<{
           email: response?.email,
           refreshToken: localStorage.getItem("refreshToken") as string,
           token: localStorage.getItem("token") as string,
+          isAdmin: localStorage.getItem("isAdmin") === "true",
         })
       },
       onError: (error) => {
@@ -109,10 +119,12 @@ export const UserContextProvider: React.FC<{
     setToken("")
     setRefreshToken("")
     setUserId(-1)
+    setIsAdmin(false)
     localStorage.removeItem("token")
     localStorage.removeItem("refreshToken")
     localStorage.removeItem("email")
     localStorage.removeItem("userId")
+    localStorage.removeItem("isAdmin")
     axios.defaults.headers.common.Authorization = null
     axios.defaults.headers.common.Refresh = null
     setIsLoggedIn(false)
@@ -134,6 +146,8 @@ export const UserContextProvider: React.FC<{
         setRefreshToken: setRefreshToken,
         setEmail: setEmail,
         logout: logout,
+        isAdmin: isAdmin,
+        setIsAdmin: setIsAdmin,
       }}
     >
       {children}

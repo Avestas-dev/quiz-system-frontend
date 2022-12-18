@@ -12,26 +12,35 @@ import Toolbar from "@mui/material/Toolbar"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { PATHS } from "../../consts/paths"
 import { UserContext } from "../../contexts/UserContext"
 
-const pages: { name: string; path: string; isLoggedIn?: boolean }[] = [
-  { name: "Home", path: PATHS.home, isLoggedIn: false },
-  { name: "Login", path: PATHS.login, isLoggedIn: false },
-  { name: "Register", path: PATHS.register, isLoggedIn: false },
-  { name: "Trainings", path: PATHS.trainings, isLoggedIn: false },
-  { name: "Tags", path: PATHS["admin-tags"] },
-  { name: "Users", path: PATHS["admin-users"] },
+type availabilityType = "not_logged_in" | "user" | "admin"
+const pages: {
+  name: string
+  path: string
+  availability: availabilityType
+}[] = [
+  { name: "Home", path: PATHS.home, availability: "not_logged_in" },
+  { name: "Login", path: PATHS.login, availability: "not_logged_in" },
+  { name: "Register", path: PATHS.register, availability: "not_logged_in" },
+  { name: "Trainings", path: PATHS.trainings, availability: "user" },
+  { name: "Tags", path: PATHS["admin-tags"], availability: "admin" },
+  { name: "Users", path: PATHS["admin-users"], availability: "admin" },
 ]
-const settings: { name: string; path: string }[] = [
-  { name: "Home", path: PATHS.home },
-  { name: "Login", path: PATHS.login },
-  { name: "Register", path: PATHS.register },
-  { name: "Trainings", path: PATHS.trainings },
-  { name: "Tags", path: PATHS["admin-tags"] },
-  { name: "Users", path: PATHS["admin-users"] },
+const settings: {
+  name: string
+  path: string
+  availability: availabilityType
+}[] = [
+  { name: "Home", path: PATHS.home, availability: "not_logged_in" },
+  { name: "Login", path: PATHS.login, availability: "not_logged_in" },
+  { name: "Register", path: PATHS.register, availability: "not_logged_in" },
+  { name: "Trainings", path: PATHS.trainings, availability: "user" },
+  { name: "Tags", path: PATHS["admin-tags"], availability: "admin" },
+  { name: "Users", path: PATHS["admin-users"], availability: "admin" },
 ]
 
 export const ResponsiveAppBar = () => {
@@ -39,7 +48,16 @@ export const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
-  const userContext = useContext(UserContext)
+  const { isAdmin, isLoggedIn, logout } = useContext(UserContext)
+  const getAvailability = React.useCallback((): availabilityType => {
+    if (isAdmin) return "admin"
+    else if (isLoggedIn) return "user"
+    else return "not_logged_in"
+  }, [])
+  const [availability, setAvailability] = React.useState<availabilityType>(
+    getAvailability()
+  )
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
@@ -54,6 +72,9 @@ export const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
+  useEffect(() => {
+    setAvailability(getAvailability)
+  }, [isAdmin, isLoggedIn, getAvailability])
 
   return (
     <AppBar position="static">
@@ -106,11 +127,18 @@ export const ResponsiveAppBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.name}</Typography>
-                </MenuItem>
-              ))}
+              {pages
+                .filter(
+                  (page) =>
+                    page.availability === availability ||
+                    (availability === "admin" &&
+                      page.availability !== "not_logged_in")
+                )
+                .map((page) => (
+                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                ))}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -133,16 +161,23 @@ export const ResponsiveAppBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Link key={page.name} to={page.path}>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.name}
-                </Button>
-              </Link>
-            ))}
+            {pages
+              .filter(
+                (page) =>
+                  page.availability === availability ||
+                  (availability === "admin" &&
+                    page.availability !== "not_logged_in")
+              )
+              .map((page) => (
+                <Link key={page.name} to={page.path}>
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page.name}
+                  </Button>
+                </Link>
+              ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -167,16 +202,23 @@ export const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <Link key={setting.name} to={setting.path}>
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting.name}</Typography>
-                  </MenuItem>
-                </Link>
-              ))}
+              {settings
+                .filter(
+                  (setting) =>
+                    setting.availability === availability ||
+                    (availability === "admin" &&
+                      setting.availability !== "not_logged_in")
+                )
+                .map((setting) => (
+                  <Link key={setting.name} to={setting.path}>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">{setting.name}</Typography>
+                    </MenuItem>
+                  </Link>
+                ))}
               <MenuItem
                 onClick={() => {
-                  userContext.logout()
+                  logout()
                   handleCloseUserMenu()
                 }}
               >

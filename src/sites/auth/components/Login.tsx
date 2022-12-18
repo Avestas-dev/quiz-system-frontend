@@ -103,14 +103,15 @@ export const Login = () => {
     {
       onSuccess: async (response) => {
         userContext.login({
-          remember: watch("remember"),
+          remember: true,
           email: response?.email,
           refreshToken: response?.refreshToken,
           token: response?.token,
           userId: response?.userId,
+          isAdmin: response?.isAdmin,
         })
         toast.success("Logged in successfully!", { autoClose: 3000 })
-        navigate("/panel")
+        navigate("/trainings", { replace: true })
       },
       onError: (error) => {
         toast.error(error?.response?.data?.message || "Login error.", {
