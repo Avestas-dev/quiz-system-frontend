@@ -9,6 +9,7 @@ import ListIcon from "@mui/icons-material/List"
 
 import IconButton from "@mui/material/IconButton"
 import { toast } from "react-toastify"
+import React from "react"
 export interface GetAllQuestionsProps {
   trainingId: string | undefined
   withAnswers: boolean
@@ -20,13 +21,17 @@ export interface GetAllQuestionsProps {
 }
 export const GetAllQuestions = ({
   trainingId,
-  withAnswers = false,
+  withAnswers = true,
   description = "",
   schema = "",
   withButtons,
   withQuestionButtons,
   tag,
 }: GetAllQuestionsProps) => {
+  const [showQuestions, setShowQuestons] = React.useState(false)
+
+  const handleShowQuestions = () => setShowQuestons(!showQuestions)
+
   const { data } = useQuery<any, any, GetQuestionsResponse>(
     "/questions/all",
     async () => {
@@ -57,7 +62,7 @@ export const GetAllQuestions = ({
       {withButtons ? (
         <div className="">
           <div className="float-left">
-            <IconButton>
+            <IconButton onClick={handleShowQuestions}>
               <ListIcon />
             </IconButton>
           </div>
@@ -79,29 +84,33 @@ export const GetAllQuestions = ({
             </div>
           </div>
           <div className="float-right flex flex-row mt-2 ml-2">
-            <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
+            <button className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-400">
               <VisibilityIcon fontSize="small" />
               <p className="mt-1">Pokaż odpowiedzi</p>
-            </div>
+            </button>
           </div>
         </div>
       ) : (
         <div></div>
       )}
-      <div className="space-y-2">
-        {data &&
-          data.length > 0 &&
-          data?.map((e) => (
-            <div key={e.question}>
-              <QuestionListItem
-                id={e.id}
-                withButtons={withQuestionButtons}
-                question={e.question}
-                tag={tag}
-              />
-            </div>
-          ))}
-      </div>
+      {showQuestions || !withButtons ? (
+        <div className="space-y-2">
+          {data &&
+            data.length > 0 &&
+            data?.map((e) => (
+              <div key={e.question}>
+                <QuestionListItem
+                  id={e.id}
+                  withButtons={withQuestionButtons}
+                  question={e.question}
+                  tag={tag}
+                />
+              </div>
+            ))}
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   )
 }
