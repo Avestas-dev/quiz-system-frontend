@@ -1,6 +1,9 @@
 import axios from "axios"
-import { useQuery } from "react-query"
-import { GetQuestionResponse } from "../../../models/Api"
+import { useMutation, useQuery } from "react-query"
+import {
+  EditQuestionWithAnswersRequest,
+  GetQuestionResponse,
+} from "../../../models/Api"
 import MovieCreation from "@mui/icons-material/MovieCreation"
 import AudioFile from "@mui/icons-material/AudioFile"
 import Image from "@mui/icons-material/Image"
@@ -22,14 +25,31 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import RadioButtonUncheckedOutlinedIcon from "@mui/icons-material/RadioButtonUncheckedOutlined"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
+import { CheckboxControl } from "../../../components/CheckboxControl"
+import { Controller, useForm } from "react-hook-form"
+import { InputControl } from "../../../components/InputControl"
 
 interface GetQuestionWithAnswers {
   questionId?: string
 }
 
+type EditQuestionWithAnswersFormProps = {
+  questionId: number
+  question: string
+  answers: {
+    answer?: string
+    isCorrect?: boolean
+    answerId?: number
+  }[]
+}
+
 export const GetQuestionWithAnswers = ({
   questionId,
 }: GetQuestionWithAnswers) => {
+  const { control, handleSubmit } = useForm<EditQuestionWithAnswersFormProps>(
+    {}
+  )
+
   const navigate = useNavigate()
 
   function getRandomHtmlColor(): string {
@@ -43,7 +63,7 @@ export const GetQuestionWithAnswers = ({
     return color
   }
 
-  const { data } = useQuery<any, any, GetQuestionResponse>(
+  const { data, refetch } = useQuery<any, any, GetQuestionResponse>(
     "/questions/all",
     async () => {
       const res = await axios.get(`/question/${questionId}`)
@@ -65,6 +85,36 @@ export const GetQuestionWithAnswers = ({
     }
   )
 
+  const editQuestionWithAnswersMutation = useMutation<
+    any,
+    any,
+    EditQuestionWithAnswersRequest
+  >(
+    async (data) => {
+      const res = await axios.put("/question/with-answers", data)
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        toast.success("Edited questions succesfully!", { autoClose: 2000 })
+        refetch()
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || "Add question error.", {
+          autoClose: 2000,
+        })
+      },
+    }
+  )
+
+  const onSubmit = (props: EditQuestionWithAnswersFormProps) => {
+    props.questionId = Number(questionId)
+    props.answers.forEach(
+      (answer, index) => (answer.answerId = data?.QuestionAnswer?.[index].id)
+    )
+    editQuestionWithAnswersMutation.mutate(props)
+  }
+
   return (
     <>
       <div className="flex mt-8 flex-col  space-y-8 p-8 rounded-2xl  w-[60%] h-[80%] bg-yellow-300">
@@ -84,8 +134,12 @@ export const GetQuestionWithAnswers = ({
             </div>
           </div>
           <div className="w-4/5 rounded-xl border-4 border-yellow-200">
-            <TextField
+            <InputControl
+              defaultValue={data?.question}
               placeholder={data?.question}
+              control={control}
+              name={`question`}
+              autoFocus
               fullWidth
               multiline
               rows={6}
@@ -97,14 +151,17 @@ export const GetQuestionWithAnswers = ({
           </div>
         </div>
         <div className="flex flex-row space-x-8">
-          {data?.QuestionAnswer?.map((e) => (
-            <div key={e.id} className="flex flex-col w-[25%] ">
+          {data?.QuestionAnswer?.map((answer, index) => (
+            <div key={answer.id} className="flex flex-col w-[25%] ">
               <div
                 style={{ backgroundColor: `${getRandomHtmlColor()}` }}
                 className=" rounded-xl"
               >
                 <div className="float-right">
-                  <Checkbox
+                  <CheckboxControl
+                    control={control}
+                    name={`answers.${index}.isCorrect`}
+                    aria-label="test"
                     icon={<RadioButtonUncheckedOutlinedIcon fontSize="small" />}
                     checkedIcon={
                       <CheckCircleOutlineOutlinedIcon
@@ -112,6 +169,7 @@ export const GetQuestionWithAnswers = ({
                         fontSize="small"
                       />
                     }
+                    defaultChecked={answer.isCorrect}
                   />
                 </div>
                 <div className="float-left ">
@@ -129,7 +187,19 @@ export const GetQuestionWithAnswers = ({
                     <FunctionsOutlinedIcon fontSize="small" />
                   </IconButton>
                 </div>
-                <TextField placeholder={e.answer} rows={10} multiline />
+                <InputControl
+                  placeholder={answer.answer}
+                  defaultValue={answer.answer}
+                  control={control}
+                  name={`answers.${index}.answer`}
+                  multiline
+                  rows={8}
+                  style={{
+                    padding: "0.25rem",
+                    height: "",
+                  }}
+                  autoFocus
+                />
               </div>
             </div>
           ))}
@@ -148,9 +218,7 @@ export const GetQuestionWithAnswers = ({
         </div>
         <div className="float-right">
           <Button
-            onClick={() => {
-              navigate("/trainings")
-            }}
+            onClick={handleSubmit(onSubmit)}
             variant="contained"
             style={{
               backgroundColor: "black",
