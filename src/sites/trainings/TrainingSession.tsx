@@ -1,4 +1,4 @@
-import { Checkbox, IconButton } from "@mui/material"
+import { Box, Button, Checkbox, IconButton, Modal } from "@mui/material"
 import axios from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useNavigate, useParams } from "react-router"
@@ -19,12 +19,17 @@ import React from "react"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
+import { modalStyle } from "../../styles/globalStyles"
 
 export interface TrainingSessionProps {
   trainingId: number
 }
 
 export const TrainingSession = () => {
+  const [isModalOpen, setModalOpen] = React.useState(false)
+  const handleOpen = () => setModalOpen(true)
+  const handleClose = () => setModalOpen(false)
+
   const queryClient = useQueryClient()
 
   const { trainingSessionId, questionindex, trainingId } = useParams()
@@ -218,9 +223,8 @@ export const TrainingSession = () => {
         questionAnswerIds: answersId,
       })
     }
-    alert(userTrainingSessionData?.totalQuestionCount)
     endTrainingMutation.mutate(endTraining)
-    navigate("/trainings")
+    handleOpen()
   }
 
   const [answersId, setAnswersId] = React.useState<number[]>([])
@@ -233,17 +237,6 @@ export const TrainingSession = () => {
       setAnswersId(answersId.filter((item) => item !== Number(value)))
     }
   }
-  // console.log("qyestion with answer", questionsWithAnswers)
-
-  // console.log(
-  //   "answer status",
-  //   userTrainingSessionData?.trainingQuestions?.[Number(questionindex)]
-  //     .answerStatus
-  // )
-
-  // console.log("training sesion data", trainingSessionData)
-
-  // console.log("answers ids", answersId)
 
   return (
     <div>
@@ -261,7 +254,8 @@ export const TrainingSession = () => {
           <div className="flex flex-col w-[80%] p-2 rounded-2xl bg-yellow-300">
             <div className="flex items-center h-[70%] justify-center rounded-xl border-4 border-yellow-200">
               <div>
-                {questionsWithAnswers?.[Number(questionindex)].question}
+                {questionsWithAnswers &&
+                  questionsWithAnswers?.[Number(questionindex)]?.question}
               </div>
             </div>
             <div className="flex h-full flex-row space-x-8 ">
@@ -357,6 +351,30 @@ export const TrainingSession = () => {
           </div>
         </div>
       </div>
+      <Modal open={isModalOpen} onClose={handleClose}>
+        <Box sx={{ ...modalStyle, width: 400 }}>
+          <h2 id="parent-modal-title">Wyniki quizu</h2>
+          <p>
+            Liczba pytań quizu:{userTrainingSessionData?.totalQuestionCount}
+          </p>
+          <p>
+            Liczba poprawnych odpowiedzi:
+            {userTrainingSessionData?.correctQuestionCount}
+          </p>
+          <div className="pt-4  text-center ">
+            <Button
+              type="submit"
+              variant="contained"
+              onClick={() => {
+                navigate("/trainings")
+              }}
+              style={{ borderRadius: 9999 }}
+            >
+              Kontynuuj
+            </Button>
+          </div>
+        </Box>
+      </Modal>
     </div>
   )
 }

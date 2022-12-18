@@ -16,14 +16,19 @@ import RadioButtonUncheckedOutlinedIcon from "@mui/icons-material/RadioButtonUnc
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
-import { Checkbox, IconButton } from "@mui/material"
+import { Box, Button, Checkbox, IconButton, Modal } from "@mui/material"
 import React from "react"
+import { modalStyle } from "../../styles/globalStyles"
 
 export interface TrainingSessionProps {
   trainingId: number
 }
 
 export const ResumeTrainingSession = () => {
+  const [isModalOpen, setModalOpen] = React.useState(false)
+  const handleOpen = () => setModalOpen(true)
+  const handleClose = () => setModalOpen(false)
+
   const { trainingSessionId, trainingId, questionIndex } = useParams()
 
   const navigate = useNavigate()
@@ -160,8 +165,8 @@ export const ResumeTrainingSession = () => {
 
   const handleNextClick = () => {
     if (
-      userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
-        .answerStatus == "not_answered" &&
+      //   userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
+      //     .answerStatus == "not_answered" &&
       answersId.length !== 0
     ) {
       addTrainingSessionAnswersMutation.mutate({
@@ -180,8 +185,8 @@ export const ResumeTrainingSession = () => {
 
   const handlePreviousClick = () => {
     if (
-      userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
-        .answerStatus === "not_answered" &&
+      //   userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
+      //     .answerStatus === "not_answered" &&
       answersId.length !== 0
     ) {
       addTrainingSessionAnswersMutation.mutate({
@@ -206,9 +211,9 @@ export const ResumeTrainingSession = () => {
   const handleFinishClick = () => {
     queryClient.removeQueries("/training-session")
     if (
-      userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
-        .answerStatus === "not_answered" &&
-      Number(questionIndex) == questionsWithAnswers?.length! - 1 &&
+      //   userTrainingSessionData?.trainingQuestions?.[Number(questionIndex)]
+      //     .answerStatus === "not_answered" &&
+      //   Number(questionIndex) == questionsWithAnswers?.length! - 1 &&
       answersId.length != 0
     ) {
       addTrainingSessionAnswersMutation.mutate({
@@ -217,9 +222,8 @@ export const ResumeTrainingSession = () => {
         questionAnswerIds: answersId,
       })
     }
-    alert(userTrainingSessionData?.totalQuestionCount)
+    handleOpen()
     endTrainingMutation.mutate(endTraining)
-    navigate("/trainings")
   }
 
   const [answersId, setAnswersId] = React.useState<number[]>([])
@@ -239,10 +243,6 @@ export const ResumeTrainingSession = () => {
     })
   })
 
-  console.log("odpowiedzi z pytaniami wszystkie:", questionsWithAnswers)
-  console.log("odpowiedzi z pytaniami pozostałe:", trainingSessionData)
-  console.log("pozostale", remainingQuestions)
-
   return (
     <div>
       <div className="bg-yellow-300 space-x-3 pl-4 pr-4 h-12">
@@ -259,65 +259,64 @@ export const ResumeTrainingSession = () => {
           <div className="flex flex-col w-[80%] p-2 rounded-2xl bg-yellow-300">
             <div className="flex items-center h-[70%] justify-center rounded-xl border-4 border-yellow-200">
               <div>
-                {remainingQuestions?.[Number(questionIndex)].question !==
-                  undefined &&
-                  remainingQuestions?.[Number(questionIndex)].question}
+                {remainingQuestions &&
+                  remainingQuestions?.[Number(questionIndex)]?.question}
               </div>
             </div>
             <div className="flex h-full flex-row space-x-8 ">
-              {remainingQuestions !== undefined &&
-                remainingQuestions?.[Number(questionIndex)].QuestionAnswer?.map(
-                  (answer) => (
+              {remainingQuestions &&
+                remainingQuestions?.[
+                  Number(questionIndex)
+                ]?.QuestionAnswer?.map((answer) => (
+                  <div
+                    key={answer.id}
+                    className="flex p-2 flex-col w-[25%] h-full"
+                  >
                     <div
-                      key={answer.id}
-                      className="flex p-2 flex-col w-[25%] h-full"
+                      // style={{ backgroundColor: `${getRandomHtmlColor()}` }}
+                      className="rounded-xl bg-purple-400 flex flex-col h-full"
                     >
-                      <div
-                        // style={{ backgroundColor: `${getRandomHtmlColor()}` }}
-                        className="rounded-xl bg-purple-400 flex flex-col h-full"
-                      >
-                        <div>
-                          <div className="float-right">
-                            <Checkbox
-                              onChange={handleChange}
-                              checked={answersId.includes(answer.id!)}
-                              value={answer.id!}
-                              icon={
-                                <RadioButtonUncheckedOutlinedIcon fontSize="small" />
-                              }
-                              checkedIcon={
-                                <CheckCircleOutlineOutlinedIcon
-                                  color="success"
-                                  fontSize="small"
-                                />
-                              }
-                              defaultChecked={false}
-                            />
-                          </div>
-                          <div className="float-left">
-                            <IconButton>
-                              <DeleteOutlineOutlinedIcon fontSize="small" />
-                            </IconButton>
-                          </div>
-                          <div className="float-left">
-                            <IconButton>
-                              <ImageOutlinedIcon fontSize="small" />
-                            </IconButton>
-                          </div>
-                          <div className="float-left">
-                            <IconButton>
-                              <FunctionsOutlinedIcon fontSize="small" />
-                            </IconButton>
-                          </div>
+                      <div>
+                        <div className="float-right">
+                          <Checkbox
+                            onChange={handleChange}
+                            checked={answersId.includes(answer.id!)}
+                            value={answer.id!}
+                            icon={
+                              <RadioButtonUncheckedOutlinedIcon fontSize="small" />
+                            }
+                            checkedIcon={
+                              <CheckCircleOutlineOutlinedIcon
+                                color="success"
+                                fontSize="small"
+                              />
+                            }
+                            defaultChecked={false}
+                          />
                         </div>
-
-                        <div className="flex rounded-xl h-full items-center justify-center">
-                          <div>{answer && answer?.answer}</div>
+                        <div className="float-left">
+                          <IconButton>
+                            <DeleteOutlineOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </div>
+                        <div className="float-left">
+                          <IconButton>
+                            <ImageOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </div>
+                        <div className="float-left">
+                          <IconButton>
+                            <FunctionsOutlinedIcon fontSize="small" />
+                          </IconButton>
                         </div>
                       </div>
+
+                      <div className="flex rounded-xl h-full items-center justify-center">
+                        <div>{answer && answer?.answer}</div>
+                      </div>
                     </div>
-                  )
-                )}
+                  </div>
+                ))}
             </div>
           </div>
           <div className="flex flex-col space-y-2 w-[20%]">
@@ -358,6 +357,30 @@ export const ResumeTrainingSession = () => {
           </div>
         </div>
       </div>
+      <Modal open={isModalOpen} onClose={handleClose}>
+        <Box sx={{ ...modalStyle, width: 400 }}>
+          <h2 id="parent-modal-title">Wyniki quizu</h2>
+          <p>
+            Liczba pytań quizu:{userTrainingSessionData?.totalQuestionCount}
+          </p>
+          <p>
+            Liczba poprawnych odpowiedzi:
+            {userTrainingSessionData?.correctQuestionCount}
+          </p>
+          <div className="pt-4  text-center ">
+            <Button
+              type="submit"
+              variant="contained"
+              onClick={() => {
+                navigate("/trainings")
+              }}
+              style={{ borderRadius: 9999 }}
+            >
+              Kontynuuj
+            </Button>
+          </div>
+        </Box>
+      </Modal>
     </div>
   )
 }
