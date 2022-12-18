@@ -47,6 +47,7 @@ export const TrainingView = () => {
                 withButtons={userContext.userId === data?.userId}
                 userEmail={data.user?.email}
                 tags={data.tagTraining}
+                trainingSession={data.trainingSession?.[0]}
               />
             )}
           </div>
