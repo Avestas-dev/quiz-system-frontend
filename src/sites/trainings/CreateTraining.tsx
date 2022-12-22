@@ -140,7 +140,7 @@ export const CreateTraining = () => {
         <div className="w-[50%] bg-gray-300 p-5 flex flex-col rounded-xl h-full border-2 border-gray-400">
           <div className="flex flex-row">
             <div className="grid place-items-center rounded-xl bg-gray-400 m-2 w-[85%] ml-8 h-48">
-              zdjecie quizu
+              quiz photo
             </div>
             <div className="bg-red-300 text-[10px] mt-2 p-1 rounded-xl h-full">
               <Delete color="error" />
@@ -151,11 +151,11 @@ export const CreateTraining = () => {
               <InputControl
                 control={control}
                 name="name"
-                label="nazwa treningu"
+                label="training name"
                 autoFocus
                 autoComplete="training name"
                 inputProps={{ inputMode: "email" }}
-                defaultValue="nazwa treningu"
+                defaultValue="training name"
               />
               <FormControl sx={{ width: 220 }}>
                 <InputLabel id="demo-multiple-chip-label">Tag</InputLabel>

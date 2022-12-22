@@ -153,7 +153,7 @@ export const EditTraining = () => {
               }}
               className="bg-yellow-200 border-2 border-gray-400 rounded-xl p-1"
             >
-              Dodaj pytanie
+              Add question
             </button>
           </div>
           <div className="w-[100%]">
@@ -169,7 +169,7 @@ export const EditTraining = () => {
         <div className="w-[50%] bg-gray-300 mt-[50px] flex flex-col rounded-xl h-full border-2 border-gray-400">
           <div className="flex flex-row">
             <div className="grid place-items-center rounded-xl bg-gray-400 m-2 w-[85%] ml-8 h-48">
-              zdjecie quizu
+              Quiz photo
             </div>
             <div className="bg-red-300 text-[10px] mt-2 p-1 rounded-xl h-full">
               <Delete color="error" />

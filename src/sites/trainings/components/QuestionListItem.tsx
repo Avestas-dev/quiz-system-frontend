@@ -30,9 +30,7 @@ export const QuestionListItem = ({
         <div className="flex flex-row space-x-1 float-left">
           <input
             checked
-            onChange={() => {
-              console.log("dupa")
-            }}
+            onChange={() => {}}
             className=" accent-green-400"
             id="multi-choice-checkbox"
             type="checkbox"
@@ -45,9 +43,6 @@ export const QuestionListItem = ({
         </div>
       </div>
       <div className="p-2 space-x-2">
-        <div className="float-left  bg-gray-300 h-24 p-2 rounded-xl">
-          Obrazek pytania
-        </div>
         <div className="grid place-items-center h-24">
           <p>{question}</p>
         </div>
@@ -75,7 +70,7 @@ export const QuestionListItem = ({
                 }}
                 className="mt-1"
               >
-                Edytuj
+                Edit
               </button>
             </div>
           </div>

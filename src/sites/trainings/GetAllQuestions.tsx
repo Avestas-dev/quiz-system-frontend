@@ -68,25 +68,25 @@ export const GetAllQuestions = ({
           </div>
           <div className="float-left mt-2 ml-2">
             {!data && data === undefined ? (
-              <p>brak pytań</p>
+              <p>no questions</p>
             ) : data.length > 10 ? (
-              <p>{data.length} pytań</p>
+              <p>{data.length} questions</p>
             ) : data.length == 1 ? (
-              <p>{data.length} pytanie</p>
+              <p>{data.length} question</p>
             ) : (
-              <p>{data.length} pytania</p>
+              <p>{data.length} questions</p>
             )}
           </div>
           <div className="float-right flex flex-row mt-2 ml-2">
             <div className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3">
               <PlayArrowIcon fontSize="small" />
-              <p className="mt-1">Podgląd quizu</p>
+              <p className="mt-1">Quiz preview</p>
             </div>
           </div>
           <div className="float-right flex flex-row mt-2 ml-2">
             <button className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-400">
               <VisibilityIcon fontSize="small" />
-              <p className="mt-1">Pokaż odpowiedzi</p>
+              <p className="mt-1">Show answers</p>
             </button>
           </div>
         </div>

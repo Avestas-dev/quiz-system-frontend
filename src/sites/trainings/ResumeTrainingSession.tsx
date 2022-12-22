@@ -250,7 +250,7 @@ export const ResumeTrainingSession = () => {
           <p className="">QuizzMe</p>
         </div>
         <div className="mt-3 float-left text-[10px] content-center space-x-1">
-          <button className="">Kategoria</button>
+          <button className="">Category</button>
           <CreateOutlinedIcon fontSize="small" />
         </div>
       </div>
@@ -328,7 +328,7 @@ export const ResumeTrainingSession = () => {
                 className="flex flex-col justify-center items-center rounded-2xl hover:bg-green-500 bg-gray-800 h-[35%] border-2 border-gray-100"
               >
                 <ChevronLeftIcon fontSize="large" />
-                <p className="pl-2 pr-2 pb-2">Poprzednie</p>
+                <p className="pl-2 pr-2 pb-2">Previous</p>
               </button>
             )}
             {Number(questionIndex) == remainingQuestions?.length! - 1 ? (
@@ -339,32 +339,32 @@ export const ResumeTrainingSession = () => {
                 className="flex flex-col justify-center items-center rounded-2xl hover:bg-green-500 bg-gray-800 h-[35%] border-2 border-gray-100"
               >
                 <ChevronRightIcon fontSize="large" />
-                <p className="pl-2 pr-2 pb-2">Następne</p>
+                <p className="pl-2 pr-2 pb-2">Next</p>
               </button>
             )}
             <button
               onClick={handlePauseClick}
               className="flex flex-col justify-center items-center rounded-2xl hover:bg-yellow-500 bg-gray-800 h-[15%] border-2 border-gray-100"
             >
-              <p>Przerwij</p>
+              <p>Stop</p>
             </button>
             <button
               onClick={handleFinishClick}
               className="flex flex-col justify-center items-center rounded-2xl hover:bg-red-500 bg-gray-800 h-[15%] border-2 border-gray-100"
             >
-              <p>Zakończ</p>
+              <p>Finish</p>
             </button>
           </div>
         </div>
       </div>
       <Modal open={isModalOpen} onClose={handleClose}>
         <Box sx={{ ...modalStyle, width: 400 }}>
-          <h2 id="parent-modal-title">Wyniki quizu</h2>
+          <h2 id="parent-modal-title">Results</h2>
           <p>
-            Liczba pytań quizu:{userTrainingSessionData?.totalQuestionCount}
+            Number of question:{userTrainingSessionData?.totalQuestionCount}
           </p>
           <p>
-            Liczba poprawnych odpowiedzi:
+            Number of correct answers:
             {userTrainingSessionData?.correctQuestionCount}
           </p>
           <div className="pt-4  text-center ">
@@ -376,7 +376,7 @@ export const ResumeTrainingSession = () => {
               }}
               style={{ borderRadius: 9999 }}
             >
-              Kontynuuj
+              Continue
             </Button>
           </div>
         </Box>

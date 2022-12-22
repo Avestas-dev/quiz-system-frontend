@@ -9,7 +9,7 @@ export const EditTrainingTopBar = ({ saveButtonFunction }: any) => {
         <p className="">QuizzMe</p>
       </div>
       <div className="mt-3 float-left text-[10px] content-center space-x-1">
-        <button className="">Kategoria</button>
+        <button className="">Category</button>
         <CreateOutlinedIcon fontSize="small" />
       </div>
       <div className="float-right m-2">
@@ -17,12 +17,12 @@ export const EditTrainingTopBar = ({ saveButtonFunction }: any) => {
           onClick={saveButtonFunction}
           className="bg-yellow-100 rounded p-1"
         >
-          Zapisz
+          Save
         </button>
       </div>
       <div className="float-right m-2">
         <button className="p-1" onClick={() => navigate(-1)}>
-          Powrót do poprzedniego edytora
+          Return to previous page
         </button>
       </div>
     </div>
