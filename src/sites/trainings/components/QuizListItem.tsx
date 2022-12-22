@@ -1,5 +1,6 @@
 import Delete from "@mui/icons-material/DeleteOutlined"
 import Bolt from "@mui/icons-material/Bolt"
+import ThumbDownIcon from "@mui/icons-material/ThumbDown"
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
@@ -12,7 +13,7 @@ import { UserContext } from "../../../contexts/UserContext"
 import { DeleteTraining } from "../DeleteTraining"
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline"
 import axios from "axios"
-import { useMutation, useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import { toast } from "react-toastify"
 import {
   GetUserTrainingSessionResponse,
@@ -29,7 +30,9 @@ interface QuizProps {
     updatedAt?: string
   }
   visibility?: boolean
+  questionCount?: number
   withButtons?: boolean
+  liked?: boolean
   userId?: number
   userEmail?: string
   tags?:
@@ -50,7 +53,9 @@ export default function QuizListItem({
   trainingSession,
   visibility = true,
   withButtons = true,
+  questionCount,
   userId,
+  liked,
   userEmail,
   tags,
 }: QuizProps) {
@@ -59,6 +64,8 @@ export default function QuizListItem({
   const userContext = useContext(UserContext)
 
   const startTraining: TrainingSessionProps = { trainingId: id! }
+
+  const queryClient = useQueryClient()
 
   const startTrainingMutation = useMutation<
     StartTrainingSessionResponse,
@@ -84,12 +91,26 @@ export default function QuizListItem({
     }
   )
 
+  const likeTrainingMutation = useMutation<any, any, any>(
+    async (data) => {
+      const res = await axios.post(`/like-switch/${data}`)
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        queryClient.invalidateQueries("/training/all")
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || "Like error", {
+          autoClose: 2000,
+        })
+      },
+    }
+  )
+
   return (
     <div className="flex flex-col bg-white border-1 border-gray-400 rounded-xl hover:drop-shadow-2xl">
       <div className="h-5/6 p-2 space-x-2 ">
-        <div className="float-left  bg-gray-300 h-24  p-2 rounded-xl">
-          Obrazek quizu
-        </div>
         <div
           onClick={() => {
             navigate(`/training/${id}`)
@@ -110,14 +131,6 @@ export default function QuizListItem({
             </Box>
           </div>
           <h2>{name}</h2>
-          <div className="flex flex-row text-[10px]">
-            <PrecisionManufacturingIcon fontSize="inherit" />
-            <p> 0% poprawność odpowiedzi</p>
-          </div>
-          <div className="flex flex-row text-[10px]">
-            <PlayArrowIcon fontSize="inherit" />
-            <p> 0 odtworzeń</p>
-          </div>
         </div>
         <div className="float-right bg-gray-300 rounded-xl">
           {id !== undefined && userContext.userId == userId ? (
@@ -130,7 +143,7 @@ export default function QuizListItem({
       <div className="p-2">
         <div className="float-left flex flex-row">
           <AccountCircleIcon color="disabled" fontSize="large" />
-          <p className="text-[10px] mt-3">Autor: {userEmail}</p>
+          <p className="text-[10px] mt-3">Author: {userEmail}</p>
         </div>
         <div>
           {withButtons ? (
@@ -142,7 +155,7 @@ export default function QuizListItem({
                     navigate(`/training/edit/${id}`)
                   }}
                 >
-                  Edytuj
+                  Edit
                 </button>
               </div>
             </div>
@@ -153,9 +166,10 @@ export default function QuizListItem({
         <div className="float-right flex flex-row mt-2 ml-2">
           <button className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200">
             <ShareIcon fontSize="small" />
-            <p className="mt-1">Udostępnij</p>
+            <p className="mt-1">Share</p>
           </button>
         </div>
+
         <div className="float-right flex flex-row mt-2 ml-2">
           <button
             onClick={() => {
@@ -164,39 +178,56 @@ export default function QuizListItem({
             className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200"
           >
             <FolderOpenIcon fontSize="small" />
-            <p className="mt-1">Zapisz</p>
+            <p className="mt-1">Save</p>
           </button>
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
-          <button className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-red-200">
-            <FavoriteBorderIcon fontSize="small" />
-            <p className="mt-1">0</p>
+          <button
+            onClick={() => {
+              likeTrainingMutation.mutate(id)
+            }}
+            className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-red-200"
+          >
+            {liked ? (
+              <ThumbDownIcon fontSize="small" />
+            ) : (
+              <FavoriteBorderIcon fontSize="small" />
+            )}
+            {liked ? (
+              <p className="mt-1">Dislike</p>
+            ) : (
+              <p className="mt-1">Like</p>
+            )}
           </button>
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
-          {trainingSession?.finished || trainingSession === undefined ? (
-            <button
-              onClick={() => {
-                startTrainingMutation.mutate(startTraining)
-              }}
-              className="bg-green-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-green-400"
-            >
-              <PlayCircleOutlineIcon fontSize="small" />
-              <p className="mt-1">Rozpocznij quiz</p>
-            </button>
+          {questionCount && questionCount >= 0 ? (
+            trainingSession?.finished || trainingSession === undefined ? (
+              <button
+                onClick={() => {
+                  startTrainingMutation.mutate(startTraining)
+                }}
+                className="bg-green-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-green-400"
+              >
+                <PlayCircleOutlineIcon fontSize="small" />
+                <p className="mt-1">Start quiz</p>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  navigate(
+                    `/training-session/resume/${trainingSession.id}/training/${id}/question/0`
+                  )
+                  console.log("halo")
+                }}
+                className="bg-yellow-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-yellow-400"
+              >
+                <PlayCircleOutlineIcon fontSize="small" />
+                <p className="mt-1">Resume training session</p>
+              </button>
+            )
           ) : (
-            <button
-              onClick={() => {
-                navigate(
-                  `/training-session/resume/${trainingSession.id}/training/${id}/question/0`
-                )
-                console.log("halo")
-              }}
-              className="bg-yellow-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-yellow-400"
-            >
-              <PlayCircleOutlineIcon fontSize="small" />
-              <p className="mt-1">Wznów sesję treningową</p>
-            </button>
+            <div></div>
           )}
         </div>
       </div>
