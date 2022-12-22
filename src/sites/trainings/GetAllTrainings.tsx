@@ -4,34 +4,47 @@ import { useNavigate } from "react-router"
 import QuizListItem from "./components/QuizListItem"
 import { GetAllTrainingsResponse } from "../../models/Api"
 import { toast } from "react-toastify"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { UserContext } from "../../contexts/UserContext"
+import { Button, InputAdornment, TextField, ToggleButton } from "@mui/material"
+import SearchIcon from "@mui/icons-material/Search"
+import AddIcon from "@mui/icons-material/Add"
+import React from "react"
+import { Controller, useForm } from "react-hook-form"
+
 export interface GetAllTrainingsProps {
   onlyLiked?: boolean
   search?: string
   tags?: string[]
 }
+
+interface GetAllTrainingsFormProps {
+  onlyLiked?: boolean
+  search?: string
+}
+
 export const GetAllTrainings = ({
   onlyLiked = false,
-  search = "",
   tags = [],
 }: GetAllTrainingsProps) => {
   const userContext = useContext(UserContext)
 
-  console.log(userContext.userId)
+  const [onlyMine, setOnlyMine] = React.useState(false)
 
-  const { data } = useQuery<any, any, GetAllTrainingsResponse>(
-    "/training/all",
+  const { control, handleSubmit, watch } = useForm<GetAllTrainingsFormProps>({})
+
+  const watchSearch = watch("search")
+
+  const { data, refetch } = useQuery<any, any, GetAllTrainingsResponse>(
+    ["/training/all", { search: watch("search") }],
     async () => {
       const res = await axios.get(
-        `/training/all?onlyLiked=${onlyLiked}?search=${search}`
+        `/training/all?onlyLiked=${onlyLiked}?search=${watchSearch}`
       )
       return res.data
     },
     {
-      onSuccess: async (response) => {
-        toast.success("Trainings loaded succesfully", { autoClose: 3000 })
-      },
+      onSuccess: async (response) => {},
       onError: (error) => {
         toast.error(
           error?.response?.data?.message ||
@@ -43,11 +56,60 @@ export const GetAllTrainings = ({
       },
     }
   )
+  useEffect(() => {
+    refetch()
+  }, [watch("search")])
 
-  console.log("wszysttkie treningi:", data)
+  console.log("search:", watchSearch)
+  console.log("liczba treningow", data?.length)
 
   return (
     <div className="space-y-2">
+      <div className="flex items-center justify-center space-x-2">
+        <Controller
+          control={control}
+          name="search"
+          render={({ field: { onChange, value } }) => (
+            <TextField
+              value={value}
+              onChange={onChange}
+              id="filled-search"
+              label="Search trainings"
+              type="search"
+              variant="filled"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+        />
+
+        {/* <ToggleButton
+          color="warning"
+          selected={onlyMine}
+          onChange={() => {
+            setOnlyMine(!onlyMine)
+          }}
+          value={onlyMine}
+        >
+          Created by me
+        </ToggleButton> */}
+      </div>
+      <div className="flex items-center justify-center">
+        <Button
+          type="submit"
+          variant="contained"
+          onClick={() => {}}
+          style={{ borderRadius: 9999 }}
+          startIcon={<AddIcon />}
+        >
+          Add quiz
+        </Button>
+      </div>
       {data
         ?.filter((e) => e.visibility === true)
         .map((e) => (
@@ -57,9 +119,11 @@ export const GetAllTrainings = ({
               name={e.name}
               trainingSession={e.trainingSession?.[0]}
               withButtons={userContext.userId === e.userId}
+              questionCount={e.questionCount}
               userId={e.userId}
               userEmail={e.user?.email}
               tags={e.tagTraining}
+              liked={e.likedTraining}
             />
           </div>
         ))}
