@@ -58,15 +58,15 @@ export interface RegisterGoogleResponse {
   refreshToken?: string;
   /** @example resetToken */
   passwordResetToken?: string;
-  /** @example 2022-12-20T21:18:15.168Z */
+  /** @example 2022-12-22T00:12:01.194Z */
   passwordResetDate?: string;
   /** @example 105081556580525628106 */
   googleSub?: string;
   /** @example false */
   isAdmin?: boolean;
-  /** @example 2022-12-20T21:18:15.168Z */
+  /** @example 2022-12-22T00:12:01.194Z */
   createdAt?: string;
-  /** @example 2022-12-20T21:18:15.168Z */
+  /** @example 2022-12-22T00:12:01.194Z */
   updatedAt?: string;
 }
 
@@ -95,15 +95,15 @@ export interface RegisterResponse {
   refreshToken?: string;
   /** @example resetToken */
   passwordResetToken?: string;
-  /** @example 2022-12-20T21:18:15.169Z */
+  /** @example 2022-12-22T00:12:01.195Z */
   passwordResetDate?: string;
   /** @example 105081556580525628106 */
   googleSub?: string;
   /** @example false */
   isAdmin?: boolean;
-  /** @example 2022-12-20T21:18:15.169Z */
+  /** @example 2022-12-22T00:12:01.195Z */
   createdAt?: string;
-  /** @example 2022-12-20T21:18:15.169Z */
+  /** @example 2022-12-22T00:12:01.195Z */
   updatedAt?: string;
 }
 
@@ -160,11 +160,11 @@ export interface EditTrainingRequest {
 export type GetAllTrainingsResponse = {
   /** @example 1 */
   id?: number;
-  /** @example 2022-12-20T21:18:15.181Z */
+  /** @example 2022-12-22T00:12:01.206Z */
   createdAt?: string;
   /** @example test */
   name?: string;
-  /** @example 2022-12-20T21:18:15.181Z */
+  /** @example 2022-12-22T00:12:01.206Z */
   updatedAt?: string;
   /** @example 1 */
   userId?: number;
@@ -172,6 +172,8 @@ export type GetAllTrainingsResponse = {
   visibility?: boolean;
   /** @example true */
   likedTraining?: boolean;
+  /** @example 10 */
+  questionCount?: number;
   user?: {
     /** @example kamilporeba@hotmail.com */
     email?: string;
@@ -187,11 +189,11 @@ export type GetAllTrainingsResponse = {
   trainingSession?: {
     /** @example 1 */
     id?: number;
-    /** @example 2022-12-20T21:18:15.181Z */
+    /** @example 2022-12-22T00:12:01.206Z */
     createdAt?: string;
     /** @example false */
     finished?: boolean;
-    /** @example 2022-12-20T21:18:15.181Z */
+    /** @example 2022-12-22T00:12:01.206Z */
     updatedAt?: string;
   }[];
 }[];
@@ -199,11 +201,11 @@ export type GetAllTrainingsResponse = {
 export interface GetOneTrainingResponse {
   /** @example 1 */
   id?: number;
-  /** @example 2022-12-20T21:18:15.182Z */
+  /** @example 2022-12-22T00:12:01.206Z */
   createdAt?: string;
   /** @example test */
   name?: string;
-  /** @example 2022-12-20T21:18:15.182Z */
+  /** @example 2022-12-22T00:12:01.206Z */
   updatedAt?: string;
   /** @example 1 */
   userId?: number;
@@ -211,6 +213,8 @@ export interface GetOneTrainingResponse {
   visibility?: boolean;
   /** @example true */
   likedTraining?: boolean;
+  /** @example 10 */
+  questionCount?: number;
   user?: {
     /** @example kamilporeba@hotmail.com */
     email?: string;
@@ -226,11 +230,11 @@ export interface GetOneTrainingResponse {
   trainingSession?: {
     /** @example 1 */
     id?: number;
-    /** @example 2022-12-20T21:18:15.182Z */
+    /** @example 2022-12-22T00:12:01.206Z */
     createdAt?: string;
     /** @example false */
     finished?: boolean;
-    /** @example 2022-12-20T21:18:15.182Z */
+    /** @example 2022-12-22T00:12:01.206Z */
     updatedAt?: string;
   }[];
 }
@@ -254,7 +258,7 @@ export interface AddQuestionAnswerRequest {
 export interface AddQuestionAnswerResponse {
   /** @example answer */
   answer?: string;
-  /** @example 2022-12-20T21:18:15.164Z */
+  /** @example 2022-12-22T00:12:01.189Z */
   createdAt?: string;
   /** @example 1 */
   id?: number;
@@ -262,7 +266,7 @@ export interface AddQuestionAnswerResponse {
   isCorrect?: boolean;
   /** @example 1 */
   questionId?: number;
-  /** @example 2022-12-20T21:18:15.164Z */
+  /** @example 2022-12-22T00:12:01.189Z */
   updatedAt?: string;
 }
 
@@ -273,9 +277,9 @@ export type GetQuestionsResponse = {
   question?: string;
   /** @example 1 */
   trainingId?: number;
-  /** @example 2022-12-20T21:18:15.176Z */
+  /** @example 2022-12-22T00:12:01.201Z */
   createdAt?: string;
-  /** @example 2022-12-20T21:18:15.176Z */
+  /** @example 2022-12-22T00:12:01.201Z */
   updatedAt?: string;
   QuestionAnswer?: {
     /** @example 1 */
@@ -286,9 +290,9 @@ export type GetQuestionsResponse = {
     answer?: string;
     /** @example true */
     isCorrect?: boolean;
-    /** @example 2022-12-20T21:18:15.176Z */
+    /** @example 2022-12-22T00:12:01.201Z */
     createdAt?: string;
-    /** @example 2022-12-20T21:18:15.176Z */
+    /** @example 2022-12-22T00:12:01.201Z */
     updatedAt?: string;
   }[];
 }[];
@@ -300,9 +304,9 @@ export interface GetQuestionResponse {
   question?: string;
   /** @example 1 */
   trainingId?: number;
-  /** @example 2022-12-20T21:18:15.175Z */
+  /** @example 2022-12-22T00:12:01.201Z */
   createdAt?: string;
-  /** @example 2022-12-20T21:18:15.175Z */
+  /** @example 2022-12-22T00:12:01.201Z */
   updatedAt?: string;
   QuestionAnswer?: {
     /** @example 1 */
@@ -313,9 +317,9 @@ export interface GetQuestionResponse {
     answer?: string;
     /** @example true */
     isCorrect?: boolean;
-    /** @example 2022-12-20T21:18:15.175Z */
+    /** @example 2022-12-22T00:12:01.201Z */
     createdAt?: string;
-    /** @example 2022-12-20T21:18:15.175Z */
+    /** @example 2022-12-22T00:12:01.201Z */
     updatedAt?: string;
   }[];
 }
@@ -385,7 +389,7 @@ export type TagsResponse = {
 export interface BlockUserRequest {
   /** @example 1 */
   userId?: number;
-  /** @example 2022-12-20T21:18:15.185Z */
+  /** @example 2022-12-22T00:12:01.209Z */
   blockedTo?: string;
 }
 
@@ -404,9 +408,9 @@ export interface GetTrainingSessionQuestionsResponse {
     question?: string;
     /** @example 1000000 */
     trainingId?: number;
-    /** @example 2022-12-20T21:18:15.183Z */
+    /** @example 2022-12-22T00:12:01.207Z */
     createdAt?: string;
-    /** @example 2022-12-20T21:18:15.183Z */
+    /** @example 2022-12-22T00:12:01.207Z */
     updatedAt?: string;
   }[];
   /** @example 0 */
@@ -500,18 +504,18 @@ export interface EditTagRequest {
 export type GetAllUsersResponse = {
   /** @example 7 */
   id?: number;
-  /** @example 2022-12-20T21:18:15.186Z */
+  /** @example 2022-12-22T00:12:01.210Z */
   createdAt?: string;
-  /** @example 2022-12-20T21:18:15.186Z */
+  /** @example 2022-12-22T00:12:01.210Z */
   updatedAt?: string;
   /** @example kamilporeba5@hotmail.com */
   email?: string;
-  /** @example 2022-12-20T21:18:15.186Z */
+  /** @example 2022-12-22T00:12:01.210Z */
   passwordResetDate?: string;
   /** @example true */
   isAdmin?: boolean;
   googleSub?: any;
-  /** @example 2022-12-20T21:18:15.186Z */
+  /** @example 2022-12-22T00:12:01.210Z */
   blockedDate?: string;
 }[];
 
@@ -1155,12 +1159,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Likes
      * @name LikeSwitchCreate
-     * @request POST:/like-switch
+     * @request POST:/like-switch/{trainingId}
      * @secure
      */
-    likeSwitchCreate: (params: RequestParams = {}) =>
+    likeSwitchCreate: (trainingId: string, params: RequestParams = {}) =>
       this.request<ChangeLikeResponse, any>({
-        path: `/like-switch`,
+        path: `/like-switch/${trainingId}`,
         method: "POST",
         secure: true,
         ...params,
