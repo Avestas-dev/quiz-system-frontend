@@ -1,16 +1,14 @@
-import axios, { AxiosResponse } from "axios"
-import { useQuery } from "react-query"
-import { useNavigate } from "react-router"
-import QuizListItem from "./components/QuizListItem"
-import { GetAllTrainingsResponse } from "../../models/Api"
-import { toast } from "react-toastify"
-import { useContext, useEffect } from "react"
-import { UserContext } from "../../contexts/UserContext"
-import { Button, InputAdornment, TextField, ToggleButton } from "@mui/material"
-import SearchIcon from "@mui/icons-material/Search"
 import AddIcon from "@mui/icons-material/Add"
-import React from "react"
+import SearchIcon from "@mui/icons-material/Search"
+import { Button, InputAdornment, TextField } from "@mui/material"
+import axios from "axios"
+import React, { useContext, useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { useQuery } from "react-query"
+import { toast } from "react-toastify"
+import { UserContext } from "../../contexts/UserContext"
+import { GetAllTrainingsResponse } from "../../models/Api"
+import QuizListItem from "./components/QuizListItem"
 
 export interface GetAllTrainingsProps {
   onlyLiked?: boolean
@@ -39,7 +37,7 @@ export const GetAllTrainings = ({
     ["/training/all", { search: watch("search") }],
     async () => {
       const res = await axios.get(
-        `/training/all?onlyLiked=${onlyLiked}?search=${watchSearch}`
+        `/training/all?onlyLiked=${onlyLiked}&search=${watchSearch}`
       )
       return res.data
     },
