@@ -117,7 +117,7 @@ export const GetQuestionWithAnswers = ({
 
   return (
     <>
-      <div className="flex mt-8 flex-col  space-y-8 p-8 rounded-2xl  w-[60%] h-[80%] bg-yellow-300">
+      <div className="flex mt-8 flex-col shadow-2xl border-4 border-gray-300 space-y-8 p-8 rounded-2xl  w-[60%] h-[80%] bg-yellow-300">
         <div className="flex flex-row space-x-2  ">
           <div className="flex flex-col w-1/5 space-y-2  items-center">
             <div className="flex flex-col items-center rounded-xl bg-yellow-200 p-1 w-3/5">
@@ -135,7 +135,7 @@ export const GetQuestionWithAnswers = ({
           </div>
           <div className="w-4/5 rounded-xl border-4 border-yellow-200">
             <InputControl
-              defaultValue={data?.question}
+              //defaultValue={data?.question}
               placeholder={data?.question}
               control={control}
               name={`question`}
@@ -193,7 +193,7 @@ export const GetQuestionWithAnswers = ({
                   control={control}
                   name={`answers.${index}.answer`}
                   multiline
-                  rows={8}
+                  rows={10}
                   style={{
                     padding: "0.25rem",
                     height: "",
@@ -205,9 +205,12 @@ export const GetQuestionWithAnswers = ({
           ))}
         </div>
       </div>
-      <div className="w-[60%] space-x-2 mt-2">
-        <div className="float-right">
+      <div className="w-[60%] mt-2">
+        <div className="float-right p-2">
           <Button
+            onClick={() => {
+              navigate(-1)
+            }}
             variant="contained"
             style={{
               backgroundColor: "black",
@@ -216,7 +219,7 @@ export const GetQuestionWithAnswers = ({
             Anuluj
           </Button>
         </div>
-        <div className="float-right">
+        <div className="float-right p-2">
           <Button
             onClick={handleSubmit(onSubmit)}
             variant="contained"

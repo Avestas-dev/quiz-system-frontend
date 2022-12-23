@@ -1,3 +1,4 @@
+import { Container } from "@mui/material"
 import { Layout } from "../../components/layout/Layout"
 import { Login } from "./components/Login"
 import { Register } from "./components/Register"
@@ -10,15 +11,22 @@ export const Auth = ({ variant }: AuthProps) => {
   return (
     <div className="flex">
       <Layout>
-        <div className="flex flex-row shadow-2xl border-gray border-2 min-h-full">
-          <div className="flex-1 w-[55%] min-h-full ">
-            {variant === "login" && <Login />}
-            {variant === "register" && <Register />}
-          </div>
-          <div className="bg-blue-500 w-[45%] shadow-2xl border-gray border-2 hidden lg:block">
-            <p>This will be image</p>
-          </div>
-        </div>
+        <Container
+          sx={{
+            paddingX: 4,
+            paddingY: 4,
+            marginLeft: "auto",
+            marginRight: "auto",
+            flex: 1,
+            flexDirection: "column",
+            flexGrow: 1,
+            width: "100%",
+          }}
+          maxWidth="xl"
+        >
+          {variant === "login" && <Login />}
+          {variant === "register" && <Register />}
+        </Container>
       </Layout>
     </div>
   )

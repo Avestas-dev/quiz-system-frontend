@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Container,
   FormControl,
   IconButton,
   InputLabel,
@@ -26,6 +27,7 @@ import axios from "axios"
 import { toast } from "react-toastify"
 import { AddQuestionWithAnswersRequest, TagsResponse } from "../../models/Api"
 import { CheckboxControl } from "../../components/CheckboxControl"
+import { Layout } from "../../components/layout/Layout"
 
 type CreateQuestionWithAnswersFormProps = {
   question: string
@@ -100,11 +102,22 @@ export const CreateQuestionWithAnswers = () => {
   }
 
   return (
-    <div>
-      <EditTrainingTopBar />
-      <div className="flex flex-col h-screen items-center bg-gray-700">
-        <>
-          <div className="flex mt-8 flex-col  space-y-8 p-8 rounded-2xl  w-[60%] h-[80%] bg-yellow-300">
+    <Layout>
+      <Container
+        sx={{
+          paddingX: 4,
+          paddingY: 4,
+          marginLeft: "auto",
+          marginRight: "auto",
+          flex: 1,
+          flexDirection: "column",
+          flexGrow: 1,
+          width: "100%",
+        }}
+        maxWidth="xl"
+      >
+        <div className="flex flex-col items-center">
+          <div className="flex mt-8 flex-col border-4 border-gray-300 shadow-2xl space-y-8 p-8 rounded-2xl w-[60%] bg-yellow-300">
             <div className="flex flex-row space-x-2  ">
               <div className="flex flex-col w-1/5 space-y-2  items-center">
                 <div className="flex flex-col items-center rounded-xl bg-yellow-200 p-1 w-3/5">
@@ -181,7 +194,7 @@ export const CreateQuestionWithAnswers = () => {
                       control={control}
                       name={`answers.${index}.answer`}
                       multiline
-                      rows={8}
+                      rows={10}
                       style={{
                         padding: "0.25rem",
                         height: "",
@@ -196,6 +209,9 @@ export const CreateQuestionWithAnswers = () => {
           <div className="w-[60%] ">
             <div className="float-right p-2 ">
               <Button
+                onClick={() => {
+                  navigate(-1)
+                }}
                 variant="contained"
                 style={{
                   backgroundColor: "black",
@@ -216,8 +232,8 @@ export const CreateQuestionWithAnswers = () => {
               </Button>
             </div>
           </div>
-        </>
-      </div>
-    </div>
+        </div>
+      </Container>
+    </Layout>
   )
 }

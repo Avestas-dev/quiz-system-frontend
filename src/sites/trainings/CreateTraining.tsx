@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Chip,
+  Container,
   FormControl,
   IconButton,
   Input,
@@ -24,6 +25,7 @@ import { Controller, useForm } from "react-hook-form"
 import { InputControl } from "../../components/InputControl"
 import React from "react"
 import { toast } from "react-toastify"
+import { Layout } from "../../components/layout/Layout"
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -134,64 +136,85 @@ export const CreateTraining = () => {
   }
 
   return (
-    <div className="bg-gray-300 h-screen">
-      <EditTrainingTopBar saveButtonFunction={handleSubmit(onSubmit)} />
-      <div className="p-2 flex justify-center pt-20">
-        <div className="w-[50%] bg-gray-300 p-5 flex flex-col rounded-xl h-full border-2 border-gray-400">
-          <div className="flex flex-row">
-            <div className="grid place-items-center rounded-xl bg-gray-400 m-2 w-[85%] ml-8 h-48">
-              quiz photo
+    <Layout>
+      <Container
+        sx={{
+          paddingX: 4,
+          paddingY: 4,
+          marginLeft: "auto",
+          marginRight: "auto",
+          flex: 1,
+          flexDirection: "column",
+          flexGrow: 1,
+          width: "100%",
+        }}
+        maxWidth="xl"
+      >
+        <div className="p-2 flex justify-center pt-20">
+          <div className="w-[50%] bg-gray-300 p-5 flex flex-col rounded-xl h-full border-2 border-gray-400">
+            <div className="flex flex-row">
+              <div className="grid place-items-center rounded-xl bg-gray-400 m-2 w-[85%] ml-8 h-48">
+                quiz photo
+              </div>
+              <button className="bg-red-300 hover:bg-red-400 text-[10px] mt-2 p-1 rounded-xl h-full">
+                <Delete color="error" />
+              </button>
             </div>
-            <div className="bg-red-300 text-[10px] mt-2 p-1 rounded-xl h-full">
-              <Delete color="error" />
-            </div>
-          </div>
-          <div className="ml-8 flex flex-col pb-10">
-            <form className="space-x-4">
-              <InputControl
-                control={control}
-                name="name"
-                label="training name"
-                autoFocus
-                autoComplete="training name"
-                inputProps={{ inputMode: "email" }}
-                defaultValue="training name"
-              />
-              <FormControl sx={{ width: 220 }}>
-                <InputLabel id="demo-multiple-chip-label">Tag</InputLabel>
-                <Select
-                  labelId="demo-multiple-chip-label"
-                  id="demo-multiple-chip"
-                  multiple
-                  value={tagName}
-                  onChange={handleChange}
-                  input={
-                    <OutlinedInput id="select-multiple-chip" label="Chip" />
-                  }
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
+            <div className="ml-8 flex flex-col pb-10 space-y-2">
+              <form className="space-x-4">
+                <InputControl
+                  control={control}
+                  name="name"
+                  label="training name"
+                  autoFocus
+                  autoComplete="training name"
+                  inputProps={{ inputMode: "email" }}
+                  defaultValue="training name"
+                />
+                <FormControl sx={{ width: 220 }}>
+                  <InputLabel id="demo-multiple-chip-label">Tag</InputLabel>
+                  <Select
+                    labelId="demo-multiple-chip-label"
+                    id="demo-multiple-chip"
+                    multiple
+                    value={tagName}
+                    onChange={handleChange}
+                    input={
+                      <OutlinedInput id="select-multiple-chip" label="Chip" />
+                    }
+                    renderValue={(selected) => (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        {selected.map((value) => (
+                          <Chip key={value} label={value} />
+                        ))}
+                      </Box>
+                    )}
+                    MenuProps={MenuProps}
+                  >
+                    {tagData?.map((tag) => (
+                      <MenuItem
+                        key={tag.id}
+                        value={tag.name}
+                        style={getStyles(tag.name!, tagName, theme)}
+                      >
+                        {tag.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </form>
+              <div className="flex">
+                <button
+                  onClick={handleSubmit(onSubmit)}
+                  className="bg-yellow-200 border-2 w-48 hover:bg-yellow-300 border-gray-400 rounded-xl p-1"
                 >
-                  {tagData?.map((tag) => (
-                    <MenuItem
-                      key={tag.id}
-                      value={tag.name}
-                      style={getStyles(tag.name!, tagName, theme)}
-                    >
-                      {tag.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </form>
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Container>
+    </Layout>
   )
 }

@@ -94,7 +94,7 @@ export const GetAllQuestions = ({
         <div></div>
       )}
       {showQuestions || !withButtons ? (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {data &&
             data.length > 0 &&
             data?.map((e) => (
@@ -103,7 +103,7 @@ export const GetAllQuestions = ({
                   id={e.id}
                   withButtons={withQuestionButtons}
                   question={e.question}
-                  tag={tag}
+                  updatedAt={e.updatedAt}
                 />
               </div>
             ))}

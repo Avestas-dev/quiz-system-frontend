@@ -1,4 +1,11 @@
-import { Box, Button, Checkbox, IconButton, Modal } from "@mui/material"
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  IconButton,
+  Modal,
+} from "@mui/material"
 import axios from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useNavigate, useParams } from "react-router"
@@ -20,6 +27,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined"
 import { modalStyle } from "../../styles/globalStyles"
+import { Layout } from "../../components/layout/Layout"
 
 export interface TrainingSessionProps {
   trainingId: number
@@ -239,142 +247,147 @@ export const TrainingSession = () => {
   }
 
   return (
-    <div>
-      <div className="bg-yellow-300 space-x-3 pl-4 pr-4 h-12">
-        <div className="mt-3 float-left">
-          <p className="">QuizzMe</p>
-        </div>
-        <div className="mt-3 float-left text-[10px] content-center space-x-1">
-          <button className="">Category</button>
-          <CreateOutlinedIcon fontSize="small" />
-        </div>
-      </div>
-      <div className="flex h-screen w-screen justify-center items-center bg-gray-700">
-        <div className="flex flex-row w-[70%] h-[80%] p-8 space-x-8">
-          <div className="flex flex-col w-[80%] p-2 rounded-2xl bg-yellow-300">
-            <div className="flex items-center h-[70%] justify-center rounded-xl border-4 border-yellow-200">
-              <div>
-                {questionsWithAnswers &&
-                  questionsWithAnswers?.[Number(questionindex)]?.question}
+    <Layout>
+      <Container
+        sx={{
+          paddingX: 4,
+          paddingY: 4,
+          marginLeft: "auto",
+          marginRight: "auto",
+          flex: 1,
+          flexDirection: "column",
+          flexGrow: 1,
+          width: "100%",
+        }}
+        maxWidth="xl"
+      >
+        <div className="flex h-screen justify-center ">
+          <div className="flex flex-row w-[70%] p-8 space-x-8">
+            <div className="flex flex-col w-[80%] border-4 border-gray-300 h-fit p-2 rounded-2xl bg-yellow-300">
+              <div className="flex items-center h-64 justify-center rounded-xl border-4 border-yellow-200">
+                <div>
+                  {questionsWithAnswers &&
+                    questionsWithAnswers?.[Number(questionindex)]?.question}
+                </div>
               </div>
-            </div>
-            <div className="flex h-full flex-row space-x-8 ">
-              {questionsWithAnswers?.[
-                Number(questionindex)
-              ].QuestionAnswer?.map((answer) => (
-                <div
-                  key={answer.id}
-                  className="flex p-2 flex-col w-[25%] h-full"
-                >
+              <div className="flex h-80 flex-row space-x-8 ">
+                {questionsWithAnswers?.[
+                  Number(questionindex)
+                ].QuestionAnswer?.map((answer) => (
                   <div
-                    // style={{ backgroundColor: `${getRandomHtmlColor()}` }}
-                    className="rounded-xl bg-purple-400 flex flex-col h-full"
+                    key={answer.id}
+                    className="flex p-2 flex-col w-[25%] h-full"
                   >
-                    <div>
-                      <div className="float-right">
-                        <Checkbox
-                          onChange={handleChange}
-                          checked={answersId.includes(answer.id!)}
-                          value={answer.id!}
-                          icon={
-                            <RadioButtonUncheckedOutlinedIcon fontSize="small" />
-                          }
-                          checkedIcon={
-                            <CheckCircleOutlineOutlinedIcon
-                              color="success"
-                              fontSize="small"
-                            />
-                          }
-                          defaultChecked={false}
-                        />
+                    <div
+                      // style={{ backgroundColor: `${getRandomHtmlColor()}` }}
+                      className="rounded-xl bg-purple-400 flex flex-col h-full"
+                    >
+                      <div>
+                        <div className="float-right">
+                          <Checkbox
+                            onChange={handleChange}
+                            checked={answersId.includes(answer.id!)}
+                            value={answer.id!}
+                            icon={
+                              <RadioButtonUncheckedOutlinedIcon fontSize="small" />
+                            }
+                            checkedIcon={
+                              <CheckCircleOutlineOutlinedIcon
+                                color="success"
+                                fontSize="small"
+                              />
+                            }
+                            defaultChecked={false}
+                          />
+                        </div>
+                        <div className="float-left">
+                          <IconButton>
+                            <DeleteOutlineOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </div>
+                        <div className="float-left">
+                          <IconButton>
+                            <ImageOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </div>
+                        <div className="float-left">
+                          <IconButton>
+                            <FunctionsOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </div>
                       </div>
-                      <div className="float-left">
-                        <IconButton>
-                          <DeleteOutlineOutlinedIcon fontSize="small" />
-                        </IconButton>
-                      </div>
-                      <div className="float-left">
-                        <IconButton>
-                          <ImageOutlinedIcon fontSize="small" />
-                        </IconButton>
-                      </div>
-                      <div className="float-left">
-                        <IconButton>
-                          <FunctionsOutlinedIcon fontSize="small" />
-                        </IconButton>
-                      </div>
-                    </div>
 
-                    <div className="flex rounded-xl h-full items-center justify-center">
-                      <div>{answer && answer?.answer}</div>
+                      <div className="flex rounded-xl h-full items-center justify-center">
+                        <div>{answer && answer?.answer}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col space-y-2 w-[20%]">
+              {Number(questionindex) == 0 ? (
+                <div></div>
+              ) : (
+                <button
+                  onClick={handlePreviousClick}
+                  className="flex flex-col justify-center items-center rounded-2xl hover:bg-green-500 bg-gray-300 h-36 border-4 border-gray-400"
+                >
+                  <ChevronLeftIcon fontSize="large" />
+                  <p className="pl-2 pr-2 pb-2">Previous</p>
+                </button>
+              )}
+              {Number(questionindex) == questionsWithAnswers?.length! - 1 ? (
+                <div></div>
+              ) : (
+                <button
+                  onClick={handleNextClick}
+                  className="flex flex-col justify-center items-center rounded-2xl hover:bg-green-500 bg-gray-300 h-36 border-4 border-gray-400"
+                >
+                  <ChevronRightIcon fontSize="large" />
+                  <p className="pl-2 pr-2 pb-2">Next</p>
+                </button>
+              )}
+              <button
+                onClick={handlePauseClick}
+                className="flex flex-col justify-center items-center rounded-2xl hover:bg-yellow-500 bg-gray-300  h-36 border-4 border-gray-400"
+              >
+                <p>Stop</p>
+              </button>
+              <button
+                onClick={handleFinishClick}
+                className="flex flex-col justify-center items-center rounded-2xl hover:bg-red-500 bg-gray-300  h-36 border-4 border-gray-400"
+              >
+                <p>Finish</p>
+              </button>
             </div>
           </div>
-          <div className="flex flex-col space-y-2 w-[20%]">
-            {Number(questionindex) == 0 ? (
-              <div></div>
-            ) : (
-              <button
-                onClick={handlePreviousClick}
-                className="flex flex-col justify-center items-center rounded-2xl hover:bg-green-500 bg-gray-800 h-[35%] border-2 border-gray-100"
-              >
-                <ChevronLeftIcon fontSize="large" />
-                <p className="pl-2 pr-2 pb-2">Previous</p>
-              </button>
-            )}
-            {Number(questionindex) == questionsWithAnswers?.length! - 1 ? (
-              <div></div>
-            ) : (
-              <button
-                onClick={handleNextClick}
-                className="flex flex-col justify-center items-center rounded-2xl hover:bg-green-500 bg-gray-800 h-[35%] border-2 border-gray-100"
-              >
-                <ChevronRightIcon fontSize="large" />
-                <p className="pl-2 pr-2 pb-2">Next</p>
-              </button>
-            )}
-            <button
-              onClick={handlePauseClick}
-              className="flex flex-col justify-center items-center rounded-2xl hover:bg-yellow-500 bg-gray-800 h-[15%] border-2 border-gray-100"
-            >
-              <p>Stop</p>
-            </button>
-            <button
-              onClick={handleFinishClick}
-              className="flex flex-col justify-center items-center rounded-2xl hover:bg-red-500 bg-gray-800 h-[15%] border-2 border-gray-100"
-            >
-              <p>Finish</p>
-            </button>
-          </div>
         </div>
-      </div>
-      <Modal open={isModalOpen} onClose={handleClose}>
-        <Box sx={{ ...modalStyle, width: 400 }}>
-          <h2 id="parent-modal-title">Results</h2>
-          <p>
-            Number of questions:{userTrainingSessionData?.totalQuestionCount}
-          </p>
-          <p>
-            Number of correct answers:
-            {userTrainingSessionData?.correctQuestionCount}
-          </p>
-          <div className="pt-4  text-center ">
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={() => {
-                navigate("/trainings")
-              }}
-              style={{ borderRadius: 9999 }}
-            >
-              Continue
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-    </div>
+        <Modal open={isModalOpen} onClose={handleClose}>
+          <Box sx={{ ...modalStyle, width: 400 }}>
+            <h2 id="parent-modal-title">Results</h2>
+            <p>
+              Number of questions:{userTrainingSessionData?.totalQuestionCount}
+            </p>
+            <p>
+              Number of correct answers:
+              {userTrainingSessionData?.correctQuestionCount}
+            </p>
+            <div className="pt-4  text-center ">
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={() => {
+                  navigate("/trainings")
+                }}
+                style={{ borderRadius: 9999 }}
+              >
+                Continue
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+      </Container>
+    </Layout>
   )
 }
