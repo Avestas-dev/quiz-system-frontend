@@ -99,6 +99,7 @@ export default function QuizListItem({
     {
       onSuccess: async (response) => {
         queryClient.invalidateQueries("/training/all")
+        queryClient.invalidateQueries("/training")
       },
       onError: (error) => {
         toast.error(error?.response?.data?.message || "Like error", {
@@ -109,7 +110,7 @@ export default function QuizListItem({
   )
 
   return (
-    <div className="flex flex-col bg-white border-1 border-gray-400 rounded-xl hover:drop-shadow-2xl">
+    <div className="flex flex-col bg-white shadow-2xl border-4 border-gray-400 rounded-2xl hover:drop-shadow-2xl">
       <div className="h-5/6 p-2 space-x-2 ">
         <div
           onClick={() => {
@@ -164,23 +165,17 @@ export default function QuizListItem({
           )}
         </div>
         <div className="float-right flex flex-row mt-2 ml-2">
-          <button className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200">
-            <ShareIcon fontSize="small" />
-            <p className="mt-1">Share</p>
-          </button>
-        </div>
-
-        <div className="float-right flex flex-row mt-2 ml-2">
           <button
             onClick={() => {
-              navigate("/")
+              navigate(`/training/${id}`)
             }}
             className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-gray-200"
           >
-            <FolderOpenIcon fontSize="small" />
-            <p className="mt-1">Save</p>
+            <ShareIcon fontSize="small" />
+            <p className="mt-1">Details</p>
           </button>
         </div>
+
         <div className="float-right flex flex-row mt-2 ml-2">
           <button
             onClick={() => {
@@ -189,14 +184,14 @@ export default function QuizListItem({
             className="bg-gray-300 text-[10px] flex flex-row p-1 rounded space-x-2 pr-3 hover:bg-red-200"
           >
             {liked ? (
-              <ThumbDownIcon fontSize="small" />
-            ) : (
               <FavoriteBorderIcon fontSize="small" />
+            ) : (
+              <ThumbDownIcon fontSize="small" />
             )}
             {liked ? (
-              <p className="mt-1">Dislike</p>
+              <p className="mt-1">Liked</p>
             ) : (
-              <p className="mt-1">Like</p>
+              <p className="mt-1">Not liked</p>
             )}
           </button>
         </div>

@@ -1,43 +1,41 @@
 import AddIcon from "@mui/icons-material/Add"
 import SearchIcon from "@mui/icons-material/Search"
-import { Button, InputAdornment, TextField } from "@mui/material"
+import { Button, Checkbox, InputAdornment, TextField } from "@mui/material"
 import axios from "axios"
 import React, { useContext, useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useQuery } from "react-query"
+import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import { UserContext } from "../../contexts/UserContext"
 import { GetAllTrainingsResponse } from "../../models/Api"
 import QuizListItem from "./components/QuizListItem"
-
-export interface GetAllTrainingsProps {
-  onlyLiked?: boolean
-  search?: string
-  tags?: string[]
-}
 
 interface GetAllTrainingsFormProps {
   onlyLiked?: boolean
   search?: string
 }
 
-export const GetAllTrainings = ({
-  onlyLiked = false,
-  tags = [],
-}: GetAllTrainingsProps) => {
+export const GetAllTrainings = () => {
   const userContext = useContext(UserContext)
 
-  const [onlyMine, setOnlyMine] = React.useState(false)
+  const navigate = useNavigate()
 
-  const { control, handleSubmit, watch } = useForm<GetAllTrainingsFormProps>({})
+  const { control, handleSubmit, watch } = useForm<GetAllTrainingsFormProps>({
+    defaultValues: {
+      onlyLiked: false,
+      search: "",
+    },
+  })
 
-  const watchSearch = watch("search")
+  let watchSearch = watch("search")
+  let watchLiked = watch("onlyLiked")
 
   const { data, refetch } = useQuery<any, any, GetAllTrainingsResponse>(
     ["/training/all", { search: watch("search") }],
     async () => {
       const res = await axios.get(
-        `/training/all?onlyLiked=${onlyLiked}&search=${watchSearch}`
+        `/training/all?onlyLiked=${watchLiked}&search=${watchSearch}`
       )
       return res.data
     },
@@ -56,14 +54,15 @@ export const GetAllTrainings = ({
   )
   useEffect(() => {
     refetch()
-  }, [watch("search")])
+  }, [watch("search"), watch("onlyLiked")])
 
   console.log("search:", watchSearch)
+  console.log("only liked", watchLiked)
   console.log("liczba treningow", data?.length)
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-center space-x-2">
+    <div className="space-y-3">
+      <div className="flex items-center justify-center space-x-4">
         <Controller
           control={control}
           name="search"
@@ -85,23 +84,25 @@ export const GetAllTrainings = ({
             />
           )}
         />
-
-        {/* <ToggleButton
-          color="warning"
-          selected={onlyMine}
-          onChange={() => {
-            setOnlyMine(!onlyMine)
-          }}
-          value={onlyMine}
-        >
-          Created by me
-        </ToggleButton> */}
+        <Controller
+          name="onlyLiked"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Checkbox
+              onChange={(e) => onChange(e.target.checked)}
+              checked={value}
+            />
+          )}
+        />
+        Liked only
       </div>
       <div className="flex items-center justify-center">
         <Button
           type="submit"
           variant="contained"
-          onClick={() => {}}
+          onClick={() => {
+            navigate(`/training/create/1`)
+          }}
           style={{ borderRadius: 9999 }}
           startIcon={<AddIcon />}
         >
