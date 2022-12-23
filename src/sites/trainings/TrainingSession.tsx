@@ -300,16 +300,7 @@ export const TrainingSession = () => {
                             defaultChecked={false}
                           />
                         </div>
-                        <div className="float-left">
-                          <IconButton>
-                            <DeleteOutlineOutlinedIcon fontSize="small" />
-                          </IconButton>
-                        </div>
-                        <div className="float-left">
-                          <IconButton>
-                            <ImageOutlinedIcon fontSize="small" />
-                          </IconButton>
-                        </div>
+
                         <div className="float-left">
                           <IconButton>
                             <FunctionsOutlinedIcon fontSize="small" />
