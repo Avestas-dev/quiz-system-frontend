@@ -1,6 +1,5 @@
 import { Container } from "@mui/material"
 import { FC } from "react"
-import Sidebar from "../Sidebar"
 import { ResponsiveAppBar } from "./ResponsiveAppBar"
 interface LayoutProps {
   children: JSX.Element
